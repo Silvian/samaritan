@@ -58,5 +58,16 @@ docs/_build/
 # PyBuilder
 target/
 
+# Pydev/IntellJ stuff:
+.idea/
+
+# Ignore anything in static/admin
+static/admin/
+
+# Do not add the settings file
+samaritan/settings.py
+
+# Do not include the database file or configs
+db.*
 #Ipython Notebook
 .ipynb_checkpoints
