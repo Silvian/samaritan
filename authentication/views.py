@@ -1,0 +1,44 @@
+"""
+@author: Silvian Dragan
+@Date: 02/05/2016
+@Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+"""
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
+from samaritan.constants import SettingsConstants
+
+
+def login_view(request):
+    context = SettingsConstants.get_settings(SettingsConstants())
+    if request.GET.get('logout', False):
+        context['logout'] = True
+        context['msg'] = "You've been logged out successfully"
+
+    return render(request, "samaritan/login.html", context)
+
+
+def authenticate_user(request):
+    if request.method == 'POST':
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        context = SettingsConstants.get_settings(SettingsConstants())
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+                context['msg'] = "This account has been disabled"
+                return render(request, "samaritan/login.html", context)
+        else:
+            # the authentication system was unable to verify the username and password
+            context['msg'] = "The username or password are incorrect"
+            return render(request, "samaritan/login.html", context)
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/authenticate/login?logout=true')

@@ -1,0 +1,45 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+<div>
+  </br>
+  <h2><i class="fa fa-user fa-fw" aria-hidden="true"></i> Login</h2>
+</div>
+
+<h3>Enter username and password</h3>
+
+
+  {% if logout %}
+    <div class="alert alert-info" role="alert">
+      <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+      {{ msg }}
+    </div>
+
+  {% elif msg %}
+    <div class="alert alert-danger" role="alert">
+      <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+      <span class="sr-only">Error:</span>
+      {{ msg }}
+    </div>
+  {% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="col-md-4">
+    <form role="form" enctype="multipart/form-data" action="/authenticate/access/" method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <input type="text" id="username" name="username" placeholder="username" required autofocus>
+        </fieldset>
+        <fieldset class="form-group">
+            <input type="password" id="password" name="password" placeholder="password" required>
+        </fieldset>
+        <button class="btn btn-primary" type = "submit" name = "login"><i class="fa fa-sign-in fa-fw"></i> Login</button>
+
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samaritan</title>
+    {% load static from staticfiles %}
+    <link href="{% static 'resources/css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'resources/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs-3.3.6/dt-1.10.11,af-2.1.1/datatables.min.css"/>
+    <link href="{% static 'resources/css/sticky-footer.css' %}" rel="stylesheet"/>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{%url 'index' %}"><i class="fa fa-home fa-fw"></i> Samaritan</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="#"><i class="fa fa-child fa-fw"></i> Members</a></li>
+          <li><a href="#"><i class="fa fa-star fa-fw"></i> Guests</a></li>
+          <li><a href="#"><i class="fa fa-globe fa-fw"></i> Everyone</a></li>
+          <li><a href="#"><i class="fa fa-users fa-fw"></i> Groups</a></li>
+          <li><a href="#"><i class="fa fa-compass fa-fw"></i> Roles</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/authenticate/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</button></a></li>
+        </ul>
+        <form class="navbar-form navbar-right" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default"><i class="fa fa-search fa-fw"></i></button>
+        </form>
+
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+    <br/>
+    <br/>
+
+    <div class="container">
+
+      {% block heading %} {% endblock %}
+
+    </div>
+
+    <hr/>
+    <br/>
+
+    <div class="container">
+
+      {% block body %} {% endblock %}
+
+    </div>
+
+    <br/>
+
+    <footer class="footer">
+      <div class="footer-container" align="center">
+        <p class="text-muted">
+            <b>Author: {{ author }}</b>
+            <i>© {{ copyright }}, Licence: {{ licence }}</i>
+            - <b><i>Version: {{ version }}</i></b>
+        </p>
+      </div>
+    </footer>
+
+    {% load staticfiles %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'resources/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs-3.3.6/dt-1.10.11,af-2.1.1/datatables.min.js"></script>
+    <script src="{% static 'resources/js/app.js' %}"></script>
+
+</body>
+</html>

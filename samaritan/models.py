@@ -1,0 +1,71 @@
+"""
+@author: Silvian Dragan
+@Date: 02/05/2016
+@Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+
+Main models file describing database models for the Samaritan CMA app.
+"""
+
+from django.db import models
+from django.utils import timezone
+
+
+class Address(models.Model):
+    number = models.CharField(max_length=100, blank=True)
+    street = models.CharField(max_length=200)
+    locality = models.CharField(max_length=200, blank=True)
+    city = models.CharField(max_length=200)
+    post_code = models.CharField(max_length=50)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.post_code
+
+
+class ChurchRole(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.name
+
+
+class Member(models.Model):
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    date_of_birth = models.DateField()
+    telephone = models.CharField(max_length=200, blank=True)
+    address = models.ForeignKey(Address)
+    email = models.CharField(max_length=200, blank=True)
+    baptismal_date = models.DateField(blank=True)
+    is_member = models.BooleanField()
+    is_active = models.BooleanField()
+    church_role = models.ForeignKey(ChurchRole, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.last_name
+
+
+class ChurchGroup(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    member = models.ManyToManyField(Member)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.name
+
+
+
