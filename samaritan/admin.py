@@ -2,6 +2,7 @@
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+@Details: https://github.com/Silvian/samaritan
 
 Main admin data models import configurations file for the Samaritan CMA app.
 """

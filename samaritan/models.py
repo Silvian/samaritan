@@ -2,6 +2,7 @@
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+@Details: https://github.com/Silvian/samaritan
 
 Main models file describing database models for the Samaritan CMA app.
 """
@@ -42,9 +43,12 @@ class Member(models.Model):
     telephone = models.CharField(max_length=200, blank=True)
     address = models.ForeignKey(Address)
     email = models.CharField(max_length=200, blank=True)
+    profile_pic = models.CharField(max_length=200, blank=True)
+    is_baptised = models.BooleanField(default=False)
     baptismal_date = models.DateField(blank=True)
     is_member = models.BooleanField()
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=True)
+    notes = models.TextField(blank=True)
     church_role = models.ForeignKey(ChurchRole, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
 

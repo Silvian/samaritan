@@ -3,6 +3,7 @@
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+@Details: https://github.com/Silvian/samaritan
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/

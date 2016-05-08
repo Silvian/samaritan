@@ -2,6 +2,7 @@
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+@Details: https://github.com/Silvian/samaritan
 """
 
 from django.contrib.auth.decorators import login_required

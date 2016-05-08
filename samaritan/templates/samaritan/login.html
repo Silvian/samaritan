@@ -7,28 +7,27 @@
   <h2><i class="fa fa-user fa-fw" aria-hidden="true"></i> Login</h2>
 </div>
 
-<h3>Enter username and password</h3>
+{% endblock %}
 
+{% block body %}
 
-  {% if logout %}
+{% if logout %}
     <div class="alert alert-info" role="alert">
       <i class="fa fa-check fa-fw" aria-hidden="true"></i>
       {{ msg }}
     </div>
 
-  {% elif msg %}
+{% elif msg %}
     <div class="alert alert-danger" role="alert">
       <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
       <span class="sr-only">Error:</span>
       {{ msg }}
     </div>
-  {% endif %}
+{% endif %}
 
-{% endblock %}
+<h4>Enter username and password</h4>
 
-{% block body %}
-
-<div class="col-md-4">
+<div class="col-md-4 well">
     <form role="form" enctype="multipart/form-data" action="/authenticate/access/" method="post">
         {% csrf_token %}
         <fieldset class="form-group">

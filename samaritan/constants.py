@@ -2,6 +2,7 @@
 @author: Silvian Dragan
 @Date: 05/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+@Details: https://github.com/Silvian/samaritan
 
 Main file for storing constants classes
 """

@@ -5,6 +5,7 @@ WSGI config for samaritan project.
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
+@Details: https://github.com/Silvian/samaritan
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
