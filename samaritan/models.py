@@ -12,9 +12,9 @@ from django.utils import timezone
 
 
 class Address(models.Model):
-    number = models.CharField(max_length=100, blank=True)
+    number = models.CharField(max_length=100, blank=True, null=True)
     street = models.CharField(max_length=200)
-    locality = models.CharField(max_length=200, blank=True)
+    locality = models.CharField(max_length=200, blank=True, null=True)
     city = models.CharField(max_length=200)
     post_code = models.CharField(max_length=50)
 
@@ -27,7 +27,7 @@ class Address(models.Model):
 
 class ChurchRole(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, null=True)
 
     def publish(self):
         self.save()
@@ -40,15 +40,15 @@ class Member(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     date_of_birth = models.DateField()
-    telephone = models.CharField(max_length=200, blank=True)
+    telephone = models.CharField(max_length=200, blank=True, null=True)
     address = models.ForeignKey(Address)
-    email = models.CharField(max_length=200, blank=True)
-    profile_pic = models.CharField(max_length=200, blank=True)
+    email = models.CharField(max_length=200, blank=True, null=True)
+    profile_pic = models.CharField(max_length=200, blank=True, null=True)
     is_baptised = models.BooleanField(default=False)
-    baptismal_date = models.DateField(blank=True)
+    baptismal_date = models.DateField(blank=True, null=True)
     is_member = models.BooleanField()
     is_active = models.BooleanField(default=True)
-    notes = models.TextField(blank=True)
+    notes = models.TextField(blank=True, null=True)
     church_role = models.ForeignKey(ChurchRole, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
 
@@ -57,12 +57,12 @@ class Member(models.Model):
         self.save()
 
     def __str__(self):
-        return self.last_name
+        return self.last_name + " " + self.first_name
 
 
 class ChurchGroup(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, null=True)
     member = models.ManyToManyField(Member)
 
     def publish(self):

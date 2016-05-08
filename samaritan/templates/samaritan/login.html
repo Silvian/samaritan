@@ -31,10 +31,10 @@
     <form role="form" enctype="multipart/form-data" action="/authenticate/access/" method="post">
         {% csrf_token %}
         <fieldset class="form-group">
-            <input type="text" id="username" name="username" placeholder="username" required autofocus>
+            <input class="form-control" type="text" id="username" name="username" placeholder="username" required autofocus>
         </fieldset>
         <fieldset class="form-group">
-            <input type="password" id="password" name="password" placeholder="password" required>
+            <input class="form-control" type="password" id="password" name="password" placeholder="password" required>
         </fieldset>
         <button class="btn btn-primary" type = "submit" name = "login"><i class="fa fa-sign-in fa-fw"></i> Login</button>
 
