@@ -47,13 +47,13 @@
       <div class="modal-body">
         <div class="form-group">
           <fieldset class="form-group">
-            <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" placeholder="First name" required maxlength="200"/>
+            <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" placeholder="First name*" required maxlength="200"/>
           </fieldset>
           <fieldset class="form-group">
-            <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" placeholder="Last name" required maxlength="200"/>
+            <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" placeholder="Last name*" required maxlength="200"/>
           </fieldset>
           <fieldset class="form-group">
-            <input class="form-control datepicker" data-date-format="mm/dd/yyyy" id="date_of_birth" name="date_of_birth" path="date_of_birth" type="text" placeholder="Date of birth (mm/dd/yyyy)" required maxlength="10"/>
+            <input class="form-control datepicker" data-date-format="mm/dd/yyyy" id="date_of_birth" name="date_of_birth" path="date_of_birth" type="text" placeholder="Date of birth* (mm/dd/yyyy)" required maxlength="10"/>
           </fieldset>
           <fieldset class="form-group">
             <input class="form-control" id="telephone" name="telephone" path="telephone" type="text" placeholder="telephone" maxlength="200"/>
@@ -62,7 +62,7 @@
             <input class="form-control" id="email" name="email" path="email" type="email" placeholder="email" maxlength="200"/>
           </fieldset>
           <fieldset class="form-group">
-            <label for="address-select" style="float:left;margin-right:5px;">Select Address</label>
+            <label for="address-select" style="float:left;margin-right:5px;">Select Address*</label>
             <select class="form-control" id="address-select" name="address-select" required>
             </select>
           </fieldset>
@@ -78,10 +78,16 @@
             <input id="is_member" name="is_member" path="is_member" type="checkbox" placeholder="is_member" checked/>
           </fieldset>
           <fieldset class="form-group">
-            <label for="church-role-select" style="float:left;margin-right:5px;">Church role</label>
+            <label for="church-role-select" style="float:left;margin-right:5px;">Church role*</label>
             <select class="form-control" id="church-role-select" name="church-role-select" required>
             </select>
           </fieldset>
+
+          <div id="required-fields-alert" class="alert alert-danger" role="alert" hidden>
+            <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            Please fill in all the required fields marked with a *
+          </div>
+
         </div>
 
       </div>
@@ -92,5 +98,12 @@
     </div>
   </div>
 </div>
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/app.js' %}"></script>
 
 {% endblock %}

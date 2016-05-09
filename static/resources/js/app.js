@@ -45,6 +45,7 @@ $(document).ready(function(){
     $('.datepicker').datepicker();
 
     $("#add-member-button").click(function(event) {
+        $('#required-fields-alert').hide();
         $("#add-member-modal").modal('show');
     });
 
@@ -56,12 +57,13 @@ $(document).ready(function(){
 });
 
 function loadAddresses() {
-
+    ecblockui();
     $.ajax({
         type: 'GET',
         url: 'api/addresses',
         dataType: 'json',
         success: function (data) {
+            ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
                 options += '<option value="' + data[i].pk + '">' + data[i].fields.number + ' ' + data[i].fields.street + ' ' + data[i].fields.locality + ', ' + data[i].fields.city + ', ' + data[i].fields.post_code + '</option> ';
@@ -74,12 +76,13 @@ function loadAddresses() {
 }
 
 function loadChurchRoles() {
-
+    ecblockui();
     $.ajax({
         type: 'GET',
         url: 'api/roles',
         dataType: 'json',
         success: function (data) {
+            ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
                 options += '<option value="' + data[i].pk + '">' + data[i].fields.name + '</option> ';
@@ -93,32 +96,44 @@ function loadChurchRoles() {
 
 function submitAddMember(members_table) {
 
-    url = 'api/addMember';
+    if($('#first_name').val()=="" || $('#last_name').val()=="" || $('#date_of_birth').val()=="" ||
+        $('select[name=address-select]').val()=="" || $('select[name=church-role-select]').val()=="") {
 
-    /* Send the data using post */
-    var posting = $.post( url, {
-                      first_name     : $('#first_name').val(),
-                      last_name      : $('#last_name').val(),
-                      date_of_birth  : $('#date_of_birth').val(),
-                      telephone      : $('#telephone').val(),
-                      email          : $('#email').val(),
-                      address        : $('select[name=address-select]').val(),
-                      is_baptised    : $('#is_baptised').val(),
-                      baptismal_date : $('#baptismal_date').val(),
-                      is_member      : $('#is_member').val(),
-                      church_role    : $('select[name=church-role-select]').val(),
-                      is_active      : true,
-                      csrfmiddlewaretoken : getCookie('csrftoken')
-    });
+        $('#required-fields-alert').show();
 
-    /* Alerts the results */
-    posting.done(function( data ) {
-        if(data.success) {
-            $("#add-member-modal").modal('hide');
-            members_table.ajax.reload();
-        }
+    }
 
-    });
+    else {
+
+        $('#required-fields-alert').hide();
+        url = 'api/addMember';
+
+        /* Send the data using post */
+        var posting = $.post( url, {
+                          first_name     : $('#first_name').val(),
+                          last_name      : $('#last_name').val(),
+                          date_of_birth  : $('#date_of_birth').val(),
+                          telephone      : $('#telephone').val(),
+                          email          : $('#email').val(),
+                          address        : $('select[name=address-select]').val(),
+                          is_baptised    : $('#is_baptised').val(),
+                          baptismal_date : $('#baptismal_date').val(),
+                          is_member      : $('#is_member').val(),
+                          church_role    : $('select[name=church-role-select]').val(),
+                          is_active      : true,
+                          csrfmiddlewaretoken : getCookie('csrftoken')
+        });
+
+        /* Alerts the results */
+        posting.done(function( data ) {
+            if(data.success) {
+                $("#add-member-modal").modal('hide');
+                members_table.ajax.reload();
+            }
+
+        });
+
+    }
 
 }
 
@@ -156,4 +171,18 @@ function getCookie(name) {
     }
 
     return cookieValue;
+}
+
+function ecblockui() {
+
+    $.blockUI({ message: '', baseZ: 2000});
+    $.fancybox.showLoading();
+
+}
+
+function ecunblockui() {
+
+    $.unblockUI();
+    $.fancybox.hideLoading();
+
 }
