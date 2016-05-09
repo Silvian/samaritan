@@ -4,7 +4,7 @@ $(document).ready(function(){
     var members_table = $('#members-list').DataTable({
     'ajax': {
         "type"   : "GET",
-        "url"    : 'api/members',
+        "url"    : 'api/members/getActive',
 
         "dataSrc": ""
     },
@@ -106,7 +106,7 @@ function submitAddMember(members_table) {
     else {
 
         $('#required-fields-alert').hide();
-        url = 'api/addMember';
+        url = 'api/members/add';
 
         /* Send the data using post */
         var posting = $.post( url, {

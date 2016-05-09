@@ -25,9 +25,9 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
-    url(r'^api/members', views.get_all_active_members, name='members'),
+    url(r'^api/members/add', views.add_new_members, name='addMember'),
+    url(r'^api/members/getActive', views.get_all_active_members, name='getActiveMembers'),
     url(r'^api/roles', views.get_church_roles, name='roles'),
     url(r'^api/addresses', views.get_all_addresses, name='addresses'),
-    url(r'^api/addMember', views.add_new_members, name='addMember'),
     url(r'^$', views.index_view, name='index'),
 ]
