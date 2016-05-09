@@ -69,5 +69,9 @@ samaritan/settings.py
 
 # Do not include the database file or configs
 db.*
+
+# Do not include any images related to profile pictures file storage
+static/resources/img/profile_pictures/*
+
 #Ipython Notebook
 .ipynb_checkpoints
