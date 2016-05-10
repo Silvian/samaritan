@@ -11,6 +11,16 @@
 
 {% block body %}
 
+  <div class="container">
+      <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-member-button">
+      <i class="fa fa-user-plus fa-fw"></i> New member
+  </button>
+
+  </div>
+
+  <br/>
+
   <div class="well">
 
     <table class="table table-striped table-hover" id="members-list">
@@ -29,12 +39,6 @@
     </table>
 
   </div>
-
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" id="add-member-button">
-  Add new member
-</button>
 
 <!-- Modal -->
 <div class="modal fade" id="add-member-modal" role="dialog" aria-labelledby="addMemberModal">
@@ -85,7 +89,7 @@
 
           <div id="required-fields-alert" class="alert alert-danger" role="alert" hidden>
             <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
-            Please fill in all the required fields marked with a *
+            Please fill in all the required fields marked with an asterisk *
           </div>
 
         </div>
