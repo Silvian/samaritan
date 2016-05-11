@@ -8,14 +8,23 @@ Main forms file to describe web page forms based on models for the Samaritan CMA
 """
 
 from django import forms
-from models import Member
+from models import Member, Address
 
 
-class AddMemberForm(forms.ModelForm):
+class MemberForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(AddMemberForm, self).__init__(*args, **kwargs)
+        super(MemberForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Member
         fields = ('first_name', 'last_name', 'date_of_birth', 'telephone', 'email', 'address',
                   'is_baptised', 'baptismal_date', 'is_member', 'church_role', 'is_active')
+
+
+class AddressForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AddressForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Address
+        fields = ('number', 'street', 'locality', 'city', 'post_code')

@@ -45,12 +45,17 @@ $(document).ready(function(){
     $('.datepicker').datepicker();
 
     $("#add-member-button").click(function(event) {
+        $('#new-address').hide();
         $('#required-fields-alert').hide();
         $("#add-member-modal").modal('show');
     });
 
+    $("#create-address").click(function(event) {
+        $('#new-address').show();
+    });
+
     $("#save-member").click(function(event) {
-        submitAddMember(members_table);
+        addMember(members_table);
     });
 
 
@@ -58,9 +63,11 @@ $(document).ready(function(){
 
 function loadAddresses() {
     ecblockui();
+    $("#address-select").html("");
+
     $.ajax({
         type: 'GET',
-        url: 'api/addresses',
+        url: 'api/addresses/get',
         dataType: 'json',
         success: function (data) {
             ecunblockui();
@@ -94,10 +101,20 @@ function loadChurchRoles() {
 
 }
 
-function submitAddMember(members_table) {
+function addMember(members_table) {
+
+    new_address = false;
+
+    if($('select[name=address-select]').val()==null) {
+        new_address = true;
+        if($('#street').val()=="" || $('#city').val()=="" || $('#post_code').val()=="") {
+
+           $('#required-fields-alert').show();
+        }
+    }
 
     if($('#first_name').val()=="" || $('#last_name').val()=="" || $('#date_of_birth').val()=="" ||
-        $('select[name=address-select]').val()=="" || $('select[name=church-role-select]').val()=="") {
+         $('select[name=church-role-select]').val()==null) {
 
         $('#required-fields-alert').show();
 
@@ -105,35 +122,79 @@ function submitAddMember(members_table) {
 
     else {
 
-        $('#required-fields-alert').hide();
-        url = 'api/members/add';
+        if(new_address) {
+            submitAddAddress(members_table);
+        }
 
-        /* Send the data using post */
-        var posting = $.post( url, {
-                          first_name     : $('#first_name').val(),
-                          last_name      : $('#last_name').val(),
-                          date_of_birth  : $('#date_of_birth').val(),
-                          telephone      : $('#telephone').val(),
-                          email          : $('#email').val(),
-                          address        : $('select[name=address-select]').val(),
-                          is_baptised    : $('#is_baptised').val(),
-                          baptismal_date : $('#baptismal_date').val(),
-                          is_member      : $('#is_member').val(),
-                          church_role    : $('select[name=church-role-select]').val(),
-                          is_active      : true,
-                          csrfmiddlewaretoken : getCookie('csrftoken')
-        });
-
-        /* Alerts the results */
-        posting.done(function( data ) {
-            if(data.success) {
-                $("#add-member-modal").modal('hide');
-                members_table.ajax.reload();
-            }
-
-        });
+        else {
+            submitAddMember(members_table, null);
+        }
 
     }
+
+}
+
+function submitAddAddress(members_table) {
+
+    url = 'api/addresses/add';
+
+    var posting = $.post( url, {
+                  number    : $('#number').val(),
+                  street    : $('#street').val(),
+                  locality  : $('#locality').val(),
+                  city      : $('#city').val(),
+                  post_code : $('#post_code').val(),
+                  csrfmiddlewaretoken : getCookie('csrftoken')
+    });
+
+        posting.done(function( data ) {
+        if(data.address) {
+            submitAddMember(members_table, data.address);
+            loadAddresses();
+        }
+
+    });
+
+}
+
+function submitAddMember(members_table, addressId) {
+
+    url = 'api/members/add';
+
+    var address;
+
+    if(addressId != null) {
+        address = addressId;
+    }
+
+    else {
+       address = $('select[name=address-select]').val();
+    }
+
+    /* Send the data using post */
+    var posting = $.post( url, {
+                      first_name     : $('#first_name').val(),
+                      last_name      : $('#last_name').val(),
+                      date_of_birth  : $('#date_of_birth').val(),
+                      telephone      : $('#telephone').val(),
+                      email          : $('#email').val(),
+                      address        : address,
+                      is_baptised    : $('#is_baptised').val(),
+                      baptismal_date : $('#baptismal_date').val(),
+                      is_member      : $('#is_member').val(),
+                      church_role    : $('select[name=church-role-select]').val(),
+                      is_active      : true,
+                      csrfmiddlewaretoken : getCookie('csrftoken')
+    });
+
+    /* Alerts the results */
+    posting.done(function( data ) {
+        if(data.success) {
+            $("#add-member-modal").modal('hide');
+            members_table.ajax.reload();
+        }
+
+    });
 
 }
 

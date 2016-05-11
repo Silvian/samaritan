@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^api/members/add', views.add_new_members, name='addMember'),
     url(r'^api/members/getActive', views.get_all_active_members, name='getActiveMembers'),
     url(r'^api/roles', views.get_church_roles, name='roles'),
-    url(r'^api/addresses', views.get_all_addresses, name='addresses'),
+    url(r'^api/addresses/get', views.get_all_addresses, name='addresses'),
+    url(r'^api/addresses/add', views.add_new_address, name='addAddress'),
     url(r'^$', views.index_view, name='index'),
 ]

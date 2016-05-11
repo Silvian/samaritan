@@ -16,7 +16,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.utils import timezone
 from models import Member, ChurchRole, Address
-from forms import AddMemberForm
+from forms import MemberForm, AddressForm
 import json
 
 # this loads teh main settings constants that display
@@ -59,6 +59,15 @@ def get_all_addresses(request):
 @login_required
 def add_new_members(request):
     if request.method == 'POST':
-        form = AddMemberForm(request.POST)
+        form = MemberForm(request.POST)
         form.save()
         return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def add_new_address(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        new_address = form.save()
+        return HttpResponse(json.dumps({'address': new_address.pk}), content_type='application/json')
+
