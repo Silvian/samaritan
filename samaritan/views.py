@@ -17,6 +17,7 @@ from django.core import serializers
 from django.utils import timezone
 from models import Member, ChurchRole, Address
 from forms import MemberForm, AddressForm
+from django.shortcuts import get_object_or_404
 import json
 
 # this loads teh main settings constants that display
@@ -71,3 +72,20 @@ def add_new_address(request):
         new_address = form.save()
         return HttpResponse(json.dumps({'address': new_address.pk}), content_type='application/json')
 
+
+@login_required
+def update_member(request, id):
+    member = get_object_or_404(Member, id=id)
+    form = MemberForm(request.POST or None, instance=member)
+    if form.is_valid():
+        form.save()
+        return HttpResponse(json.dump(success_response), content_type='application/json')
+
+
+@login_required
+def update_address(request, id):
+    address = get_object_or_404(Address, id=id)
+    form = AddressForm(request.POST or None, instance=address)
+    if form.is_valid():
+        form.save()
+        return HttpResponse(json.dump(success_response), content_type='application/json')

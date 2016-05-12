@@ -73,7 +73,8 @@ function loadAddresses() {
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
-                options += '<option value="' + data[i].pk + '">' + data[i].fields.number + ' ' + data[i].fields.street + ' ' + data[i].fields.locality + ', ' + data[i].fields.city + ', ' + data[i].fields.post_code + '</option> ';
+                options += '<option value="' + data[i].pk + '">' + data[i].fields.number + ' ' + data[i].fields.street +
+                 ' ' + data[i].fields.locality + ', ' + data[i].fields.city + ', ' + data[i].fields.post_code + '</option> ';
             });
             $("#address-select").append(options);
             $("#address-select").select2('val', 1);
@@ -86,7 +87,7 @@ function loadChurchRoles() {
     ecblockui();
     $.ajax({
         type: 'GET',
-        url: 'api/roles',
+        url: 'api/roles/get',
         dataType: 'json',
         success: function (data) {
             ecunblockui();

@@ -26,9 +26,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
     url(r'^api/members/add', views.add_new_members, name='addMember'),
+    url(r'^api/members/update', views.update_member, name='updateMember'),
     url(r'^api/members/getActive', views.get_all_active_members, name='getActiveMembers'),
-    url(r'^api/roles', views.get_church_roles, name='roles'),
-    url(r'^api/addresses/get', views.get_all_addresses, name='addresses'),
+    url(r'^api/roles/get', views.get_church_roles, name='getRoles'),
     url(r'^api/addresses/add', views.add_new_address, name='addAddress'),
+    url(r'^api/addresses/update', views.update_address, name='updateAddress'),
+    url(r'^api/addresses/get', views.get_all_addresses, name='addresses'),
     url(r'^$', views.index_view, name='index'),
 ]
