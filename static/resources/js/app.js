@@ -20,6 +20,10 @@ $(document).ready(function(){
                             return getEmailLink(row.fields.email);
                         }
             },
+            {"mRender": function (data, type, row) {
+                            return '<button type="button" class="btn btn-primary btn-sm" id="edit-'+ row.pk +'"><i class="fa fa-pencil-square-o fa-fw"></i></td>';
+                        }
+            },
         ],
 
     });

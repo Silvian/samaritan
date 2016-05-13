@@ -74,18 +74,36 @@ def add_new_address(request):
 
 
 @login_required
-def update_member(request, id):
-    member = get_object_or_404(Member, id=id)
-    form = MemberForm(request.POST or None, instance=member)
-    if form.is_valid():
-        form.save()
-        return HttpResponse(json.dump(success_response), content_type='application/json')
+def get_member(request):
+    if request.is_ajax:
+        member = Member.objects.get(pk=request.GET['id'])
+    data = serializers.serialize("json", member)
+    return HttpResponse(data, content_type='application/json')
 
 
 @login_required
-def update_address(request, id):
-    address = get_object_or_404(Address, id=id)
-    form = AddressForm(request.POST or None, instance=address)
-    if form.is_valid():
-        form.save()
-        return HttpResponse(json.dump(success_response), content_type='application/json')
+def get_address(request):
+    if request.is_ajax:
+        address = Address.objects.get(pk=request.GET['id'])
+    data = serializers.serialize("json", address)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def update_member(request):
+    if request.method == 'POST':
+        member = get_object_or_404(Member, id=request.POST['id'])
+        form = MemberForm(request.POST or None, instance=member)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(json.dump(success_response), content_type='application/json')
+
+
+@login_required
+def update_address(request):
+    if request.method == 'POST':
+        address = get_object_or_404(Address, id=request.POST['id'])
+        form = AddressForm(request.POST or None, instance=address)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(json.dump(success_response), content_type='application/json')
