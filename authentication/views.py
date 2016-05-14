@@ -3,6 +3,9 @@
 @Date: 02/05/2016
 @Copyright: Copyright 2016, Samaritan CMA - Published under GNU General Public Licence v3
 @Details: https://github.com/Silvian/samaritan
+
+Authentication module is fully completed.
+Do not change anything here unless you really know what you're doing.
 """
 
 from django.contrib.auth.decorators import login_required
