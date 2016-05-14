@@ -47,7 +47,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add new member</h4>
+        <h4 class="modal-title" id="member-modal-label"></h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -58,7 +58,7 @@
             <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" placeholder="Last name*" required maxlength="200"/>
           </fieldset>
           <fieldset class="form-group">
-            <input class="form-control datepicker" data-date-format="mm/dd/yyyy" id="date_of_birth" name="date_of_birth" path="date_of_birth" type="text" placeholder="Date of birth* (mm/dd/yyyy)" required maxlength="10"/>
+            <input class="form-control datepicker" data-date-format="yyyy-mm-dd" id="date_of_birth" name="date_of_birth" path="date_of_birth" type="text" placeholder="Date of birth* (yyyy-mm-dd)" required maxlength="10"/>
           </fieldset>
           <fieldset class="form-group">
             <input class="form-control" id="telephone" name="telephone" path="telephone" type="text" placeholder="telephone" maxlength="200"/>
@@ -90,18 +90,18 @@
            </fieldset>
           </div>
           <fieldset class="form-group">
-            <label for="is_baptised" style="float:left;margin-right:5px;">Baptised?</label>
-            <input id="is_baptised" name="is_baptised" path="is_baptised" type="checkbox" placeholder="is_baptised" checked/>
-          </fieldset>
-          <fieldset class="form-group">
-            <input class="form-control datepicker" data-date-format="mm/dd/yyyy" id="baptismal_date" name="baptismal_date" path="baptismal_date" type="text" placeholder="Baptismal date (mm/dd/yyyy)" maxlength="10"/>
-          </fieldset>
-          <fieldset class="form-group">
             <label for="is_member" style="float:left;margin-right:5px;">Church member?</label>
             <input id="is_member" name="is_member" path="is_member" type="checkbox" placeholder="is_member" checked/>
           </fieldset>
           <fieldset class="form-group">
-            <label for="church-role-select" style="float:left;margin-right:5px;">Church role*</label>
+            <label for="is_baptised" style="float:left;margin-right:5px;">Baptised?</label>
+            <input id="is_baptised" name="is_baptised" path="is_baptised" type="checkbox" placeholder="is_baptised"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control datepicker" data-date-format="yyyy-mm-dd" id="baptismal_date" name="baptismal_date" path="baptismal_date" type="text" placeholder="Baptismal date (yyyy-mm-dd)" maxlength="10"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="church-role-select" style="float:left;margin-right:5px;">Church role* <i id="church-role"></i></label>
             <select class="form-control" id="church-role-select" name="church-role-select" required>
             </select>
           </fieldset>
@@ -116,7 +116,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="clear-member" type="button" class="btn btn-warning" style="float:left"><i class="fa fa-eraser fa-fw"></i> Clear</button>
         <button id="save-member" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
+        <button id="update-member" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Update</button>
       </div>
     </div>
   </div>

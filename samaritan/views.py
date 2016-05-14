@@ -77,7 +77,7 @@ def add_new_address(request):
 def get_member(request):
     if request.is_ajax:
         member = Member.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", member)
+    data = serializers.serialize("json", [member])
     return HttpResponse(data, content_type='application/json')
 
 
@@ -85,7 +85,15 @@ def get_member(request):
 def get_address(request):
     if request.is_ajax:
         address = Address.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", address)
+    data = serializers.serialize("json", [address])
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def get_role(request):
+    if request.is_ajax:
+        role = ChurchRole.objects.get(pk=request.GET['id'])
+    data = serializers.serialize("json", [role])
     return HttpResponse(data, content_type='application/json')
 
 
