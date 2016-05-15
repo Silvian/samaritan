@@ -8,9 +8,11 @@ Main admin data models import configurations file for the Samaritan CMA app.
 """
 
 from django.contrib import admin
-from .models import Address, Member, ChurchRole, ChurchGroup
+from .models import Address, Member, ChurchRole, ChurchGroup, Membership, MembershipType
 
 admin.site.register(Address)
 admin.site.register(Member)
 admin.site.register(ChurchRole)
 admin.site.register(ChurchGroup)
+admin.site.register(Membership)
+admin.site.register(MembershipType)
