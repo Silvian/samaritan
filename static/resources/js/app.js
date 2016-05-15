@@ -48,7 +48,7 @@ $(document).ready(function(){
     });
 
     $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'dd/mm/yyyy'
     });
 
     $("#add-member-button").click(function(event) {
@@ -197,12 +197,12 @@ function submitAddMember(members_table, addressId) {
     var posting = $.post( url, {
                       first_name     : $('#first_name').val(),
                       last_name      : $('#last_name').val(),
-                      date_of_birth  : $('#date_of_birth').val(),
+                      date_of_birth  : standardDate($('#date_of_birth').val()),
                       telephone      : $('#telephone').val(),
                       email          : $('#email').val(),
                       address        : address,
                       is_baptised    : $('#is_baptised').val(),
-                      baptismal_date : $('#baptismal_date').val(),
+                      baptismal_date : standardDate($('#baptismal_date').val()),
                       is_member      : $('#is_member').val(),
                       church_role    : $('select[name=church-role-select]').val(),
                       is_active      : true,
@@ -233,7 +233,7 @@ function editMember(id, members_table) {
 
              $('#first_name').val(member.fields.first_name);
              $('#last_name').val(member.fields.last_name);
-             $('#date_of_birth').val(member.fields.date_of_birth);
+             $('#date_of_birth').val(europeanDate(new Date(member.fields.date_of_birth)));
              $('#telephone').val(member.fields.telephone);
              $('#email').val(member.fields.email);
 
@@ -241,7 +241,7 @@ function editMember(id, members_table) {
 
              setCheckbox('#is_member', member.fields.is_member);
              setCheckbox('#is_baptised', member.fields.is_baptised);
-             $('#baptismal_date').val(member.fields.baptismal_date);
+             $('#baptismal_date').val(europeanDate(new Date(member.fields.baptismal_date)));
 
              editRole(member.fields.church_role);
 
@@ -338,6 +338,27 @@ function getFormattedDate(date) {
     });
 
     return result;
+}
+
+function standardDate(date_string) {
+
+    var date = date_string.split("/");
+    var day = date[0];
+    var month = date[1];
+    var year = date[2];
+    var standard = year+"-"+month+"-"+day;
+
+    return standard;
+}
+
+function europeanDate(date) {
+
+    function pad(s) {
+        return (s < 10) ? '0' + s : s;
+    }
+
+  return [pad(date.getDate()), pad(date.getMonth()+1), date.getFullYear()].join('/');
+
 }
 
 function getEmailLink(email) {
