@@ -18,7 +18,8 @@ class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
         fields = ('first_name', 'last_name', 'date_of_birth', 'telephone', 'email', 'address',
-                  'is_baptised', 'baptismal_date', 'is_member', 'church_role', 'is_active')
+                  'is_baptised', 'baptismal_date', 'baptismal_place', 'is_member',
+                  'membership_type', 'membership_date', 'church_role', 'is_active')
 
 
 class AddressForm(forms.ModelForm):

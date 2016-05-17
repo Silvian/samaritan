@@ -31,12 +31,21 @@ $(document).ready(function(){
 
     loadAddresses();
 
+    loadMembershipTypes();
+
     loadChurchRoles();
 
     $("#address-select").select2({
         dropdownAutoWidth: true,
         width: '100%',
         placeholder: "Select an existing address",
+        allowClear: true,
+    });
+
+    $("#membership-type-select").select2({
+        dropdownAutoWidth: true,
+        width: '100%',
+        placeholder: "Select membership type",
         allowClear: true,
     });
 
@@ -60,6 +69,10 @@ $(document).ready(function(){
         $('#update-member').hide();
         $('#save-member').show();
         $("#add-member-modal").modal('show');
+    });
+
+    $('#is_baptised').click(function() {
+        $('#baptismal_details')[this.checked ? "show" : "hide"]();
     });
 
     $("#create-address").click(function(event) {
@@ -104,8 +117,28 @@ function loadAddresses() {
 
 }
 
+function loadMembershipTypes() {
+    ecblockui();
+    $("#membership-type-select").html("");
+    $.ajax({
+        type: 'GET',
+        url: 'api/membership/getTypes',
+        dataType: 'json',
+        success: function (data) {
+            ecunblockui();
+            var options = '';
+            $.each(data, function(i, item) {
+                options += '<option value="' + data[i].pk + '">' + data[i].fields.name + '</option> ';
+            });
+            $("#membership-type-select").append(options);
+            $("#membership-type-select").select2('val', 1);
+        }
+    });
+}
+
 function loadChurchRoles() {
     ecblockui();
+    $("#church-role-select").html("");
     $.ajax({
         type: 'GET',
         url: 'api/roles/getAll',
@@ -193,19 +226,28 @@ function submitAddMember(members_table, addressId) {
        address = $('select[name=address-select]').val();
     }
 
+    var is_baptised = false;
+
+    if($('#is_baptised').prop("checked") == true){
+         is_baptised = true;
+    }
+
     /* Send the data using post */
     var posting = $.post( url, {
-                      first_name     : $('#first_name').val(),
-                      last_name      : $('#last_name').val(),
-                      date_of_birth  : standardDate($('#date_of_birth').val()),
-                      telephone      : $('#telephone').val(),
-                      email          : $('#email').val(),
-                      address        : address,
-                      is_baptised    : $('#is_baptised').val(),
-                      baptismal_date : standardDate($('#baptismal_date').val()),
-                      is_member      : $('#is_member').val(),
-                      church_role    : $('select[name=church-role-select]').val(),
-                      is_active      : true,
+                      first_name      : $('#first_name').val(),
+                      last_name       : $('#last_name').val(),
+                      date_of_birth   : standardDate($('#date_of_birth').val()),
+                      telephone       : $('#telephone').val(),
+                      email           : $('#email').val(),
+                      address         : address,
+                      is_baptised     : is_baptised,
+                      baptismal_date  : standardDate($('#baptismal_date').val()),
+                      baptismal_place : $('#baptismal_place').val(),
+                      is_member       : $('#is_member').val(),
+                      membership_type : $('select[name=membership-type-select]').val(),
+                      membership_date : standardDate($('#membership_date').val()),
+                      church_role     : $('select[name=church-role-select]').val(),
+                      is_active       : true,
                       csrfmiddlewaretoken : getCookie('csrftoken')
     });
 
@@ -233,7 +275,7 @@ function editMember(id, members_table) {
 
              $('#first_name').val(member.fields.first_name);
              $('#last_name').val(member.fields.last_name);
-             $('#date_of_birth').val(europeanDate(new Date(member.fields.date_of_birth)));
+             $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
              $('#telephone').val(member.fields.telephone);
              $('#email').val(member.fields.email);
 
@@ -241,9 +283,20 @@ function editMember(id, members_table) {
 
              setCheckbox('#is_member', member.fields.is_member);
              setCheckbox('#is_baptised', member.fields.is_baptised);
-             $('#baptismal_date').val(europeanDate(new Date(member.fields.baptismal_date)));
+             $('#baptismal_place').val(member.fields.baptismal_place);
+             $('#baptismal_date').val(europeanDate(member.fields.baptismal_date));
+             $('#membership_date').val(europeanDate(member.fields.membership_date));
+
+             editMembershipType(member.fields.membership_type);
 
              editRole(member.fields.church_role);
+
+             if($('#is_baptised').prop("checked") == true){
+                 $('#baptismal_details').show();
+             }
+             else if($('#is_baptised').prop("checked") == false){
+                 $('#baptismal_details').hide();
+             }
 
              $('#new-address').show();
              $('#create-address').hide();
@@ -278,15 +331,41 @@ function editAddress(address_id) {
 
 }
 
+function editMembershipType(membership_type_id) {
+    loadMembershipTypes();
+    $.ajax({
+	    type: 'GET',
+	    url: 'api/membership/getSingle',
+	    dataType: 'json',
+	    data: { id: membership_type_id},
+	    success: function (data) {
+	        var membershipType=data[0];
+	        $('#membership-type').html(membershipType.fields.name);
+
+            $('select[name=membership-type-select] option:selected').attr("selected", null);
+            $('select[name=membership-type-select] option[value="'+membershipType.pk+'"]').attr("selected","selected");
+
+            $("#membership-type-select").select2({
+                val: membershipType.pk,
+                dropdownAutoWidth: true,
+                width: '100%',
+                placeholder: "Select membership type",
+                allowClear: true,
+            });
+
+	    }
+    });
+
+}
+
 function editRole(role_id) {
-    ecblockui();
+    loadChurchRoles();
     $.ajax({
 	    type: 'GET',
 	    url: 'api/roles/getSingle',
 	    dataType: 'json',
 	    data: { id: role_id},
 	    success: function (data) {
-	        ecunblockui();
 	        var role=data[0];
 	        $('#church-role').html(role.fields.name);
 
@@ -320,7 +399,11 @@ function clearFields() {
    $('#post_code').val("");
    $('#is_baptised').prop('checked', false);
    $('#baptismal_date').val("");
+   $('#baptismal_place').val("");
    $('#church-role').html("");
+   $('#membership-type').html("");
+   $('#membership_date').val("");
+   $('#baptismal_details').hide();
 
 
 }
@@ -342,22 +425,30 @@ function getFormattedDate(date) {
 
 function standardDate(date_string) {
 
-    var date = date_string.split("/");
-    var day = date[0];
-    var month = date[1];
-    var year = date[2];
-    var standard = year+"-"+month+"-"+day;
+    if(date_string != "") {
 
-    return standard;
+        var date = date_string.split("/");
+        var day = date[0];
+        var month = date[1];
+        var year = date[2];
+        var standard = year+"-"+month+"-"+day;
+
+        return standard;
+    }
 }
 
-function europeanDate(date) {
+function europeanDate(date_string) {
 
-    function pad(s) {
-        return (s < 10) ? '0' + s : s;
+    if(date_string != null) {
+
+        date = new Date(date_string);
+
+        function pad(s) {
+            return (s < 10) ? '0' + s : s;
+        }
+
+        return [pad(date.getDate()), pad(date.getMonth()+1), date.getFullYear()].join('/');
     }
-
-  return [pad(date.getDate()), pad(date.getMonth()+1), date.getFullYear()].join('/');
 
 }
 

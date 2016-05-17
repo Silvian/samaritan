@@ -36,18 +36,6 @@ class MembershipType(models.Model):
         return self.name
 
 
-class Membership(models.Model):
-    type = models.ForeignKey(MembershipType)
-    date = models.DateField()
-    notes = models.TextField(blank=True, null=True)
-
-    def publish(self):
-        self.save()
-
-    def __str__(self):
-        return self.type
-
-
 class ChurchRole(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
@@ -69,8 +57,10 @@ class Member(models.Model):
     profile_pic = models.CharField(max_length=200, blank=True, null=True)
     is_baptised = models.BooleanField(default=False)
     baptismal_date = models.DateField(blank=True, null=True)
+    baptismal_place = models.CharField(max_length=200, blank=True, null=True)
     is_member = models.BooleanField()
-    membership = models.ForeignKey(Membership, null=True)
+    membership_type = models.ForeignKey(MembershipType, blank=True, null=True)
+    membership_date = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     notes = models.TextField(blank=True, null=True)
     church_role = models.ForeignKey(ChurchRole, on_delete=models.CASCADE)

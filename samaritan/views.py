@@ -15,7 +15,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 from django.utils import timezone
-from models import Member, ChurchRole, Address
+from models import Member, ChurchRole, Address, MembershipType
 from forms import MemberForm, AddressForm
 from django.shortcuts import get_object_or_404
 import json
@@ -46,6 +46,15 @@ def get_church_roles(request):
     if request.is_ajax:
         roles = ChurchRole.objects.all()
     data = serializers.serialize("json", roles)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def get_membership_types(request):
+    if request.is_ajax:
+        membership_types = MembershipType.objects.all()
+
+    data = serializers.serialize("json", membership_types)
     return HttpResponse(data, content_type='application/json')
 
 
@@ -86,6 +95,14 @@ def get_address(request):
     if request.is_ajax:
         address = Address.objects.get(pk=request.GET['id'])
     data = serializers.serialize("json", [address])
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def get_membership_type(request):
+    if request.is_ajax:
+        membership_type = MembershipType.objects.get(pk=request.GET['id'])
+    data = serializers.serialize("json", [membership_type])
     return HttpResponse(data, content_type='application/json')
 
 
