@@ -121,7 +121,7 @@ def update_member(request):
         form = MemberForm(request.POST or None, instance=member)
         if form.is_valid():
             form.save()
-            return HttpResponse(json.dump(success_response), content_type='application/json')
+            return HttpResponse(json.dumps(success_response), content_type='application/json')
 
 
 @login_required
@@ -131,4 +131,4 @@ def update_address(request):
         form = AddressForm(request.POST or None, instance=address)
         if form.is_valid():
             form.save()
-            return HttpResponse(json.dump(success_response), content_type='application/json')
+            return HttpResponse(json.dumps(success_response), content_type='application/json')

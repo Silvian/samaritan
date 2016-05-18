@@ -62,11 +62,11 @@ $(document).ready(function(){
 
     $("#add-member-button").click(function(event) {
         clearFields();
+        $('#member-id').val("");
+        $('#address-id').val("");
         $('#create-address').show();
         $('#required-fields-alert').hide();
         $('#member-modal-label').html("Add new member");
-        $('#update-member').hide();
-        $('#save-member').show();
         $("#add-member-modal").modal('show');
     });
 
@@ -159,7 +159,7 @@ function addMember(members_table) {
 
     new_address = false;
 
-    if($('select[name=address-select]').val()==null) {
+    if($('select[name=address-select]').val()==null && $('#member-id').val()=="") {
         new_address = true;
         if($('#street').val()=="" || $('#city').val()=="" || $('#post_code').val()=="") {
 
@@ -176,19 +176,19 @@ function addMember(members_table) {
 
     else {
 
-        if(new_address) {
-            submitAddAddress(members_table);
+        if(new_address || $('#post_code').val()!="") {
+            submitAddress(members_table);
         }
 
         else {
-            submitAddMember(members_table, null);
+            submitMember(members_table, null);
         }
 
     }
 
 }
 
-function submitAddAddress(members_table) {
+function submitAddress(members_table) {
 
     url = 'api/addresses/add';
 
@@ -203,7 +203,7 @@ function submitAddAddress(members_table) {
 
         posting.done(function( data ) {
         if(data.address) {
-            submitAddMember(members_table, data.address);
+            submitMember(members_table, data.address);
             loadAddresses();
         }
 
@@ -211,9 +211,18 @@ function submitAddAddress(members_table) {
 
 }
 
-function submitAddMember(members_table, addressId) {
+function submitMember(members_table, addressId) {
 
-    url = 'api/members/add';
+    id = $('#member-id').val();
+
+    if(id == "") {
+        id = null;
+        url = 'api/members/add';
+    }
+
+    else {
+        url = 'api/members/update';
+    }
 
     var address;
 
@@ -221,8 +230,12 @@ function submitAddMember(members_table, addressId) {
         address = addressId;
     }
 
-    else {
+    else if ($('select[name=address-select]').val()!=""){
        address = $('select[name=address-select]').val();
+    }
+
+    else if($('#address-id').val()!="") {
+        address = $('#address-id').val();
     }
 
     var is_baptised = false;
@@ -233,6 +246,7 @@ function submitAddMember(members_table, addressId) {
 
     /* Send the data using post */
     var posting = $.post( url, {
+                      id              : id,
                       first_name      : $('#first_name').val(),
                       last_name       : $('#last_name').val(),
                       date_of_birth   : standardDate($('#date_of_birth').val()),
@@ -272,12 +286,13 @@ function editMember(id, members_table) {
 	         ecunblockui();
 	         var member = data[0];
 
+             $('#member-id').val(member.pk);
              $('#first_name').val(member.fields.first_name);
              $('#last_name').val(member.fields.last_name);
              $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
              $('#telephone').val(member.fields.telephone);
              $('#email').val(member.fields.email);
-
+             $('#address-id').val(member.fields.address);
              editAddress(member.fields.address);
 
              setCheckbox('#is_member', member.fields.is_member);
@@ -298,8 +313,6 @@ function editMember(id, members_table) {
              }
 
              $('#required-fields-alert').hide();
-             $('#update-member').show();
-             $('#save-member').hide();
              $('#member-modal-label').html("Member details");
              $("#add-member-modal").modal('show');
 	    }

@@ -51,6 +51,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
+          <input id="member-id" type="hidden" value="">
           <fieldset class="form-group">
             <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" placeholder="First name*" required maxlength="200"/>
           </fieldset>
@@ -66,6 +67,7 @@
           <fieldset class="form-group">
             <input class="form-control" id="email" name="email" path="email" type="email" placeholder="email" maxlength="200"/>
           </fieldset>
+          <input id="address-id" type="hidden" value="">
           <fieldset id="address-group" class="form-group" hidden="true">
             <a id="address"></a>
           </fieldset>
@@ -134,7 +136,6 @@
         <button type="button" class="btn btn-danger" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
         <button id="clear-member" type="button" class="btn btn-warning" style="float:left"><i class="fa fa-eraser fa-fw"></i> Clear</button>
         <button id="save-member" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
-        <button id="update-member" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Update</button>
       </div>
     </div>
   </div>
