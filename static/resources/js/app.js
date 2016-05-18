@@ -62,7 +62,6 @@ $(document).ready(function(){
 
     $("#add-member-button").click(function(event) {
         clearFields();
-        $('#new-address').hide();
         $('#create-address').show();
         $('#required-fields-alert').hide();
         $('#member-modal-label').html("Add new member");
@@ -298,8 +297,6 @@ function editMember(id, members_table) {
                  $('#baptismal_details').hide();
              }
 
-             $('#new-address').show();
-             $('#create-address').hide();
              $('#required-fields-alert').hide();
              $('#update-member').show();
              $('#save-member').hide();
@@ -320,12 +317,13 @@ function editAddress(address_id) {
 	    success: function (data) {
 	        ecunblockui();
 	        var address=data[0];
-
-	        $('#number').val(address.fields.number);
-            $('#street').val(address.fields.street);
-            $('#locality').val(address.fields.locality);
-            $('#city').val(address.fields.city);
-            $('#post_code').val(address.fields.post_code);
+	        var address_string = address.fields.number+' '+address.fields.street+' '+address.fields.locality+' '
+                                    +address.fields.city+' '+address.fields.post_code;
+            var map = '<i class="fa fa-map-marker" aria-hidden="true"></i> ';
+            $('#address').html(map + address_string);
+            $('#address').attr('href','http://google.co.uk/maps/place/'+address_string);
+            $('#address').attr('target','_');
+            $('#address-group').show();
 	    }
     });
 
@@ -387,11 +385,14 @@ function editRole(role_id) {
 
 function clearFields() {
 
+   $('#new-address').hide();
+   $('#address-group').hide();
    $('#first_name').val("");
    $('#last_name').val("");
    $('#date_of_birth').val("");
    $('#telephone').val("");
    $('#email').val("");
+   $('#address').html("");
    $('#number').val("");
    $('#street').val("");
    $('#locality').val("");
@@ -404,6 +405,7 @@ function clearFields() {
    $('#membership-type').html("");
    $('#membership_date').val("");
    $('#baptismal_details').hide();
+
 
 
 }
