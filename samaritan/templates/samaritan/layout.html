@@ -10,8 +10,8 @@
     {% load static from staticfiles %}
     <link href="{% static 'resources/css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'resources/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs-3.3.6/dt-1.10.11,af-2.1.1/datatables.min.css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+    <link href="{% static 'resources/css/datatables.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'resources/css/select2.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'resources/css/bootstrap-datepicker.css' %}" rel="stylesheet"/>
     <link href="{% static 'resources/fancybox/jquery.fancybox.css' %}" rel="stylesheet"/>
     <link href="{% static 'resources/css/sticky-footer.css' %}" rel="stylesheet"/>
@@ -89,8 +89,8 @@
     <script src="{% static 'resources/js/jquery.min.js' %}"></script>
     <script src="{% static 'resources/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'resources/js/bootstrap-datepicker.js' %}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/t/bs-3.3.6/dt-1.10.11,af-2.1.1/datatables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+    <script src="{% static 'resources/js/datatables.min.js' %}"></script>
+    <script src="{% static 'resources/js/select2.min.js' %}"></script>
     <script src="{% static 'resources/js/blockui.js' %}"></script>
     <script src="{% static 'resources/fancybox/jquery.fancybox.js' %}"></script>
     {% block jsfiles %} {% endblock %}
