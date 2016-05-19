@@ -230,7 +230,7 @@ function submitMember(members_table, addressId) {
         address = addressId;
     }
 
-    else if ($('select[name=address-select]').val()!=""){
+    else if ($('select[name=address-select]').val() != null){
        address = $('select[name=address-select]').val();
     }
 
