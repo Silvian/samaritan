@@ -1,0 +1,25 @@
+# Install XlsxWriter python plugin:
+
+$ curl -O -L http://github.com/jmcnamara/XlsxWriter/archive/master.tar.gz
+
+$ tar zxvf master.tar.gz
+$ cd XlsxWriter-master/
+$ sudo python setup.py install
+
+# Test XlsxWriter plugin has been installed correctly:
+
+# If the installation went correctly you can create a small sample program like the following to verify that the module works correctly:
+
+import xlsxwriter
+
+workbook = xlsxwriter.Workbook('hello.xlsx')
+worksheet = workbook.add_worksheet()
+
+worksheet.write('A1', 'Hello world')
+
+workbook.close()
+
+# Save this to a file called hello.py and run it as follows:
+
+$ python hello.py
+
