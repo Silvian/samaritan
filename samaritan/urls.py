@@ -25,6 +25,7 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
+    url(r'^export/', include('export.urls', namespace="export")),
     url(r'^api/members/add', views.add_new_members, name='addMember'),
     url(r'^api/members/update', views.update_member, name='updateMember'),
     url(r'^api/members/getActive', views.get_all_active_members, name='getActiveMembers'),
