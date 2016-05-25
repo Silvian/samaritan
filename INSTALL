@@ -1,3 +1,21 @@
+# To deploy a Django application to apache it's so easy... two steps:
+
+# 1. install apache and wsgi modules:
+$ sudo yum/apt-get install httpd/apache2 python-setuptools libapache2-mod-wsgi
+
+# 2. add the config section at the bottom of your apache2.conf or httpd.conf file:
+
+WSGIScriptAlias / /path/to/mysite.com/mysite/wsgi.py
+WSGIPythonPath /path/to/mysite.com
+
+<Directory /path/to/mysite.com/mysite>
+  <Files wsgi.py>
+    Require all granted
+  </Files>
+</Directory>
+
+###################################
+
 # Install XlsxWriter python plugin:
 
 $ curl -O -L http://github.com/jmcnamara/XlsxWriter/archive/master.tar.gz
