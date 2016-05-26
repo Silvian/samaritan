@@ -22,9 +22,10 @@ FILE_NAME_DATE = '%Y-%m-%d-%H.%M.%S'
 def write_to_excel(download_data, report_title=None):
     output = StringIO.StringIO()
     workbook = xlsxwriter.Workbook(output)
+    title_text = u"{0} {1}".format(report_title, ugettext("Report"))
 
     # Here we will adding the code to add data
-    worksheet_s = workbook.add_worksheet("Summary")
+    worksheet_s = workbook.add_worksheet(title_text)
 
     title = workbook.add_format({
         'bold': True,
@@ -41,7 +42,6 @@ def write_to_excel(download_data, report_title=None):
         'border': 1
     })
 
-    title_text = u"{0} {1}".format(report_title, ugettext("Report"))
     worksheet_s.merge_range('B2:H2', title_text, title)
 
     worksheet_s.write(4, 0, ugettext("First Name"), header)
@@ -63,7 +63,7 @@ def write_to_excel(download_data, report_title=None):
     worksheet_s.write(4, 8, ugettext("Postcode"), header)
     worksheet_s.set_column('I:I', 15)
     worksheet_s.write(4, 9, ugettext("Email"), header)
-    worksheet_s.set_column('J:J', 25)
+    worksheet_s.set_column('J:J', 30)
     worksheet_s.write(4, 10, ugettext("Is Baptised"), header)
     worksheet_s.set_column('K:K', 10)
     worksheet_s.write(4, 11, ugettext("Baptismal Date"), header)
@@ -81,7 +81,7 @@ def write_to_excel(download_data, report_title=None):
     worksheet_s.write(4, 17, ugettext("Church Role"), header)
     worksheet_s.set_column('R:R', 15)
     worksheet_s.write(4, 18, ugettext("Notes"), header)
-    worksheet_s.set_column('S:S', 25)
+    worksheet_s.set_column('S:S', 30)
 
     # Start from the first cell. Rows and columns are zero indexed.
     row = 5
