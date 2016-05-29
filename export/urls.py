@@ -11,4 +11,7 @@ from . import views
 
 urlpatterns = [
     url(r'^download/members/excel', views.download_members, name='membersExcel'),
+    url(r'^download/guests/excel', views.download_guests, name='guestsExcel'),
+    url(r'^download/everyone/excel', views.download_everyone, name='everyoneExcel'),
+    url(r'^download/historical/excel', views.download_historical, name='historicalExcel'),
 ]

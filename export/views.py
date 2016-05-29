@@ -23,3 +23,45 @@ def download_members(request):
         download_data = write_to_excel(data, "Members")
         response.write(download_data)
         return response
+
+
+@login_required
+def download_guests(request):
+    if request.method == 'GET':
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=GuestsList-'+file_name_date()+'.xlsx'
+        members = Member.objects.filter(
+            is_active=True, is_member=False
+        ).order_by('last_name')
+        data = list(members)
+        download_data = write_to_excel(data, "Guests")
+        response.write(download_data)
+        return response
+
+
+@login_required
+def download_everyone(request):
+    if request.method == 'GET':
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=FullList-'+file_name_date()+'.xlsx'
+        members = Member.objects.filter(
+            is_active=True
+        ).order_by('last_name')
+        data = list(members)
+        download_data = write_to_excel(data, "Full")
+        response.write(download_data)
+        return response
+
+
+@login_required
+def download_historical(request):
+    if request.method == 'GET':
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=HistoricalRecordsList-'+file_name_date()+'.xlsx'
+        members = Member.objects.filter(
+            is_active=False
+        ).order_by('last_name')
+        data = list(members)
+        download_data = write_to_excel(data, "Historical Records")
+        response.write(download_data)
+        return response
