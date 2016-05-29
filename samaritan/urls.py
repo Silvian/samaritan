@@ -24,19 +24,8 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/', include('api.urls', namespace="api")),
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
     url(r'^export/', include('export.urls', namespace="export")),
-    url(r'^api/members/add', views.add_new_members, name='addMember'),
-    url(r'^api/members/update', views.update_member, name='updateMember'),
-    url(r'^api/members/getActive', views.get_all_active_members, name='getActiveMembers'),
-    url('^api/members/getMember', views.get_member, name='getMember'),
-    url('^api/membership/getTypes', views.get_membership_types, name='getMembershipTypes'),
-    url('^api/membership/getSingle', views.get_membership_type, name='getMembershipSingle'),
-    url(r'^api/roles/getAll', views.get_church_roles, name='getAllRoles'),
-    url(r'^api/roles/getSingle', views.get_role, name='getSingleRoles'),
-    url(r'^api/addresses/add', views.add_new_address, name='addAddress'),
-    url(r'^api/addresses/update', views.update_address, name='updateAddress'),
-    url(r'^api/addresses/getAddress', views.get_address, name='getAddress'),
-    url(r'^api/addresses/getAll', views.get_all_addresses, name='addresses'),
     url(r'^$', views.index_view, name='index'),
 ]
