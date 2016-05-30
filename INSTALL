@@ -45,9 +45,9 @@ $ git checkout --force master
 
 $ python manage.py migrate
 
-# Change the admin password:
+# Create a super user account for the samaritan web app:
 
-$ python manage.py changepassword
+$ python manage.py createsuperuser
 
 # Run the test server:
 
