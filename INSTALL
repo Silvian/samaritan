@@ -11,6 +11,48 @@ $ sudo yum/apt-get install python
 
 ###################################
 
+# Initiate a django project names samaritan as following:
+# First check that you have installed Django and Python correctly:
+
+$ python -c "import django; print(django.get_version())"
+
+# Now create a new django project names samaritan:
+
+$ django-admin startproject samaritan
+
+# Navigate inside the created project directory:
+
+$ cd samaritan
+
+# Initiate git repository by running:
+
+$ git init
+
+# Now checkout the latest samaritan code base from the master branch:
+
+$ git checkout -b https://github.com/Silvian/samaritan.git --track origin/master
+
+# Modify your own settings.py file to be exactly like the settings.sample.py file provided.
+# You must also include the global static setting without any modifications.
+# Maintaining the copyright title, licence and author.
+# You are not entitled to change anything regarding: AUTHOR, COPYRIGHT or LICENCE.
+# NOTE: You must keep your own secret key generated (do not overwrite that with the sample provided
+# and do not share that with anybody). Keep it secret!
+
+# Run migrations package as following:
+
+$ python manage.py migrate
+
+# Change the admin password:
+
+$ python manage.py changepassword
+
+# Run the test server:
+
+$ python manage.py runserver
+
+###################################
+
 # Install XlsxWriter python plugin:
 
 $ curl -O -L http://github.com/jmcnamara/XlsxWriter/archive/master.tar.gz
@@ -54,4 +96,14 @@ WSGIPythonPath /path/to/mysite.com
     Require all granted
   </Files>
 </Directory>
+
+# Don't forget to collect all static pages:
+
+$ python manage.py collectstatic
+
+# P.S. Don't forget to reboot apache:
+
+$ sudo service apache2/httpd restart
+
+# Enjoy! :)
 

@@ -11,7 +11,8 @@
 
 import StringIO
 import xlsxwriter
-import time, datetime
+import time
+import datetime
 from django.utils.translation import ugettext
 
 
