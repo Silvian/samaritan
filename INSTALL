@@ -30,7 +30,9 @@ $ git init
 
 # Now checkout the latest samaritan code base from the master branch:
 
-$ git checkout -b https://github.com/Silvian/samaritan.git --track origin/master
+$ git remote add origin https://github.com/Silvian/samaritan.git
+
+$ git checkout --force master
 
 # Modify your own settings.py file to be exactly like the settings.sample.py file provided.
 # You must also include the global static setting without any modifications.
