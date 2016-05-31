@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^api/', include('api.urls', namespace="api")),
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
     url(r'^export/', include('export.urls', namespace="export")),
+    url(r'^members/', views.members_view, name='members'),
     url(r'^$', views.index_view, name='index'),
 ]

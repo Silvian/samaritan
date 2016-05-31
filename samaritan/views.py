@@ -21,3 +21,8 @@ footer_context = SettingsConstants.get_settings(SettingsConstants())
 @login_required
 def index_view(request):
     return render(request, "samaritan/index.html", footer_context)
+
+
+@login_required
+def members_view(request):
+    return render(request, "samaritan/members.html", footer_context)

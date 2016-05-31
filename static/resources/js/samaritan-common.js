@@ -4,7 +4,7 @@ $(document).ready(function(){
     var members_table = $('#members-list').DataTable({
     'ajax': {
         "type"   : "GET",
-        "url"    : 'api/members/getActive',
+        "url"    : '/api/members/getActive',
 
         "dataSrc": ""
     },
@@ -100,7 +100,7 @@ function loadAddresses() {
 
     $.ajax({
         type: 'GET',
-        url: 'api/addresses/getAll',
+        url: '/api/addresses/getAll',
         dataType: 'json',
         success: function (data) {
             ecunblockui();
@@ -121,7 +121,7 @@ function loadMembershipTypes() {
     $("#membership-type-select").html("");
     $.ajax({
         type: 'GET',
-        url: 'api/membership/getTypes',
+        url: '/api/membership/getTypes',
         dataType: 'json',
         success: function (data) {
             ecunblockui();
@@ -140,7 +140,7 @@ function loadChurchRoles() {
     $("#church-role-select").html("");
     $.ajax({
         type: 'GET',
-        url: 'api/roles/getAll',
+        url: '/api/roles/getAll',
         dataType: 'json',
         success: function (data) {
             ecunblockui();
@@ -190,7 +190,7 @@ function addMember(members_table) {
 
 function submitAddress(members_table) {
 
-    url = 'api/addresses/add';
+    url = '/api/addresses/add';
 
     var posting = $.post( url, {
                   number    : $('#number').val(),
@@ -217,11 +217,11 @@ function submitMember(members_table, addressId) {
 
     if(id == "") {
         id = null;
-        url = 'api/members/add';
+        url = '/api/members/add';
     }
 
     else {
-        url = 'api/members/update';
+        url = '/api/members/update';
     }
 
     var address;
@@ -279,7 +279,7 @@ function editMember(id, members_table) {
     ecblockui();
     $.ajax({
 	    type: 'GET',
-	    url: 'api/members/getMember',
+	    url: '/api/members/getMember',
 	    dataType: 'json',
 	    data: { id: id},
 	    success: function (data) {
@@ -324,7 +324,7 @@ function editAddress(address_id) {
     ecblockui();
     $.ajax({
 	    type: 'GET',
-	    url: 'api/addresses/getAddress',
+	    url: '/api/addresses/getAddress',
 	    dataType: 'json',
 	    data: { id: address_id},
 	    success: function (data) {
@@ -346,7 +346,7 @@ function editMembershipType(membership_type_id) {
     loadMembershipTypes();
     $.ajax({
 	    type: 'GET',
-	    url: 'api/membership/getSingle',
+	    url: '/api/membership/getSingle',
 	    dataType: 'json',
 	    data: { id: membership_type_id},
 	    success: function (data) {
@@ -373,7 +373,7 @@ function editRole(role_id) {
     loadChurchRoles();
     $.ajax({
 	    type: 'GET',
-	    url: 'api/roles/getSingle',
+	    url: '/api/roles/getSingle',
 	    dataType: 'json',
 	    data: { id: role_id},
 	    success: function (data) {
