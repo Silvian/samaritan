@@ -32,6 +32,16 @@ def get_all_active_members(request):
 
 
 @login_required
+def get_all_active_guests(request):
+    if request.is_ajax:
+        guests = Member.objects.filter(
+            is_active=True, is_member=False
+        ).order_by('last_name')
+    data = serializers.serialize("json", guests)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
 def get_church_roles(request):
     if request.is_ajax:
         roles = ChurchRole.objects.all()

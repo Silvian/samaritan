@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^members/update', views.update_member, name='updateMember'),
     url(r'^members/getActive', views.get_all_active_members, name='getActiveMembers'),
     url('^members/getMember', views.get_member, name='getMember'),
+    url('^guests/getActive', views.get_all_active_guests, name='getActiveGuests'),
     url('^membership/getTypes', views.get_membership_types, name='getMembershipTypes'),
     url('^membership/getSingle', views.get_membership_type, name='getMembershipSingle'),
     url(r'^roles/getAll', views.get_church_roles, name='getAllRoles'),

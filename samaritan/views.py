@@ -26,3 +26,8 @@ def index_view(request):
 @login_required
 def members_view(request):
     return render(request, "samaritan/members.html", footer_context)
+
+
+@login_required
+def guests_view(request):
+    return render(request, "samaritan/guests.html", footer_context)

@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
     url(r'^export/', include('export.urls', namespace="export")),
     url(r'^members/', views.members_view, name='members'),
+    url(r'^guests/', views.guests_view, name='guests'),
     url(r'^$', views.index_view, name='index'),
 ]
