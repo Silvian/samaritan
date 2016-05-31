@@ -1,0 +1,103 @@
+{% block member_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="add-member-modal" role="dialog" aria-labelledby="addMemberModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="member-modal-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input id="member-id" type="hidden" value="">
+          <fieldset class="form-group">
+            <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" placeholder="First name*" required maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" placeholder="Last name*" required maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control datepicker" data-date-format="dd/mm/yyyy" id="date_of_birth" name="date_of_birth" path="date_of_birth" type="text" placeholder="Date of birth* (dd/mm/yyyy)" required maxlength="10"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="telephone" name="telephone" path="telephone" type="text" placeholder="telephone" maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="email" name="email" path="email" type="email" placeholder="email" maxlength="200"/>
+          </fieldset>
+          <input id="address-id" type="hidden" value="">
+          <fieldset id="address-group" class="form-group" hidden="true">
+            <a id="address"></a>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="address-select" style="float:left;margin-right:5px;">Select Address*</label><button id="create-address" class="btn btn-xs btn-primary"><i class="fa fa-plus-circle fa-fw"></i> create new</button>
+            <select class="form-control" id="address-select" name="address-select" required>
+            </select>
+          </fieldset>
+          <div id="new-address" hidden="true">
+           <input id="new-address-selected" type="hidden" value="">
+           <fieldset class="form-group">
+             <input class="form-control" id="number" name="number" path="number" type="text" placeholder="no" maxlength="100"/>
+           </fieldset>
+           <fieldset class="form-group">
+             <input class="form-control" id="street" name="street" path="street" type="text" placeholder="street*" maxlength="200"/>
+           </fieldset>
+           <fieldset class="form-group">
+            <input class="form-control" id="locality" name="locality" path="locality" type="text" placeholder="locality" maxlength="200"/>
+           </fieldset>
+           <fieldset class="form-group">
+             <input class="form-control" id="city" name="city" path="city" type="text" placeholder="city*" maxlength="200"/>
+           </fieldset>
+           <fieldset class="form-group">
+             <input class="form-control" id="post_code" name="post_code" path="post_code" type="text" placeholder="postcode*" maxlength="50"/>
+           </fieldset>
+          </div>
+          <fieldset class="form-group">
+            <label for="is_baptised" style="float:left;margin-right:5px;">Baptised?</label>
+            <input id="is_baptised" name="is_baptised" path="is_baptised" type="checkbox" placeholder="is_baptised"/>
+          </fieldset>
+          <div id="baptismal_details" hidden="true">
+           <fieldset class="form-group">
+             <input class="form-control datepicker" data-date-format="dd/mm/yyyy" id="baptismal_date" name="baptismal_date" path="baptismal_date" type="text" placeholder="Baptismal date (dd/mm/yyyy)" maxlength="10"/>
+           </fieldset>
+           <fieldset class="form-group">
+              <input class="form-control" id="baptismal_place" name="baptismal_place" path="baptismal_place" type="text" placeholder="Baptismal place" maxlength="200"/>
+           </fieldset>
+          </div>
+          <fieldset class="form-group">
+            <label for="is_member" style="float:left;margin-right:5px;">Church member?</label>
+            <input id="is_member" name="is_member" path="is_member" type="checkbox" placeholder="is_member" checked/>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="membership-type-select" style="float:left;margin-right:5px;">Membership type: <i id="membership-type"></i></label>
+            <select class="form-control" id="membership-type-select" name="membership-type-select">
+            </select>
+          </fieldset>
+          <fieldset class="form-group">
+             <input class="form-control datepicker" data-date-format="dd/mm/yyyy" id="membership_date" name="membership_date" path="membership_date" type="text" placeholder="Membership date (dd/mm/yyyy)" maxlength="10"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="church-role-select" style="float:left;margin-right:5px;">Church role* <i id="church-role"></i></label>
+            <select class="form-control" id="church-role-select" name="church-role-select" required>
+            </select>
+          </fieldset>
+
+          <div id="required-fields-alert" class="alert alert-danger" role="alert" hidden="true">
+            <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            Please fill in all the required fields marked with an asterisk *
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="clear-member" type="button" class="btn btn-warning" style="float:left"><i class="fa fa-eraser fa-fw"></i> Clear</button>
+        <button id="save-member" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
