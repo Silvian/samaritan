@@ -69,14 +69,16 @@
             <label for="is_member" style="float:left;margin-right:5px;">Church member?</label>
             <input id="is_member" name="is_member" path="is_member" type="checkbox" placeholder="is_member"/>
           </fieldset>
-          <fieldset class="form-group">
-            <label for="membership-type-select" style="float:left;margin-right:5px;">Membership type: <i id="membership-type"></i></label>
-            <select class="form-control" id="membership-type-select" name="membership-type-select">
-            </select>
-          </fieldset>
-          <fieldset class="form-group">
+          <div id="membership_details" hidden="true">
+           <fieldset class="form-group">
+             <label for="membership-type-select" style="float:left;margin-right:5px;">Membership type: <i id="membership-type"></i></label>
+             <select class="form-control" id="membership-type-select" name="membership-type-select">
+             </select>
+           </fieldset>
+           <fieldset class="form-group">
              <input class="form-control datepicker" data-date-format="dd/mm/yyyy" id="membership_date" name="membership_date" path="membership_date" type="text" placeholder="Membership date (dd/mm/yyyy)" maxlength="10"/>
-          </fieldset>
+           </fieldset>
+          </div>
           <fieldset class="form-group">
             <label for="church-role-select" style="float:left;margin-right:5px;">Church role* <i id="church-role"></i></label>
             <select class="form-control" id="church-role-select" name="church-role-select" required>

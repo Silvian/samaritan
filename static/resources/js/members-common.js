@@ -222,6 +222,13 @@ function editMember(id, members_table, title) {
                  $('#baptismal_details').hide();
              }
 
+             if($('#is_member').prop("checked") == true){
+                 $('#membership_details').show();
+             }
+             else if($('#is_member').prop("checked") == false){
+                 $('#membership_details').hide();
+             }
+
              $('#required-fields-alert').hide();
              $('#member-modal-label').html(title);
              $("#add-member-modal").modal('show');

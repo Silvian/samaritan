@@ -68,11 +68,16 @@ $(document).ready(function(){
         $('#required-fields-alert').hide();
         $('#member-modal-label').html("Add new member");
         $('#is_member').prop('checked', true);
+        $('#membership_details').show();
         $("#add-member-modal").modal('show');
     });
 
     $('#is_baptised').click(function() {
         $('#baptismal_details')[this.checked ? "show" : "hide"]();
+    });
+
+    $('#is_member').click(function() {
+        $('#membership_details')[this.checked ? "show" : "hide"]();
     });
 
     $("#create-address").click(function(event) {

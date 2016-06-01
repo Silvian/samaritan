@@ -75,6 +75,10 @@ $(document).ready(function(){
         $('#baptismal_details')[this.checked ? "show" : "hide"]();
     });
 
+    $('#is_member').click(function() {
+        $('#membership_details')[this.checked ? "show" : "hide"]();
+    });
+
     $("#create-address").click(function(event) {
         $('#new-address').show();
     });
