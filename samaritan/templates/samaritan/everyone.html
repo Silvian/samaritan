@@ -1,0 +1,61 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+  <div>
+    <br/>
+    <h2><i class="fa fa-globe fa-fw" aria-hidden="true"></i> Everyone List</h2>
+  </div>
+
+{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+
+    <!-- Button for excel download -->
+    <a type="button" class="btn btn-success btn-md" style="float:left" id="download-members" href="/export/download/everyone/excel/">
+      <i class="fa fa-file-excel-o fa-fw"></i> Download Excel
+    </a>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-person-button">
+        <i class="fa fa-globe fa-fw"></i> Add new person
+    </button>
+
+  </div>
+
+  <br/>
+
+  <div class="well">
+
+    <table class="table table-striped table-hover" id="everyone-list">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date of Birth</th>
+          <th>Telephone</th>
+          <th>Email</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+
+{% include "samaritan/modals/member_modal.html" %}
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/members-common.js' %}"></script>
+<script src="{% static 'resources/js/everyone.js' %}"></script>
+
+{% endblock %}

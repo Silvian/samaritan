@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^export/', include('export.urls', namespace="export")),
     url(r'^members/', views.members_view, name='members'),
     url(r'^guests/', views.guests_view, name='guests'),
+    url(r'^everyone/', views.everyone_view, name='everyone'),
     url(r'^$', views.index_view, name='index'),
 ]

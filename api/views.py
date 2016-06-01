@@ -22,6 +22,16 @@ success_response = {'success': True}
 
 
 @login_required
+def get_all_active(request):
+    if request.is_ajax:
+        everyone = Member.objects.filter(
+            is_active=True
+        ).order_by('last_name')
+    data = serializers.serialize("json", everyone)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
 def get_all_active_members(request):
     if request.is_ajax:
         members = Member.objects.filter(

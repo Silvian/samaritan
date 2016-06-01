@@ -31,3 +31,8 @@ def members_view(request):
 @login_required
 def guests_view(request):
     return render(request, "samaritan/guests.html", footer_context)
+
+
+@login_required
+def everyone_view(request):
+    return render(request, "samaritan/everyone.html", footer_context)
