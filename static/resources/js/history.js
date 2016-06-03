@@ -49,4 +49,19 @@ $(document).ready(function(){
         editMember(id[1], historical_table, "Person details");
     });
 
+    $('#reinstate-member').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/api/history/reinstate',
+            dataType: 'json',
+            data: { id: $('#member-id').val(),
+                    csrfmiddlewaretoken : getCookie('csrftoken')
+                    },
+            success: function (data) {
+                $("#add-member-modal").modal('hide');
+                historical_table.ajax.reload();
+            }
+        });
+    });
+
 });

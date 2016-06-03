@@ -18,6 +18,7 @@ urlpatterns = [
     url('^guests/getActive', views.get_all_active_guests, name='getActiveGuests'),
     url('^everyone/getActive', views.get_all_active, name='getEveryoneActive'),
     url('^history/getRecords', views.get_historical_records, name='getHistoryRecords'),
+    url('^history/reinstate', views.reinstate_member, name='reinstateHistory'),
     url('^membership/getTypes', views.get_membership_types, name='getMembershipTypes'),
     url('^membership/getSingle', views.get_membership_type, name='getMembershipSingle'),
     url(r'^roles/getAll', views.get_church_roles, name='getAllRoles'),

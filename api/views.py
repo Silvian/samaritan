@@ -162,3 +162,12 @@ def terminate_member(request):
         member.notes = request.POST['notes']
         member.save()
         return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def reinstate_member(request):
+    if request.method == 'POST':
+        member = get_object_or_404(Member, id=request.POST['id'])
+        member.is_active = True
+        member.save()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')

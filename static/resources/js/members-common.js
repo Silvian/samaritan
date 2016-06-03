@@ -229,6 +229,8 @@ function editMember(id, members_table, title) {
                  $('#membership_details').hide();
              }
 
+             $('#additional-notes').val(member.fields.notes);
+
              $('#required-fields-alert').hide();
              $('#member-modal-label').html(title);
              $('#terminate-member').show();

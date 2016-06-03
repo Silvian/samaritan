@@ -58,11 +58,17 @@
             <label style="float:left;margin-right:5px;">Church role* <i id="church-role"></i></label>
           </fieldset>
 
+          <fieldset class="form-group">
+            <label for="additional-notes" style="float:left;margin-right:5px;">Additional notes <i id="additional-notes-label"></i></label>
+            <textarea style="height: 230px" id="additional-notes" maxlength="10000" class="form-control" rows="3" readonly></textarea>
+          </fieldset>
+
         </div>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="reinstate-member" type="button" class="btn btn-success"><i class="fa fa-check fa-fw"></i> Reinstate</button>
       </div>
     </div>
   </div>
