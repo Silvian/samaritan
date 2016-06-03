@@ -12,10 +12,12 @@ from . import views
 urlpatterns = [
     url(r'^members/add', views.add_new_members, name='addMember'),
     url(r'^members/update', views.update_member, name='updateMember'),
+    url(r'^members/terminate', views.terminate_member, name='terminateMember'),
     url(r'^members/getActive', views.get_all_active_members, name='getActiveMembers'),
     url('^members/getMember', views.get_member, name='getMember'),
     url('^guests/getActive', views.get_all_active_guests, name='getActiveGuests'),
     url('^everyone/getActive', views.get_all_active, name='getEveryoneActive'),
+    url('^history/getRecords', views.get_historical_records, name='getHistoryRecords'),
     url('^membership/getTypes', views.get_membership_types, name='getMembershipTypes'),
     url('^membership/getSingle', views.get_membership_type, name='getMembershipSingle'),
     url(r'^roles/getAll', views.get_church_roles, name='getAllRoles'),

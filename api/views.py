@@ -52,6 +52,16 @@ def get_all_active_guests(request):
 
 
 @login_required
+def get_historical_records(request):
+    if request.is_ajax:
+        historical = Member.objects.filter(
+            is_active=False
+        ).order_by('last_name')
+    data = serializers.serialize("json", historical)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
 def get_church_roles(request):
     if request.is_ajax:
         roles = ChurchRole.objects.all()
@@ -142,3 +152,13 @@ def update_address(request):
         if form.is_valid():
             form.save()
             return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def terminate_member(request):
+    if request.method == 'POST':
+        member = get_object_or_404(Member, id=request.POST['id'])
+        member.is_active = False
+        member.notes = request.POST['notes']
+        member.save()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')

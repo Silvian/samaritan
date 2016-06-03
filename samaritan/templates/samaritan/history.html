@@ -4,7 +4,7 @@
 
   <div>
     <br/>
-    <h2><i class="fa fa-star fa-fw" aria-hidden="true"></i> Guests List</h2>
+    <h2><i class="fa fa-globe fa-fw" aria-hidden="true"></i> Historical Records</h2>
   </div>
 
 {% endblock %}
@@ -14,14 +14,9 @@
   <div class="container">
 
     <!-- Button for excel download -->
-    <a type="button" class="btn btn-success btn-md" style="float:left" id="download-members" href="/export/download/guests/excel/">
+    <a type="button" class="btn btn-success btn-md" style="float:left" id="download-members" href="/export/download/historical/excel/">
       <i class="fa fa-file-excel-o fa-fw"></i> Download Excel
     </a>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-guest-button">
-        <i class="fa fa-user-plus fa-fw"></i> New guest
-    </button>
 
   </div>
 
@@ -29,7 +24,7 @@
 
   <div class="well">
 
-    <table class="table table-striped table-hover" id="guests-list">
+    <table class="table table-striped table-hover" id="historical-list">
       <thead>
         <tr>
           <th>First Name</th>
@@ -47,9 +42,7 @@
 
   </div>
 
-{% include "samaritan/modals/member_modal.html" %}
-
-{% include "samaritan/modals/terminate_modal.html" %}
+{% include "samaritan/modals/historical_modal.html" %}
 
 {% endblock %}
 
@@ -58,6 +51,6 @@
 {% load staticfiles %}
 <script src="{% static 'resources/js/samaritan-common.js' %}"></script>
 <script src="{% static 'resources/js/members-common.js' %}"></script>
-<script src="{% static 'resources/js/guests.js' %}"></script>
+<script src="{% static 'resources/js/history.js' %}"></script>
 
 {% endblock %}

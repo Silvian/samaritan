@@ -231,6 +231,7 @@ function editMember(id, members_table, title) {
 
              $('#required-fields-alert').hide();
              $('#member-modal-label').html(title);
+             $('#terminate-member').show();
              $("#add-member-modal").modal('show');
 	    }
 	});
@@ -313,6 +314,37 @@ function editRole(role_id) {
 
 }
 
+function terminateMember(members_table) {
+
+    $("#terminate-member-modal-label").html("Confirm termination?");
+    $("#terminate-member-modal").modal('show');
+
+    url = '/api/members/terminate';
+    id = $('#member-id').val();
+
+    $("#terminate-member-confirm").click(function(event) {
+        notes = $('#additional-notes').val();
+        /* Send the data using post */
+        var posting = $.post( url, {
+                          id    : id,
+                          notes : notes,
+                          csrfmiddlewaretoken : getCookie('csrftoken')
+        });
+
+        /* Alerts the results */
+        posting.done(function( data ) {
+            if(data.success) {
+                $("#terminate-member-modal").modal('hide');
+                $("#add-member-modal").modal('hide');
+                members_table.ajax.reload();
+            }
+
+        });
+
+    });
+
+}
+
 function clearFields() {
 
    $('#new-address').hide();
@@ -335,7 +367,6 @@ function clearFields() {
    $('#membership-type').html("");
    $('#membership_date').val("");
    $('#baptismal_details').hide();
-
 
 
 }

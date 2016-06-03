@@ -1,0 +1,26 @@
+{% block terminate_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="terminate-member-modal" role="dialog" aria-labelledby="terminateMemberModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="terminate-member-modal-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="additional-notes" style="float:left;margin-right:5px;">Additional notes <i id="additional-notes-label"></i></label>
+          <textarea style="height: 230px" id="additional-notes" maxlength="10000" class="form-control" rows="3"></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="terminate-member-confirm" type="button" class="btn btn-danger"><i class="fa fa-trash fa-fw"></i> Confirm Terminate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

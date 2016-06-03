@@ -1,0 +1,71 @@
+{% block member_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="add-member-modal" role="dialog" aria-labelledby="addMemberModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="member-modal-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input id="member-id" type="hidden" value="">
+          <fieldset class="form-group">
+            <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" readonly/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" readonly/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" data-date-format="dd/mm/yyyy" id="date_of_birth" name="date_of_birth" path="date_of_birth" type="text" readonly/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="telephone" name="telephone" path="telephone" type="text" readonly/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="email" name="email" path="email" type="email" readonly/>
+          </fieldset>
+          <input id="address-id" type="hidden" value="">
+          <fieldset id="address-group" class="form-group" hidden="true">
+            <a id="address"></a>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="is_baptised" style="float:left;margin-right:5px;">Baptised?</label>
+            <input id="is_baptised" name="is_baptised" path="is_baptised" type="checkbox" placeholder="is_baptised" readonly/>
+          </fieldset>
+          <div id="baptismal_details" hidden="true">
+           <fieldset class="form-group">
+             <input class="form-control" data-date-format="dd/mm/yyyy" id="baptismal_date" name="baptismal_date" path="baptismal_date" type="text" readonly/>
+           </fieldset>
+           <fieldset class="form-group">
+              <input class="form-control" id="baptismal_place" name="baptismal_place" path="baptismal_place" type="text" readonly/>
+           </fieldset>
+          </div>
+          <fieldset class="form-group">
+            <label for="is_member" style="float:left;margin-right:5px;">Church member?</label>
+            <input id="is_member" name="is_member" path="is_member" type="checkbox" placeholder="is_member" readonly/>
+          </fieldset>
+          <div id="membership_details" hidden="true">
+           <fieldset class="form-group">
+             <label style="float:left;margin-right:5px;">Membership type: <i id="membership-type"></i></label>
+           </fieldset>
+           <fieldset class="form-group">
+             <input class="form-control" data-date-format="dd/mm/yyyy" id="membership_date" name="membership_date" path="membership_date" type="text" readonly/>
+           </fieldset>
+          </div>
+          <fieldset class="form-group">
+            <label style="float:left;margin-right:5px;">Church role* <i id="church-role"></i></label>
+          </fieldset>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

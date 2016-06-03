@@ -68,6 +68,7 @@ $(document).ready(function(){
         $('#required-fields-alert').hide();
         $('#member-modal-label').html("Add new guest");
         $('#is_member').prop('checked', false);
+        $('#terminate-member').hide();
         $("#add-member-modal").modal('show');
     });
 
@@ -85,6 +86,10 @@ $(document).ready(function(){
 
     $("#clear-member").click(function(event) {
         clearFields();
+    });
+
+    $("#terminate-member").click(function(event) {
+        terminateMember(guests_table);
     });
 
     $("#save-member").click(function(event) {

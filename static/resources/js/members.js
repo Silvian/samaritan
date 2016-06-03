@@ -68,6 +68,7 @@ $(document).ready(function(){
         $('#required-fields-alert').hide();
         $('#member-modal-label').html("Add new member");
         $('#is_member').prop('checked', true);
+        $('#terminate-member').hide();
         $('#membership_details').show();
         $("#add-member-modal").modal('show');
     });
@@ -86,6 +87,10 @@ $(document).ready(function(){
 
     $("#clear-member").click(function(event) {
         clearFields();
+    });
+
+    $("#terminate-member").click(function(event) {
+        terminateMember(members_table);
     });
 
     $("#save-member").click(function(event) {
