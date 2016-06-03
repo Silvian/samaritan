@@ -1,4 +1,4 @@
-# Samaritan CMA (Church Management Assitant)
+# Samaritan CMA (Church Management Assistant)
 
 This is the main development project repository for Samaritan CMA
 
