@@ -14,7 +14,7 @@ from django.core import serializers
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from samaritan.models import Member, ChurchRole, Address, MembershipType
-from samaritan.forms import MemberForm, AddressForm
+from samaritan.forms import MemberForm, AddressForm, RoleForm
 from django.shortcuts import get_object_or_404
 import json
 
@@ -67,6 +67,39 @@ def get_church_roles(request):
         roles = ChurchRole.objects.all()
     data = serializers.serialize("json", roles)
     return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def get_role(request):
+    if request.is_ajax:
+        role = ChurchRole.objects.get(pk=request.GET['id'])
+    data = serializers.serialize("json", [role])
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def add_church_role(request):
+    if request.method == 'POST':
+        form = RoleForm(request.POST)
+        form.save()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def update_church_role(request):
+    if request.method == 'POST':
+        role = get_object_or_404(ChurchRole, id=request.POST['id'])
+        form = RoleForm(request.POST or None, instance=role)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def delete_church_role(request):
+    if request.method == 'POST':
+        ChurchRole.objects.get(pk=request.POST['id']).delete()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
 
 
 @login_required
@@ -123,14 +156,6 @@ def get_membership_type(request):
     if request.is_ajax:
         membership_type = MembershipType.objects.get(pk=request.GET['id'])
     data = serializers.serialize("json", [membership_type])
-    return HttpResponse(data, content_type='application/json')
-
-
-@login_required
-def get_role(request):
-    if request.is_ajax:
-        role = ChurchRole.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", [role])
     return HttpResponse(data, content_type='application/json')
 
 

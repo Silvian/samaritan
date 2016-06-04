@@ -39,5 +39,10 @@ def everyone_view(request):
 
 
 @login_required
+def roles_view(request):
+    return render(request, "samaritan/roles.html", footer_context)
+
+
+@login_required
 def historical_view(request):
     return render(request, "samaritan/history.html", footer_context)
