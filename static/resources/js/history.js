@@ -50,6 +50,7 @@ $(document).ready(function(){
     });
 
     $('#reinstate-member').click(function() {
+        ecblockui();
         $.ajax({
             type: 'POST',
             url: '/api/history/reinstate',
@@ -58,6 +59,7 @@ $(document).ready(function(){
                     csrfmiddlewaretoken : getCookie('csrftoken')
                     },
             success: function (data) {
+                ecunblockui();
                 $("#add-member-modal").modal('hide');
                 historical_table.ajax.reload();
             }

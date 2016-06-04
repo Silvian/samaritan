@@ -327,6 +327,7 @@ function terminateMember(members_table) {
     $("#terminate-member-confirm").click(function(event) {
         notes = $('#additional-notes').val();
         /* Send the data using post */
+        ecblockui();
         var posting = $.post( url, {
                           id    : id,
                           notes : notes,
@@ -336,6 +337,7 @@ function terminateMember(members_table) {
         /* Alerts the results */
         posting.done(function( data ) {
             if(data.success) {
+                ecunblockui();
                 $("#terminate-member-modal").modal('hide');
                 $("#add-member-modal").modal('hide');
                 members_table.ajax.reload();
