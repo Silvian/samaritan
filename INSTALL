@@ -32,28 +32,11 @@ $ git init
 
 $ git remote add origin https://github.com/Silvian/samaritan.git
 
+$ git pull origin master
+
 $ git checkout --force master
 
-# Modify your own settings.py file to be exactly like the settings.sample.py file provided.
-# You must also include the global static setting without any modifications.
-# Maintaining the copyright title, licence and author.
-# You are not entitled to change anything regarding: AUTHOR, COPYRIGHT or LICENCE.
-# NOTE: You must keep your own secret key generated (do not overwrite that with the sample provided
-# and do not share that with anybody). Keep it secret!
-
-# Run migrations package as following:
-
-$ python manage.py migrate
-
-# Create a super user account for the samaritan web app:
-
-$ python manage.py createsuperuser
-
-# Run the test server:
-
-$ python manage.py runserver
-
-###################################
+##################################
 
 # Install XlsxWriter python plugin:
 
@@ -82,6 +65,27 @@ workbook.close()
 $ python hello.py
 
 ##################################
+
+# Modify your own settings.py file to be exactly like the settings.sample.py file provided.
+# You must also include the global static setting without any modifications.
+# Maintaining the copyright title, licence and author.
+# You are not entitled to change anything regarding: AUTHOR, COPYRIGHT or LICENCE.
+# NOTE: You must keep your own secret key generated (do not overwrite that with the sample provided
+# and do not share that with anybody). Keep it secret!
+
+# Run migrations package as following:
+
+$ python manage.py migrate
+
+# Create a super user account for the samaritan web app:
+
+$ python manage.py createsuperuser
+
+# Run the test server:
+
+$ python manage.py runserver
+
+###################################
 
 # To deploy a Django application to apache it's so easy... two steps:
 
