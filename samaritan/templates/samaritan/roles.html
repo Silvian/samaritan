@@ -1,0 +1,58 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+  <div>
+    <br/>
+    <h2><i class="fa fa-compass fa-fw" aria-hidden="true"></i> Roles</h2>
+  </div>
+
+{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-role-button">
+        <i class="fa fa-compass fa-fw"></i> New Role
+    </button>
+
+  </div>
+
+  <br/>
+
+  <div id="roles-empty" class="alert alert-info" role="alert">
+      <i class="fa fa-info fa-fw" aria-hidden="true"></i>
+      Roles are empty
+  </div>
+
+  <div class="well">
+
+      <table class="table table-striped table-hover" id="roles-list">
+      <thead>
+        <tr>
+          <th>Role name</th>
+          <th>Role description</th>
+          <th>View details</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+
+{% include "samaritan/modals/role_modal.html" %}
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/roles.js' %}"></script>
+
+{% endblock %}

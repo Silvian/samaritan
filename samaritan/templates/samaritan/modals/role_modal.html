@@ -1,0 +1,29 @@
+{% block terminate_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="role-modal" role="dialog" aria-labelledby="roleModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="role-modal-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input class="form-control" id="role-name" name="role-name" path="role-name" type="text" placeholder="Role name*" required maxlength="200"/>
+        </div>
+        <div class="form-group">
+          <label for="role-description" style="float:left;margin-right:5px;">Role description <i id="additional-notes-label"></i></label>
+          <textarea style="height: 200px" id="role-description" maxlength="10000" class="form-control" rows="3"></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="save-role" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
