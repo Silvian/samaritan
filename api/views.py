@@ -98,8 +98,16 @@ def update_church_role(request):
 @login_required
 def delete_church_role(request):
     if request.method == 'POST':
-        ChurchRole.objects.get(pk=request.POST['id']).delete()
-        return HttpResponse(json.dumps(success_response), content_type='application/json')
+        church_role = ChurchRole.objects.get(pk=request.POST['id'])
+
+        if not Member.objects.filter(church_role=church_role):
+            church_role.delete()
+            return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+        else:
+            return HttpResponse(json.dumps({
+                            'error': "Cannot delete because this role is assigned to a member"}),
+                                content_type='application/json')
 
 
 @login_required
