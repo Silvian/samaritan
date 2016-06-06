@@ -20,7 +20,7 @@ import os
 # Global settings static variables config
 AUTHOR = "Silvian Dragan"
 COPYRIGHT = "Copyright 2016, Samaritan CMA (Church Management Assistant)"
-CREDITS = []
+CREDITS = ['Vlad Neacsu', ]
 LICENCE = "GPLv3"
 VERSION = "0.1"
 MAINTAINER = "Silvian Dragan"
