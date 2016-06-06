@@ -3,7 +3,8 @@ $(document).ready(function(){
     getRoles();
 
     $('#add-role-button').click(function() {
-        $('#role-modal-label').html("Add a new role")
+        $('#role-modal-label').html("Add a new role");
+        $('#required-fields-alert').hide();
         $('#role-modal').modal('show');
     });
 
@@ -50,20 +51,30 @@ function getRoles() {
 }
 
 function addRole() {
-    ecblockui();
-    $.ajax({
-        type: 'POST',
-        url: '/api/roles/add',
-        dataType: 'json',
-        data: {    name : $('#role-name').val(),
-                   description : $('#role-description').val(),
-                   csrfmiddlewaretoken : getCookie('csrftoken')
-                },
-        success: function (data) {
-            ecunblockui();
-            $("#role-modal").modal('hide');
-            getRoles();
-        }
-    });
+
+    $('#required-fields-alert').hide();
+
+    if($('#role-name').val()!="") {
+        ecblockui();
+        $.ajax({
+            type: 'POST',
+            url: '/api/roles/add',
+            dataType: 'json',
+            data: {    name : $('#role-name').val(),
+                       description : $('#role-description').val(),
+                       csrfmiddlewaretoken : getCookie('csrftoken')
+                    },
+            success: function (data) {
+                ecunblockui();
+                $("#role-modal").modal('hide');
+                getRoles();
+            }
+        });
+
+    }
+
+    else {
+       $('#required-fields-alert').show();
+    }
 
 }
