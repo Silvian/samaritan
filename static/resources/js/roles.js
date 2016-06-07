@@ -12,9 +12,9 @@ $(document).ready(function(){
 
     $('#save-role').click(function() {
         addRole();
-    })
+    });
 
-    $('#roles-list').on("click", 'button', function() {
+    $('#roles-list').on("click", '[id^="remove-"]', function() {
         var id = this.id.split('remove-');
         deleteRole(id[1]);
     });
@@ -88,27 +88,35 @@ function addRole() {
 
 function deleteRole(id) {
 
-    ecblockui();
-    $.ajax({
-        type: 'POST',
-        url: '/api/roles/delete',
-        dataType: 'json',
-        data: {    id : id,
-                   csrfmiddlewaretoken : getCookie('csrftoken')
-                },
-        success: function (data) {
-            ecunblockui();
-            if(data.success) {
-                getRoles();
+    $('#delete-modal-label').html("Delete role");
+    $('#delete-modal').modal('show');
+
+    $('#delete-confirm').click(function() {
+        $('#delete-modal').modal('hide');
+        ecblockui();
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/roles/delete',
+            dataType: 'json',
+            data: {    id : id,
+                       csrfmiddlewaretoken : getCookie('csrftoken')
+                    },
+            success: function (data) {
+                ecunblockui();
+                if(data.success) {
+                    getRoles();
+                }
+                else {
+                    $('#error-msg').html(data.error);
+                    $('#roles-error').show();
+                    setTimeout(function () {
+                        $('#roles-error').hide();
+                    }, 3000);
+                }
             }
-            else {
-                $('#error-msg').html(data.error);
-                $('#roles-error').show();
-                setTimeout(function () {
-                    $('#roles-error').hide();
-                }, 3000);
-            }
-        }
+        });
+
     });
 
 }
