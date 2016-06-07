@@ -5,13 +5,19 @@ $(document).ready(function(){
     getRoles();
 
     $('#add-role-button').click(function() {
+        clearRoleFields();
         $('#role-modal-label').html("Add a new role");
         $('#required-fields-alert').hide();
         $('#role-modal').modal('show');
+
+        $('#save-role').click(function() {
+            saveRole();
+        });
     });
 
-    $('#save-role').click(function() {
-        addRole();
+    $('#roles-list').on("click", '[id^="view-"]', function() {
+        var id = this.id.split('view-');
+        editRole(id[1]);
     });
 
     $('#roles-list').on("click", '[id^="remove-"]', function() {
@@ -57,17 +63,28 @@ function getRoles() {
 
 }
 
-function addRole() {
+function saveRole() {
 
     $('#required-fields-alert').hide();
 
     if($('#role-name').val()!="") {
+
+        var id = null;
+        if($('#role-id').val()!="") {
+            id = $('#role-id').val();
+            url = '/api/roles/update';
+        }
+        else {
+            url = '/api/roles/add';
+        }
+
         ecblockui();
         $.ajax({
             type: 'POST',
-            url: '/api/roles/add',
+            url: url,
             dataType: 'json',
-            data: {    name : $('#role-name').val(),
+            data: {    id : id,
+                       name : $('#role-name').val(),
                        description : $('#role-description').val(),
                        csrfmiddlewaretoken : getCookie('csrftoken')
                     },
@@ -83,6 +100,32 @@ function addRole() {
     else {
        $('#required-fields-alert').show();
     }
+
+}
+
+function editRole(id) {
+
+    clearRoleFields();
+    $('#role-modal-label').html("Edit role");
+    $('#role-modal').modal('show');
+    ecblockui();
+    $.ajax({
+        type: 'GET',
+        url: '/api/roles/getSingle',
+        dataType: 'json',
+        data: { id : id },
+        success: function (data) {
+            ecunblockui();
+            var role = data[0];
+            $('#role-id').val(role.pk);
+            $('#role-name').val(role.fields.name);
+            $('#role-description').val(role.fields.description);
+        }
+    });
+
+    $('#save-role').click(function() {
+        saveRole();
+    });
 
 }
 
@@ -110,5 +153,13 @@ function deleteRole(id) {
             }
         }
     });
+
+}
+
+function clearRoleFields() {
+
+    $('#role-id').val("");
+    $('#role-name').val("");
+    $('#role-description').val("");
 
 }
