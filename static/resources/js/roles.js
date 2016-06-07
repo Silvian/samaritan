@@ -9,10 +9,10 @@ $(document).ready(function(){
         $('#role-modal-label').html("Add a new role");
         $('#required-fields-alert').hide();
         $('#role-modal').modal('show');
+    });
 
-        $('#save-role').click(function() {
-            saveRole();
-        });
+    $('#save-role').click(function() {
+        saveRole();
     });
 
     $('#roles-list').on("click", '[id^="view-"]', function() {
@@ -121,10 +121,6 @@ function editRole(id) {
             $('#role-name').val(role.fields.name);
             $('#role-description').val(role.fields.description);
         }
-    });
-
-    $('#save-role').click(function() {
-        saveRole();
     });
 
 }
