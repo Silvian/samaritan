@@ -88,35 +88,27 @@ function addRole() {
 
 function deleteRole(id) {
 
-    $('#delete-modal-label').html("Delete role");
-    $('#delete-modal').modal('show');
-
-    $('#delete-confirm').click(function() {
-        $('#delete-modal').modal('hide');
-        ecblockui();
-
-        $.ajax({
-            type: 'POST',
-            url: '/api/roles/delete',
-            dataType: 'json',
-            data: {    id : id,
-                       csrfmiddlewaretoken : getCookie('csrftoken')
-                    },
-            success: function (data) {
-                ecunblockui();
-                if(data.success) {
-                    getRoles();
-                }
-                else {
-                    $('#error-msg').html(data.error);
-                    $('#roles-error').show();
-                    setTimeout(function () {
-                        $('#roles-error').hide();
-                    }, 3000);
-                }
+    ecblockui();
+    $.ajax({
+        type: 'POST',
+        url: '/api/roles/delete',
+        dataType: 'json',
+        data: {    id : id,
+                   csrfmiddlewaretoken : getCookie('csrftoken')
+                },
+        success: function (data) {
+            ecunblockui();
+            if(data.success) {
+                getRoles();
             }
-        });
-
+            else {
+                $('#error-msg').html(data.error);
+                $('#roles-error').show();
+                setTimeout(function () {
+                    $('#roles-error').hide();
+                }, 3000);
+            }
+        }
     });
 
 }
