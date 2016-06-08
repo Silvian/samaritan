@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^roles/add', views.add_church_role, name='addRole'),
     url(r'^roles/update', views.update_church_role, name='updateRole'),
     url(r'^roles/delete', views.delete_church_role, name='deleteRole'),
+    url(r'^roles/getMembers', views.get_role_members, name='getRoleMembers'),
     url(r'^addresses/add', views.add_new_address, name='addAddress'),
     url(r'^addresses/update', views.update_address, name='updateAddress'),
     url(r'^addresses/getAddress', views.get_address, name='getAddress'),

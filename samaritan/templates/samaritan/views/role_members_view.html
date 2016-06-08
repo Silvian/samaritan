@@ -1,0 +1,48 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+  <div>
+    <br/>
+    <h2><i class="fa fa-compass fa-fw" aria-hidden="true"></i> Role members view</h2>
+  </div>
+
+{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+
+      <h3>Role: <i id="role-name"></i></h3>
+      <br/>
+
+  </div>
+
+  <div class="well">
+
+    <table class="table table-striped table-hover" id="role-members-list">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date of Birth</th>
+          <th>Telephone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/roles-view.js' %}"></script>
+
+{% endblock %}

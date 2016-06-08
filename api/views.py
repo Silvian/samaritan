@@ -111,6 +111,16 @@ def delete_church_role(request):
 
 
 @login_required
+def get_role_members(request):
+    if request.is_ajax:
+        church_role = get_object_or_404(ChurchRole, pk=request.GET['id'])
+        role_members = Member.objects.filter(church_role=church_role, is_active=True)
+
+    data = serializers.serialize("json", role_members)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
 def get_membership_types(request):
     if request.is_ajax:
         membership_types = MembershipType.objects.all()

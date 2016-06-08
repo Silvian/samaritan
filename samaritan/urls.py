@@ -32,5 +32,6 @@ urlpatterns = [
     url(r'^everyone/', views.everyone_view, name='everyone'),
     url(r'^roles/', views.roles_view, name='roles'),
     url(r'^history/', views.historical_view, name='history'),
+    url(r'^views/role_members', views.role_members_view, name='roleMembers'),
     url(r'^$', views.index_view, name='index'),
 ]
