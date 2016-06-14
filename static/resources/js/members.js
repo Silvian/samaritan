@@ -35,6 +35,8 @@ $(document).ready(function(){
 
     loadChurchRoles();
 
+    detailsToggle();
+
     $("#address-select").select2({
         dropdownAutoWidth: true,
         width: '100%',

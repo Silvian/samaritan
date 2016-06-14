@@ -35,6 +35,8 @@ $(document).ready(function(){
 
     loadChurchRoles();
 
+    detailsToggle();
+
     $('#is_baptised').click(function() {
         $('#baptismal_details')[this.checked ? "show" : "hide"]();
     });

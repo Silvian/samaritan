@@ -54,6 +54,7 @@ class Member(models.Model):
     telephone = models.CharField(max_length=200, blank=True, null=True)
     address = models.ForeignKey(Address)
     email = models.CharField(max_length=200, blank=True, null=True)
+    details = models.TextField(blank=True, null=True)
     profile_pic = models.CharField(max_length=200, blank=True, null=True)
     is_baptised = models.BooleanField(default=False)
     baptismal_date = models.DateField(blank=True, null=True)

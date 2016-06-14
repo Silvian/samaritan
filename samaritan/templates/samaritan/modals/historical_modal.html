@@ -31,6 +31,14 @@
             <a id="address"></a>
           </fieldset>
           <fieldset class="form-group">
+            <label for="details" style="float:left;margin-right:5px;">Details <i id="details-label"></i></label><button id="toggle-details" class="btn btn-xs btn-primary"><i class="fa fa-plus-circle fa-fw"></i> show</button>
+          </fieldset>
+          <div id="details-area" hidden="true">
+            <fieldset class="form-group">
+              <textarea style="height: 200px" id="details" maxlength="10000" class="form-control" rows="3" readonly></textarea>
+            </fieldset>
+          </div>
+          <fieldset class="form-group">
             <label for="is_baptised" style="float:left;margin-right:5px;">Baptised?</label>
             <input id="is_baptised" name="is_baptised" path="is_baptised" type="checkbox" placeholder="is_baptised" readonly/>
           </fieldset>

@@ -163,6 +163,7 @@ function submitMember(members_table, addressId) {
                       telephone       : $('#telephone').val(),
                       email           : $('#email').val(),
                       address         : address,
+                      details         : $('#details').val(),
                       is_baptised     : is_baptised,
                       baptismal_date  : standardDate($('#baptismal_date').val()),
                       baptismal_place : $('#baptismal_place').val(),
@@ -204,6 +205,8 @@ function editMember(id, members_table, title) {
              $('#email').val(member.fields.email);
              $('#address-id').val(member.fields.address);
              editAddress(member.fields.address);
+
+             $('#details').val(member.fields.details);
 
              setCheckbox('#is_member', member.fields.is_member);
              setCheckbox('#is_baptised', member.fields.is_baptised);
@@ -364,6 +367,7 @@ function clearFields() {
    $('#locality').val("");
    $('#city').val("");
    $('#post_code').val("");
+   $('#details').val("");
    $('#is_baptised').prop('checked', false);
    $('#baptismal_date').val("");
    $('#baptismal_place').val("");
@@ -372,5 +376,18 @@ function clearFields() {
    $('#membership_date').val("");
    $('#baptismal_details').hide();
 
+
+}
+
+//toggle between open and closed details
+function detailsToggle() {
+
+    //hide/show details open/closed
+    $("[id^=toggle-]").click(function(event) {
+        $('#details-area').toggle();
+
+        $(this).html($(this).html() == '<i class="fa fa-minus-circle fa-fw"></i> Hide' ? '<i class="fa fa-plus-circle fa-fw"></i> Show' : '<i class="fa fa-minus-circle fa-fw"></i> Hide');
+
+    });
 
 }
