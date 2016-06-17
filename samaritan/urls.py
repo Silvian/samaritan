@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^api/', include('api.urls', namespace="api")),
     url(r'^authenticate/', include('authentication.urls', namespace="authenticate")),
     url(r'^export/', include('export.urls', namespace="export")),
+    url(r'^email/', include('emailservice.urls', namespace="email")),
     url(r'^members/', views.members_view, name='members'),
     url(r'^guests/', views.guests_view, name='guests'),
     url(r'^everyone/', views.everyone_view, name='everyone'),
