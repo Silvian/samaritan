@@ -188,6 +188,14 @@ def update_member(request):
 
 
 @login_required
+def delete_member(request):
+    if request.method == 'POST':
+        member = Member.objects.get(pk=request.POST['id'])
+        member.delete()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
 def update_address(request):
     if request.method == 'POST':
         address = get_object_or_404(Address, id=request.POST['id'])

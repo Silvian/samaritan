@@ -43,17 +43,40 @@ $(document).ready(function(){
         editMember(id[1], historical_table, "Person details");
     });
 
+    $('#delete-member').click(function () {
+        $('#delete-modal-label').html("Delete this record permanently?");
+        $('#delete-modal').modal('show');
+    });
+
     $('#reinstate-member').click(function() {
         ecblockui();
         $.ajax({
             type: 'POST',
-            url: '/api/history/reinstate',
+            url: '/api/members/reinstate',
             dataType: 'json',
             data: { id: $('#member-id').val(),
                     csrfmiddlewaretoken : getCookie('csrftoken')
                     },
             success: function (data) {
                 ecunblockui();
+                $("#add-member-modal").modal('hide');
+                historical_table.ajax.reload();
+            }
+        });
+    });
+
+    $('#delete-confirm').click(function () {
+        ecblockui();
+        $.ajax({
+            type: 'POST',
+            url: '/api/members/delete',
+            dataType: 'json',
+            data: {id : $('#member-id').val(),
+                   csrfmiddlewaretoken : getCookie('csrftoken')
+                   },
+            success: function (data) {
+                ecunblockui();
+                $('#delete-modal').modal('hide');
                 $("#add-member-modal").modal('hide');
                 historical_table.ajax.reload();
             }
