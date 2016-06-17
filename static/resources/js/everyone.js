@@ -29,14 +29,6 @@ $(document).ready(function(){
 
     });
 
-    loadAddresses();
-
-    loadMembershipTypes();
-
-    loadChurchRoles();
-
-    detailsToggle();
-
     $("#address-select").select2({
         dropdownAutoWidth: true,
         width: '100%',
@@ -103,5 +95,13 @@ $(document).ready(function(){
         var id = this.id.split('edit-');
         editMember(id[1], everyone_table, "Person details");
     });
+
+    loadAddresses();
+
+    loadMembershipTypes();
+
+    loadChurchRoles();
+
+    detailsToggle();
 
 });

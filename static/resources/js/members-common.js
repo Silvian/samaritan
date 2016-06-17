@@ -6,6 +6,7 @@ function loadAddresses() {
         type: 'GET',
         url: '/api/addresses/getAll',
         dataType: 'json',
+        async: false,
         success: function (data) {
             ecunblockui();
             var options = '';
@@ -27,6 +28,7 @@ function loadMembershipTypes() {
         type: 'GET',
         url: '/api/membership/getTypes',
         dataType: 'json',
+        async: false,
         success: function (data) {
             ecunblockui();
             var options = '';
@@ -46,6 +48,7 @@ function loadChurchRoles() {
         type: 'GET',
         url: '/api/roles/getAll',
         dataType: 'json',
+        async: false,
         success: function (data) {
             ecunblockui();
             var options = '';
