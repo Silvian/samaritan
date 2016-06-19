@@ -9,17 +9,15 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 
-def send_group_emails(from_email, recipient_name, subject):
+def send_email(sender_email, sender_name, recipient_first_name, recipient_email, subject, message):
     text_template = get_template('samaritan/email/group_email.txt')
     html_template = get_template('samaritan/email/group_email.html')
 
-    context = {'username': recipient_name}
+    context = {'recipient_name': recipient_first_name, 'message': message, 'sender_name': sender_name}
     text_content = text_template.render(context)
     html_content = html_template.render(context)
 
-    to = ['email@example.com']
-
-    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+    msg = EmailMultiAlternatives(subject, text_content, sender_email, [recipient_email])
     msg.attach_alternative(html_content, "text/html")
     return msg.send()
 

@@ -1,3 +1,7 @@
-Hello {{ username }},
+Hi {{ recipient_name }},
 
-This is an important message.
+{{ message }}
+
+Regards,
+
+{{ sender_name }}

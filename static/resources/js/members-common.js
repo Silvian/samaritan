@@ -394,3 +394,45 @@ function detailsToggle() {
     });
 
 }
+
+function sendEmail() {
+
+    $('#email-required-fields-alert').hide();
+
+    if($('#email-subject').val()!="" && $('#email-message').val()!="") {
+
+        $('#email-modal').modal('hide');
+        $('#email-sending').show();
+        $.ajax({
+            type: 'POST',
+            url: '/email/send/group/members',
+            dataType: 'json',
+            data: {subject: $('#email-subject').val(),
+                   message: $('#email-message').val(),
+                   csrfmiddlewaretoken : getCookie('csrftoken')
+                   },
+            success: function (data) {
+                $('#email-sending').hide();
+                if(data.success) {
+                    $('#email-success').show();
+                    setTimeout(function () {
+                        $('#email-success').hide();
+                    }, 3000);
+                }
+                else {
+                    $('#email-error').val(data.error);
+                    $('#email-error').show();
+                    setTimeout(function () {
+                        $('#email-error').hide();
+                    }, 3000);
+                }
+            }
+        });
+
+    }
+
+    else {
+        $('#email-required-fields-alert').show();
+    }
+
+}

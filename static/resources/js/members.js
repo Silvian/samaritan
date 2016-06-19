@@ -97,6 +97,15 @@ $(document).ready(function(){
         editMember(id[1], members_table, "Member details");
     });
 
+    $('#email-members').click(function(event) {
+        $('#email-modal-label').html("Send email to all members");
+        $('#email-modal').modal('show');
+    });
+
+    $('#send-email').click(function(event) {
+        sendEmail();
+    });
+
     loadAddresses();
 
     loadMembershipTypes();

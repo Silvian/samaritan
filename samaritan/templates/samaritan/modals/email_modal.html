@@ -1,0 +1,34 @@
+{% block email_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="email-modal" role="dialog" aria-labelledby="emailModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="email-modal-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input class="form-control" id="email-subject" name="email-subject" path="email-subject" type="text" placeholder="Subject*" required maxlength="200"/>
+        </div>
+        <div class="form-group">
+          <label for="email-message" style="float:left;margin-right:5px;">Message* <i id="email-message-label"></i></label>
+          <textarea style="height: 250px" id="email-message" maxlength="100000" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div id="email-required-fields-alert" class="alert alert-danger" role="alert" hidden="true">
+          <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+          Please fill in all the required fields marked with an asterisk *
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="send-email" type="button" class="btn btn-primary"><i class="fa fa-envelope fa-fw"></i> Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
