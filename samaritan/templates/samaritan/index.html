@@ -11,75 +11,23 @@
 
 {% block body %}
 
-  <div class="container">
+  <div class="jumbotron">
+    <div class="container">
+      <p>Samaritan CMA is designed to address the long standing needs for churches and other organisations to better manage their internal administrative affairs:</p>
+      <ul>
+        <li>
+          <p><b>The ability to access and view the entire up to date members list securely and fully accessible on the cloud anywhere in the world and on any device.</b></p>
+        </li>
+        <li>
+          <p><b>A simple and easy way to to add members, guests, assign members to groups/organisations, assign members to roles, and keep track of members who have left.</b></p>
+        </li>
+        <li>
+          <p><b>A very intuitive user interface which is mobile friendly and easily understood.</b></p>
+        </li>
+      </ul>
 
-    <!-- Button for excel download -->
-    <a type="button" class="btn btn-success btn-md" style="float:left" id="download-members" href="/export/download/members/excel/">
-      <i class="fa fa-file-excel-o fa-fw"></i> Download Excel
-    </a>
-    &nbsp; &nbsp;
-    <!-- Button email modal -->
-    <button type="button" class="btn btn-info btn-md" id="email-members">
-      <i class="fa fa-envelope-o fa-fw"></i> Email
-    </button>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-member-button">
-      <i class="fa fa-user-plus fa-fw"></i> New member
-    </button>
-
+      <p><a class="btn btn-primary btn-lg" href="{%url 'members' %}" role="button"><i class="fa fa-male fa-fw"></i>Members</a></p>
+    </div>
   </div>
-
-  <br/>
-
-  <div id="email-sending" class="alert alert-warning" role="alert" hidden="true">
-      <i class="fa fa-info fa-fw" aria-hidden="true"></i>
-      Sending emails, please wait...
-  </div>
-
-  <div id="email-success" class="alert alert-success" role="alert" hidden="true">
-      <i class="fa fa-check fa-fw" aria-hidden="true"></i>
-      Emails have been sent successfully
-  </div>
-
-  <div id="email-error" class="alert alert-danger" role="alert" hidden="true">
-      <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
-      <span id="error-msg">Error:</span>
-  </div>
-
-  <div class="well">
-
-    <table class="table table-striped table-hover" id="members-list">
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Date of Birth</th>
-          <th>Telephone</th>
-          <th>Email</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-
-      </tbody>
-    </table>
-
-  </div>
-
-{% include "samaritan/modals/member_modal.html" %}
-
-{% include "samaritan/modals/email_modal.html" %}
-
-{% include "samaritan/modals/terminate_modal.html" %}
-
-{% endblock %}
-
-{% block jsfiles %}
-
-{% load staticfiles %}
-<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
-<script src="{% static 'resources/js/members-common.js' %}"></script>
-<script src="{% static 'resources/js/members.js' %}"></script>
 
 {% endblock %}
