@@ -10,6 +10,7 @@ Do not change anything here unless you really know what you're doing.
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from samaritan.constants import SettingsConstants
@@ -32,7 +33,7 @@ def authenticate_user(request):
             # the password verified for the user
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect(settings.REDIRECT_URL)
             else:
                 context['msg'] = "This account has been disabled"
                 return render(request, "samaritan/login.html", context)

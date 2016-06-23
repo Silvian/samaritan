@@ -154,6 +154,8 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/authenticate/login/'
 
+REDIRECT_URL = '/'
+
 
 # SMTP settings
 # Note that these settings are environment specific
