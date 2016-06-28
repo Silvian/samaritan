@@ -8,7 +8,7 @@ Main forms file to describe web page forms based on models for the Samaritan CMA
 """
 
 from django import forms
-from models import Member, Address, ChurchRole
+from models import Member, Address, ChurchRole, ChurchGroup
 
 
 class MemberForm(forms.ModelForm):
@@ -38,3 +38,12 @@ class RoleForm(forms.ModelForm):
     class Meta:
         model = ChurchRole
         fields = ('name', 'description')
+
+
+class GroupForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = ChurchGroup
+        fields = ('name', 'description', 'members')

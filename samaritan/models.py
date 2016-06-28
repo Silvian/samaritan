@@ -78,7 +78,7 @@ class Member(models.Model):
 class ChurchGroup(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
-    member = models.ManyToManyField(Member)
+    members = models.ManyToManyField(Member, blank=True)
 
     def publish(self):
         self.save()

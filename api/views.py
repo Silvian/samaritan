@@ -13,8 +13,8 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from samaritan.models import Member, ChurchRole, Address, MembershipType
-from samaritan.forms import MemberForm, AddressForm, RoleForm
+from samaritan.models import Member, ChurchRole, ChurchGroup, Address, MembershipType
+from samaritan.forms import MemberForm, AddressForm, RoleForm, GroupForm
 from django.shortcuts import get_object_or_404
 import json
 
@@ -222,3 +222,38 @@ def reinstate_member(request):
         member.is_active = True
         member.save()
         return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def get_groups(request):
+    if request.is_ajax:
+        groups = ChurchGroup.objects.all()
+    data = serializers.serialize("json", groups)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def add_new_group(request):
+    if request.method == 'POST':
+        group = GroupForm(request.POST)
+        group.save()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def update_group(request):
+    if request.method == 'POST':
+        group = get_object_or_404(ChurchGroup, id=request.POST['id'])
+        form = GroupForm(request.POST or None, instance=group)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def delete_group(request):
+    if request.method == 'POST':
+        group = ChurchGroup.objects.get(pk=request.POST['id'])
+        group.delete()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
+
