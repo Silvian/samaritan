@@ -83,12 +83,6 @@ $(document).ready(function(){
         });
     });
 
-    loadAddresses();
-
-    loadMembershipTypes();
-
-    loadChurchRoles();
-
     detailsToggle();
 
 });

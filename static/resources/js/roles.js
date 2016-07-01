@@ -22,7 +22,13 @@ $(document).ready(function(){
 
     $('#roles-list').on("click", '[id^="remove-"]', function() {
         var id = this.id.split('remove-');
-        deleteRole(id[1]);
+        $('#delete-id').val(id[1]);
+        $('#delete-modal-label').html("Delete role?");
+        $('#delete-modal').modal('show');
+    });
+
+    $('#delete-confirm').click(function() {
+        deleteRole($('#delete-id').val());
     });
 
 });
@@ -126,6 +132,8 @@ function editRole(id) {
 }
 
 function deleteRole(id) {
+
+    $('#delete-modal').modal('hide');
 
     ecblockui();
     $.ajax({
