@@ -46,4 +46,4 @@ class GroupForm(forms.ModelForm):
 
     class Meta:
         model = ChurchGroup
-        fields = ('name', 'description', 'members')
+        fields = ('name', 'description')

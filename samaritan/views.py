@@ -39,6 +39,11 @@ def everyone_view(request):
 
 
 @login_required
+def groups_view(request):
+    return render(request, "samaritan/groups.html", footer_context)
+
+
+@login_required
 def roles_view(request):
     return render(request, "samaritan/roles.html", footer_context)
 
@@ -51,3 +56,15 @@ def historical_view(request):
 @login_required
 def role_members_view(request):
     return render(request, "samaritan/views/role_members_view.html", footer_context)
+
+
+@login_required
+def group_members_view(request):
+    return render(request, "samaritan/views/group_members_view.html", footer_context)
+
+
+@login_required
+def group_members_add(request):
+    return render(request, "samaritan/views/group_members_add.html", footer_context)
+
+

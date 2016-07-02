@@ -31,8 +31,11 @@ urlpatterns = [
     url(r'^members/', views.members_view, name='members'),
     url(r'^guests/', views.guests_view, name='guests'),
     url(r'^everyone/', views.everyone_view, name='everyone'),
+    url(r'^groups/', views.groups_view, name='groups'),
     url(r'^roles/', views.roles_view, name='roles'),
     url(r'^history/', views.historical_view, name='history'),
     url(r'^views/role_members', views.role_members_view, name='roleMembers'),
+    url(r'^views/group_members', views.group_members_view, name='groupMembers'),
+    url(r'^views/group_add', views.group_members_add, name='addGroupMembers'),
     url(r'^$', views.index_view, name='index'),
 ]

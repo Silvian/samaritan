@@ -11,7 +11,6 @@ Please note: All methods and classes in here must be secure (i.e. use @login_req
 
 from django.http import HttpResponse
 from django.core import serializers
-from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from samaritan.models import Member, ChurchRole, ChurchGroup, Address, MembershipType
 from samaritan.forms import MemberForm, AddressForm, RoleForm, GroupForm
@@ -225,10 +224,18 @@ def reinstate_member(request):
 
 
 @login_required
-def get_groups(request):
+def get_all_groups(request):
     if request.is_ajax:
         groups = ChurchGroup.objects.all()
     data = serializers.serialize("json", groups)
+    return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def get_group(request):
+    if request.is_ajax:
+        group = ChurchGroup.objects.get(pk=request.GET['id'])
+    data = serializers.serialize("json", [group])
     return HttpResponse(data, content_type='application/json')
 
 
@@ -257,3 +264,46 @@ def delete_group(request):
         group.delete()
         return HttpResponse(json.dumps(success_response), content_type='application/json')
 
+
+@login_required
+def get_group_members(request):
+    if request.is_ajax:
+        church_group = get_object_or_404(ChurchGroup, id=request.GET['id'])
+        group_members = church_group.members.order_by('last_name')
+        data = serializers.serialize("json", group_members)
+        return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def get_members_to_add(request):
+    if request.is_ajax:
+        church_group = get_object_or_404(ChurchGroup, id=request.GET['id'])
+        group_members = church_group.members.order_by('last_name')
+        church_members = Member.objects.filter(
+            is_active=True, is_member=True
+        ).order_by('last_name')
+        data = []
+        for member in church_members:
+            if member not in group_members:
+                data.append(member)
+
+        data = serializers.serialize("json", data)
+        return HttpResponse(data, content_type='application/json')
+
+
+@login_required
+def add_group_member(request):
+    if request.method == 'POST':
+        group = get_object_or_404(ChurchGroup, id=request.POST['group_id'])
+        member = Member.objects.get(pk=request.POST['member_id'])
+        group.members.add(member)
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+def delete_group_member(request):
+    if request.method == 'POST':
+        group = get_object_or_404(ChurchGroup, id=request.POST['group_id'])
+        member = group.members.get(pk=request.POST['member_id'])
+        group.members.remove(member)
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
