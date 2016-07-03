@@ -53,6 +53,15 @@ $(document).ready(function(){
                     deleteGroupMember($('#delete-id').val(), id, group_members_table);
                 });
 
+                $('#email-group-members').click(function(event) {
+                    $('#email-modal-label').html("Send email to all "+group.fields.name+" group members");
+                    $('#email-modal').modal('show');
+                });
+
+                $('#send-email').click(function(event) {
+                    sendGroupEmail(id);
+                });
+
             }
         });
 
@@ -78,5 +87,48 @@ function deleteGroupMember(member_id, group_id, group_members_table) {
             group_members_table.ajax.reload();
         }
     });
+
+}
+
+function sendGroupEmail(group_id) {
+
+    $('#email-required-fields-alert').hide();
+
+    if($('#email-subject').val()!="" && $('#email-message').val()!="") {
+
+        $('#email-modal').modal('hide');
+        $('#email-sending').show();
+        $.ajax({
+            type: 'POST',
+            url: '/email/send/group/mail',
+            dataType: 'json',
+            data: {id     : group_id,
+                   subject: $('#email-subject').val(),
+                   message: $('#email-message').val(),
+                   csrfmiddlewaretoken : getCookie('csrftoken')
+                   },
+            success: function (data) {
+                $('#email-sending').hide();
+                if(data.success) {
+                    $('#email-success').show();
+                    setTimeout(function () {
+                        $('#email-success').hide();
+                    }, 3000);
+                }
+                else {
+                    $('#email-error').val(data.error);
+                    $('#email-error').show();
+                    setTimeout(function () {
+                        $('#email-error').hide();
+                    }, 3000);
+                }
+            }
+        });
+
+    }
+
+    else {
+        $('#email-required-fields-alert').show();
+    }
 
 }
