@@ -10,6 +10,6 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^send/group/members', views.send_members_group_mail, name='sendMembersGroup'),
-    url(r'^send/group/mail', views.send_group_mail, name='sendGroupMail'),
+    url(r'^send/members', views.send_members_mail, name='sendMembersEmail'),
+    url(r'^send/group', views.send_group_mail, name='sendGroupEmail'),
 ]

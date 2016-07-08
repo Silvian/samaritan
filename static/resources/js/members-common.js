@@ -405,7 +405,7 @@ function sendEmail() {
         $('#email-sending').show();
         $.ajax({
             type: 'POST',
-            url: '/email/send/group/members',
+            url: '/email/send/members',
             dataType: 'json',
             data: {subject: $('#email-subject').val(),
                    message: $('#email-message').val(),

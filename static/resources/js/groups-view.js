@@ -100,7 +100,7 @@ function sendGroupEmail(group_id) {
         $('#email-sending').show();
         $.ajax({
             type: 'POST',
-            url: '/email/send/group/mail',
+            url: '/email/send/group',
             dataType: 'json',
             data: {id     : group_id,
                    subject: $('#email-subject').val(),

@@ -16,7 +16,7 @@ success_response = {'success': True}
 
 
 @login_required
-def send_members_group_mail(request):
+def send_members_mail(request):
     if request.method == 'POST':
         members = Member.objects.filter(
             is_active=True, is_member=True
