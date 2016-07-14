@@ -24,5 +24,5 @@ if settings_sample.STATUS == STATUS:
     # cleanup temp file
     shutil.copyfile("settings-new.py", "settings.py")
     os.remove("settings-new.py")
-    print("Release performed to version: " + settings.VERSION)
+    print("Release performed to version: " + settings_sample.VERSION)
     exit(1)
