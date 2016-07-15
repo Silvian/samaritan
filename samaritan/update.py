@@ -12,7 +12,7 @@ import settings
 settings_sample = __import__('settings-sample')
 STATUS = "Release"
 
-if settings_sample.STATUS == STATUS:
+if settings_sample.STATUS == STATUS and settings.VERSION != settings_sample.VERSION:
     replacements = {settings.VERSION: settings_sample.VERSION, settings.STATUS: settings_sample.STATUS}
 
     with open('settings.py') as infile, open('settings-new.py', 'w') as outfile:
