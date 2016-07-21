@@ -58,13 +58,60 @@ class MemberModelTests(TestCase):
         self.assertEqual(test_membership_type.description, 'Baptismal details')
 
     def test_created_role(self):
+
         test_role = ChurchRole.objects.get(name="regular")
 
         self.assertEqual(test_role.name, 'regular')
         self.assertEqual(test_role.description, 'Regular church member')
 
     def test_created_group(self):
-        test_role = ChurchGroup.objects.get(name="committee")
 
-        self.assertEqual(test_role.name, 'committee')
-        self.assertEqual(test_role.description, 'The main committee group')
+        test_group = ChurchGroup.objects.get(name="committee")
+
+        self.assertEqual(test_group.name, 'committee')
+        self.assertEqual(test_group.description, 'The main committee group')
+
+    def test_add_member_to_group(self):
+
+        test_group = ChurchGroup.objects.get(name="committee")
+        test_member = Member.objects.get(last_name="Smith")
+
+        test_group.members.add(test_member)
+        member = test_group.members.get()
+        self.assertEqual(member, test_member)
+
+    def test_remove_member_from_group(self):
+
+        test_group = ChurchGroup.objects.get(name="committee")
+        test_member = Member.objects.get(last_name="Smith")
+
+        test_group.members.add(test_member)
+        member = test_group.members.get()
+        self.assertEqual(member, test_member)
+
+        test_group.members.remove(test_member)
+        self.assertEqual(len(test_group.members.all()), 0)
+
+    def test_remove_role_with_member(self):
+
+        test_role = ChurchRole.objects.get(name="regular")
+
+        self.assertTrue(test_role.delete())
+        self.assertEquals(len(Member.objects.all()), 0)
+
+    def test_remove_address_with_member(self):
+
+        address = Address.objects.get(post_code="10001")
+
+        self.assertTrue(address.delete())
+        self.assertEquals(len(Member.objects.all()), 0)
+
+    def test_remove_member(self):
+
+        test_member = Member.objects.get(last_name="Smith")
+
+        self.assertTrue(test_member.delete())
+        self.assertEquals(len(Member.objects.all()), 0)
+
+
+
