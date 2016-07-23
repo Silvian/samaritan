@@ -40,6 +40,11 @@ SECRET_KEY = 'your-secret-key-goes-here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# SECURITY SETTINGS: ensure the below settings are turned on when running with SSL/TLS active
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
 ALLOWED_HOSTS = []
 
 # Static files
