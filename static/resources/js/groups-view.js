@@ -11,7 +11,7 @@ $(document).ready(function(){
             success: function (data) {
                 ecunblockui();
                 var group=data[0];
-                $('#group-name').html(group.fields.name);
+                $('#group-name').html(htmlEntities(group.fields.name));
 
                 //enable the powerful data table sorting, pagination and searching controls
                 var group_members_table = $('#group-members-list').DataTable({
@@ -21,15 +21,24 @@ $(document).ready(function(){
                     "dataSrc": ""
                 },
                     'columns': [
-                        {"data" : "fields.first_name"},
-                        {"data" : "fields.last_name"},
-                        {"data" : "fields.telephone"},
                         {"mRender": function(data, type, row) {
-                                        return getEmailLink(row.fields.email);
+                            return htmlEntities(row.fields.first_name);
+                                    }
+                        },
+                        {"mRender": function(data, type, row) {
+                                        return htmlEntities(row.fields.last_name);
+                                    }
+                        },
+                        {"mRender": function(data, type, row) {
+                                        return htmlEntities(row.fields.telephone);
+                                    }
+                        },
+                        {"mRender": function(data, type, row) {
+                                        return getEmailLink(htmlEntities(row.fields.email));
                                     }
                         },
                         {"mRender": function (data, type, row) {
-                                        return '<button type="button" class="btn btn-danger btn-sm" id="remove-'+ row.pk
+                                        return '<button type="button" class="btn btn-danger btn-sm" id="remove-'+ htmlEntities(row.pk)
                                         +'"><i class="fa fa-trash fa-fw"></i></td>';
                                     }
                         },
@@ -54,7 +63,7 @@ $(document).ready(function(){
                 });
 
                 $('#email-group-members').click(function(event) {
-                    $('#email-modal-label').html("Send email to all "+group.fields.name+" group members");
+                    $('#email-modal-label').html("Send email to all "+htmlEntities(group.fields.name)+" group members");
                     $('#email-modal').modal('show');
                 });
 

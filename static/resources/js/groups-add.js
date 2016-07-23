@@ -15,15 +15,24 @@ $(document).ready(function(){
             "dataSrc": ""
         },
             'columns': [
-                {"data" : "fields.first_name"},
-                {"data" : "fields.last_name"},
-                {"data" : "fields.telephone"},
                 {"mRender": function(data, type, row) {
-                                return getEmailLink(row.fields.email);
+                    return htmlEntities(row.fields.first_name);
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return htmlEntities(row.fields.last_name);
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return htmlEntities(row.fields.telephone);
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return getEmailLink(htmlEntities(row.fields.email));
                             }
                 },
                 {"mRender": function (data, type, row) {
-                                return '<button type="button" class="btn btn-success btn-sm" id="add-'+ row.pk
+                                return '<button type="button" class="btn btn-success btn-sm" id="add-'+ htmlEntities(row.pk)
                                 +'"><i class="fa fa-plus-square fa-fw"></i></td>';
                             }
                 },

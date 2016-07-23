@@ -12,7 +12,7 @@ $(document).ready(function(){
             success: function (data) {
                 ecunblockui();
                 var role=data[0];
-                $('#role-name').html(role.fields.name);
+                $('#role-name').html(htmlEntities(role.fields.name));
 
                 //enable the powerful data table sorting, pagination and searching controls
                 var role_members_table = $('#role-members-list').DataTable({
@@ -22,15 +22,24 @@ $(document).ready(function(){
                     "dataSrc": ""
                 },
                     'columns': [
-                        {"data" : "fields.first_name"},
-                        {"data" : "fields.last_name"},
                         {"mRender": function(data, type, row) {
-                                        return getFormattedDate(new Date(row.fields.date_of_birth));
+                            return htmlEntities(row.fields.first_name);
                                     }
                         },
-                        {"data" : "fields.telephone"},
                         {"mRender": function(data, type, row) {
-                                        return getEmailLink(row.fields.email);
+                                        return htmlEntities(row.fields.last_name);
+                                    }
+                        },
+                        {"mRender": function(data, type, row) {
+                                        return getFormattedDate(new Date(htmlEntities(row.fields.date_of_birth)));
+                                    }
+                        },
+                        {"mRender": function(data, type, row) {
+                                        return htmlEntities(row.fields.telephone);
+                                    }
+                        },
+                        {"mRender": function(data, type, row) {
+                                        return getEmailLink(htmlEntities(row.fields.email));
                                     }
                         },
 

@@ -11,8 +11,8 @@ function loadAddresses() {
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
-                options += '<option value="' + data[i].pk + '">' + data[i].fields.number + ' ' + data[i].fields.street +
-                 ' ' + data[i].fields.locality + ', ' + data[i].fields.city + ', ' + data[i].fields.post_code + '</option> ';
+                options += '<option value="' + htmlEntities(data[i].pk) + '">' + htmlEntities(data[i].fields.number) + ' ' + htmlEntities(data[i].fields.street) +
+                 ' ' + htmlEntities(data[i].fields.locality) + ', ' + htmlEntities(data[i].fields.city) + ', ' + htmlEntities(data[i].fields.post_code) + '</option> ';
             });
             $("#address-select").append(options);
             $("#address-select").select2('val', 1);
@@ -33,7 +33,7 @@ function loadMembershipTypes() {
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
-                options += '<option value="' + data[i].pk + '">' + data[i].fields.name + '</option> ';
+                options += '<option value="' + htmlEntities(data[i].pk) + '">' + htmlEntities(data[i].fields.name) + '</option> ';
             });
             $("#membership-type-select").append(options);
             $("#membership-type-select").select2('val', 1);
@@ -53,7 +53,7 @@ function loadChurchRoles() {
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
-                options += '<option value="' + data[i].pk + '">' + data[i].fields.name + '</option> ';
+                options += '<option value="' + htmlEntities(data[i].pk) + '">' + htmlEntities(data[i].fields.name) + '</option> ';
             });
             $("#church-role-select").append(options);
             $("#church-role-select").select2('val', 1);
@@ -256,8 +256,8 @@ function editAddress(address_id) {
 	    success: function (data) {
 	        ecunblockui();
 	        var address=data[0];
-	        var address_string = address.fields.number+' '+address.fields.street+' '+address.fields.locality+' '
-                                    +address.fields.city+' '+address.fields.post_code;
+	        var address_string = htmlEntities(address.fields.number)+' '+htmlEntities(address.fields.street)+' '+htmlEntities(address.fields.locality)+' '
+                                    +htmlEntities(address.fields.city)+' '+htmlEntities(address.fields.post_code);
             var map = '<i class="fa fa-map-marker" aria-hidden="true"></i> ';
             $('#address').html(map + address_string);
             $('#address').attr('href','http://google.co.uk/maps/place/'+address_string);
@@ -277,10 +277,10 @@ function editMembershipType(membership_type_id) {
 	    data: { id: membership_type_id},
 	    success: function (data) {
 	        var membershipType=data[0];
-	        $('#membership-type').html(membershipType.fields.name);
+	        $('#membership-type').html(htmlEntities(membershipType.fields.name));
 
             $('select[name=membership-type-select] option:selected').attr("selected", null);
-            $('select[name=membership-type-select] option[value="'+membershipType.pk+'"]').attr("selected","selected");
+            $('select[name=membership-type-select] option[value="'+htmlEntities(membershipType.pk)+'"]').attr("selected","selected");
 
             $("#membership-type-select").select2({
                 val: membershipType.pk,
@@ -304,10 +304,10 @@ function editRole(role_id) {
 	    data: { id: role_id},
 	    success: function (data) {
 	        var role=data[0];
-	        $('#church-role').html(role.fields.name);
+	        $('#church-role').html(htmlEntities(role.fields.name));
 
             $('select[name=church-role-select] option:selected').attr("selected", null);
-            $('select[name=church-role-select] option[value="'+role.pk+'"]').attr("selected","selected");
+            $('select[name=church-role-select] option[value="'+htmlEntities(role.pk)+'"]').attr("selected","selected");
 
             $("#church-role-select").select2({
                 val: role.pk,

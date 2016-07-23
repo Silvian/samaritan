@@ -51,10 +51,10 @@ function getGroups() {
                 $.each(data, function(i, item) {
                     var group = item.fields;
                     $('#groups-list tbody').append('<tr>' +
-                        '<td><a href="/views/group_members?id=' + item.pk + '">' + group.name + '</a></td>' +
-                        '<td>' + group.description + '</td>' +
-                        '<td><button type="button" class="btn btn-default btn-sm" id="view-'+ item.pk +'"><i class="fa fa-edit fa-fw"></i></td>' +
-                        '<td><button type="button" class="btn btn-danger btn-sm" id="remove-'+ item.pk +'"><i class="fa fa-trash fa-fw"></i></td>' +
+                        '<td><a href="/views/group_members?id=' + htmlEntities(item.pk) + '">' + htmlEntities(group.name) + '</a></td>' +
+                        '<td>' + htmlEntities(group.description) + '</td>' +
+                        '<td><button type="button" class="btn btn-default btn-sm" id="view-'+ htmlEntities(item.pk) +'"><i class="fa fa-edit fa-fw"></i></td>' +
+                        '<td><button type="button" class="btn btn-danger btn-sm" id="remove-'+ htmlEntities(item.pk) +'"><i class="fa fa-trash fa-fw"></i></td>' +
                     '</tr>');
                 });
 

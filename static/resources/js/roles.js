@@ -51,10 +51,10 @@ function getRoles() {
                 $.each(data, function(i, item) {
                     var role = item.fields;
                     $('#roles-list tbody').append('<tr>' +
-                        '<td><a href="/views/role_members?id=' + item.pk + '">' + role.name + '</a></td>' +
-                        '<td>' + role.description + '</td>' +
-                        '<td><button type="button" class="btn btn-default btn-sm" id="view-'+ item.pk +'"><i class="fa fa-edit fa-fw"></i></td>' +
-                        '<td><button type="button" class="btn btn-danger btn-sm" id="remove-'+ item.pk +'"><i class="fa fa-trash fa-fw"></i></td>' +
+                        '<td><a href="/views/role_members?id=' + htmlEntities(item.pk) + '">' + htmlEntities(role.name) + '</a></td>' +
+                        '<td>' + htmlEntities(role.description) + '</td>' +
+                        '<td><button type="button" class="btn btn-default btn-sm" id="view-'+ htmlEntities(item.pk) +'"><i class="fa fa-edit fa-fw"></i></td>' +
+                        '<td><button type="button" class="btn btn-danger btn-sm" id="remove-'+ htmlEntities(item.pk) +'"><i class="fa fa-trash fa-fw"></i></td>' +
                     '</tr>');
                 });
 

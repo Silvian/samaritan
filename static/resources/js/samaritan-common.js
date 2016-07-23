@@ -46,6 +46,11 @@ function getEmailLink(email) {
     return '<a href="mailto:'+email+'">'+email+'</a>';
 }
 
+// function to protect against cross site scripting by escaping html entities
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
