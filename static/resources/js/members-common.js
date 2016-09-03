@@ -120,6 +120,8 @@ function submitAddress(members_table) {
 
 function submitMember(members_table, addressId) {
 
+    ecblockui();
+
     id = $('#member-id').val();
 
     if(id == "") {
@@ -181,6 +183,7 @@ function submitMember(members_table, addressId) {
     /* Alerts the results */
     posting.done(function( data ) {
         if(data.success) {
+            ecunblockui();
             $("#add-member-modal").modal('hide');
             members_table.ajax.reload();
         }
