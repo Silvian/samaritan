@@ -171,3 +171,11 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
+# Church specific email and custom greeting settings
+SEND_GREETINGS = False
+CHURCH_NAME = ""
+CHURCH_EMAIL = ""
+BIRTHDAY_SUBJECT = ""
+BIRTHDAY_GREETING = ""
