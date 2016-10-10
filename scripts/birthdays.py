@@ -15,7 +15,7 @@ import sys
 
 from datetime import date
 
-proj_path = "/home/cecilia/PycharmProjects/samaritan"
+proj_path = ""
 # This is so Django knows where to find stuff.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "samaritan.settings")
 sys.path.append(proj_path)
