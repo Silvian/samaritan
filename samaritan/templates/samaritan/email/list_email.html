@@ -1,0 +1,15 @@
+<p><h3> Hi {{ recipient_name }},</h3>
+Please see below the list of church members who had a birthday last month:</p>
+<br/>
+<ul>
+    {% for member in member_list %}
+    <li>
+        {{ member.first_name }} {{ member.last_name }}
+    </li>
+    {% endfor %}
+</ul>
+<br/>
+Regards,
+<br/>
+<br/>
+<b>{{ sender_name }}</b>
