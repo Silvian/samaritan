@@ -175,6 +175,7 @@ EMAIL_USE_SSL = False
 
 # Church specific email and custom greeting settings
 SEND_GREETINGS = False
+THRESHOLD = 1900
 CHURCH_NAME = ""
 CHURCH_EMAIL = ""
 BIRTHDAY_SUBJECT = ""

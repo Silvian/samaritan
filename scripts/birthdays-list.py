@@ -15,7 +15,7 @@ import sys
 
 from datetime import date
 
-proj_path = "/home/cecilia/PycharmProjects/samaritan"
+proj_path = ""
 # This is so Django knows where to find stuff.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "samaritan.settings")
 sys.path.append(proj_path)
@@ -49,7 +49,7 @@ if settings.SEND_BIRTHDAYS_LIST and settings.BIRTHDAYS_LIST_SUBJECT != "":
     if today.day <= settings.WEEK_CYCLE and today.weekday() == settings.SENDING_DAY:
 
         for member in everyone:
-            if member.date_of_birth.month == last_month:
+            if member.date_of_birth.month == last_month and member.date_of_birth.year > settings.THRESHOLD:
                 birthdays_list.append(member)
 
 
@@ -67,5 +67,5 @@ for church_role in church_role_set:
 if birthdays_list:
     for recipient in recipients_list:
         if not send_list_email(settings.CHURCH_EMAIL, settings.CHURCH_NAME, recipient.first_name,
-                          recipient.email, settings.BIRTHDAYS_LIST_SUBJECT, birthdays_list):
+                               recipient.email, settings.BIRTHDAYS_LIST_SUBJECT, birthdays_list):
             print "Failed to send email to the following recipient: " + recipient.email

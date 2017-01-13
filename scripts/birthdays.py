@@ -42,7 +42,8 @@ if settings.SEND_GREETINGS and settings.BIRTHDAY_SUBJECT != "" and settings.BIRT
     for member in everyone:
 
         # check each member's date of birth matches current day and month
-        if member.date_of_birth.month == today.month and member.date_of_birth.day == today.day:
+        if member.date_of_birth.month == today.month and member.date_of_birth.day == today.day \
+                and member.date_of_birth.year > settings.THRESHOLD:
             print "Sending greeting: " + member.last_name + " " + member.first_name
             if member.email is not None and member.email != "":
                 if not send_email(settings.CHURCH_EMAIL, settings.CHURCH_NAME, member.first_name,
