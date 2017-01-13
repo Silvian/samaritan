@@ -25,7 +25,7 @@ LICENCE = "GPLv3"
 VERSION = "0.5"
 MAINTAINER = "Silvian Dragan"
 EMAIL = "silvian.dragan@gmail.com"
-STATUS = "Development"
+STATUS = "Release"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
