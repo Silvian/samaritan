@@ -39,7 +39,7 @@ def authenticate_user(request):
                 return render(request, "samaritan/login.html", context)
         else:
             # the authentication system was unable to verify the username and password
-            context['msg'] = "The username or password are incorrect"
+            context['msg'] = "The username or password is incorrect"
             return render(request, "samaritan/login.html", context)
 
 
