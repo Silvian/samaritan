@@ -29,3 +29,41 @@ class SettingsConstants:
                 'version': self.version, 'maintainer': self.maintainer,
                 'email': self.email, 'status': self.status}
 
+
+class WriterConstants:
+    TITLE_TEXT = "Report"
+
+    FIRST_NAME = "First Name"
+    LAST_NAME = "Last Name"
+    DATE_OF_BIRTH = "Date of Birth"
+    TELEPHONE = "Telephone"
+    EMAIL = "Email"
+
+    ADDRESS_NO = "No."
+    ADDRESS_STREET = "Street"
+    ADDRESS_LOCALITY = "Locality"
+    ADDRESS_CITY = "City"
+    ADDRESS_POSTCODE = "Postcode"
+
+    DETAILS = "Details"
+    IS_BAPTISED = "Is Baptised"
+    BAPTISMAL_DATE = "Baptismal Date"
+    BAPTISMAL_PLACE = "Baptismal Place"
+    IS_MEMBER = "Is Member"
+    MEMBERSHIP_TYPE = "Membership Type"
+    MEMBERSHIP_DATE = "Membership Date"
+    IS_ACTIVE = "Is Active"
+    CHURCH_ROLE = "Church Role"
+    NOTES = "Notes"
+
+    YES = "Yes"
+    NO = "No"
+    NOT_APPLICABLE = "N/A"
+    NOT_SPECIFIED = "Not specified"
+
+    DATE_FORMAT = "%d-%m-%Y"
+    FILE_NAME_DATE = "%Y-%m-%d-%H.%M.%S"
+
+    def __init__(self):
+        return
+
