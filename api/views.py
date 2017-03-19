@@ -280,7 +280,7 @@ def get_members_to_add(request):
         church_group = get_object_or_404(ChurchGroup, id=request.GET['id'])
         group_members = church_group.members.order_by('last_name')
         church_members = Member.objects.filter(
-            is_active=True, is_member=True
+            is_active=True
         ).order_by('last_name')
         data = []
         for member in church_members:
