@@ -14,9 +14,6 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application's code
 COPY . /usr/src/app
 
-# Run Django migrations
-RUN python /usr/src/app/manage.py migrate
-
 # Run the app
 CMD ["./run_app.sh"]
 
