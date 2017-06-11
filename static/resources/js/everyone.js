@@ -1,43 +1,5 @@
 $(document).ready(function(){
 
-    //enable the powerful data table sorting, pagination and searching controls
-    var everyone_table = $('#everyone-list').DataTable({
-    'ajax': {
-        "type"   : "GET",
-        "url"    : '/api/everyone/getActive',
-
-        "dataSrc": ""
-    },
-        'columns': [
-            {"mRender": function(data, type, row) {
-                            return htmlEntities(row.fields.first_name);
-                        }
-            },
-            {"mRender": function(data, type, row) {
-                            return htmlEntities(row.fields.last_name);
-                        }
-            },
-            {"mRender": function(data, type, row) {
-                            return getFormattedDate(new Date(htmlEntities(row.fields.date_of_birth)));
-                        }
-            },
-            {"mRender": function(data, type, row) {
-                            return htmlEntities(row.fields.telephone);
-                        }
-            },
-            {"mRender": function(data, type, row) {
-                            return getEmailLink(htmlEntities(row.fields.email));
-                        }
-            },
-            {"mRender": function (data, type, row) {
-                            return '<button type="button" class="btn btn-default btn-sm" id="edit-'+ htmlEntities(row.pk)
-                            +'"><i class="fa fa-pencil-square-o fa-fw"></i></td>';
-                        }
-            },
-        ],
-
-    });
-
     $("#address-select").select2({
         dropdownAutoWidth: true,
         width: '100%',
@@ -62,6 +24,54 @@ $(document).ready(function(){
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy'
     });
+
+    var rolesData = loadChurchRoles();
+
+    if(rolesData) {
+
+        //enable the powerful data table sorting, pagination and searching controls
+        var everyone_table = $('#everyone-list').DataTable({
+        'ajax': {
+            "type"   : "GET",
+            "url"    : '/api/everyone/getActive',
+
+            "dataSrc": ""
+        },
+            'columns': [
+                {"mRender": function(data, type, row) {
+                                return htmlEntities(row.fields.first_name);
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return htmlEntities(row.fields.last_name);
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return getFormattedDate(new Date(htmlEntities(row.fields.date_of_birth)));
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return htmlEntities(row.fields.telephone);
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return getEmailLink(htmlEntities(row.fields.email));
+                            }
+                },
+                {"mRender": function(data, type, row) {
+                                return htmlEntities(getRoleName(rolesData, row.fields.church_role));
+                            }
+                },
+                {"mRender": function (data, type, row) {
+                                return '<button type="button" class="btn btn-default btn-sm" id="edit-'+ htmlEntities(row.pk)
+                                +'"><i class="fa fa-pencil-square-o fa-fw"></i></td>';
+                            }
+                },
+            ],
+
+        });
+
+    }
 
     $("#add-person-button").click(function(event) {
         clearFields();
@@ -108,8 +118,6 @@ $(document).ready(function(){
     loadAddresses();
 
     loadMembershipTypes();
-
-    loadChurchRoles();
 
     detailsToggle();
 

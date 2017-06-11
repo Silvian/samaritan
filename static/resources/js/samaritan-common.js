@@ -48,7 +48,12 @@ function getEmailLink(email) {
 
 // function to protect against cross site scripting by escaping html entities
 function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    var formatted = "";
+
+    if(str) {
+        formatted = String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    return formatted;
 }
 
 function getCookie(name) {

@@ -42,6 +42,7 @@ function loadMembershipTypes() {
 }
 
 function loadChurchRoles() {
+    var results = null;
     ecblockui();
     $("#church-role-select").html("");
     $.ajax({
@@ -50,6 +51,7 @@ function loadChurchRoles() {
         dataType: 'json',
         async: false,
         success: function (data) {
+            results = data;
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
@@ -59,6 +61,17 @@ function loadChurchRoles() {
             $("#church-role-select").select2('val', 1);
         }
     });
+
+    return results;
+}
+
+function getRoleName(data, key) {
+
+    for (i = 0; i < data.length; i++) {
+        if(data[i].pk === key){
+            return data[i].fields.name;
+        }
+    }
 
 }
 
