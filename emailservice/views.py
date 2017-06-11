@@ -32,6 +32,22 @@ def send_members_mail(request):
 
 
 @login_required
+def send_everyone_mail(request):
+    if request.method == 'POST':
+        members = Member.objects.filter(
+            is_active=True
+        ).order_by('last_name')
+
+        for member in members:
+            if member.email is not None and member.email != "":
+                if not send_email(request.user.email, request.user.first_name, member.first_name,
+                                  member.email, request.POST['subject'], request.POST['message']):
+                    return HttpResponse(json.dumps({'error': "Cannot send email"}), content_type='application/json')
+
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
 def send_group_mail(request):
     if request.method == 'POST':
         church_group = get_object_or_404(ChurchGroup, id=request.POST['id'])

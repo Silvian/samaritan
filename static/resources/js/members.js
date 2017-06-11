@@ -122,7 +122,7 @@ $(document).ready(function(){
     });
 
     $('#send-email').click(function(event) {
-        sendEmail();
+        sendEmail('/email/send/members');
     });
 
     loadAddresses();

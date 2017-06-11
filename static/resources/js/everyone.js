@@ -115,6 +115,15 @@ $(document).ready(function(){
         editMember(id[1], everyone_table, "Person details");
     });
 
+    $('#email-everyone').click(function(event) {
+        $('#email-modal-label').html("Send email to everyone");
+        $('#email-modal').modal('show');
+    });
+
+    $('#send-email').click(function(event) {
+        sendEmail('/email/send/everyone');
+    });
+
     loadAddresses();
 
     loadMembershipTypes();

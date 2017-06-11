@@ -411,7 +411,7 @@ function detailsToggle() {
 
 }
 
-function sendEmail() {
+function sendEmail(url) {
 
     $('#email-required-fields-alert').hide();
 
@@ -421,7 +421,7 @@ function sendEmail() {
         $('#email-sending').show();
         $.ajax({
             type: 'POST',
-            url: '/email/send/members',
+            url: url,
             dataType: 'json',
             data: {subject: $('#email-subject').val(),
                    message: $('#email-message').val(),
@@ -442,6 +442,13 @@ function sendEmail() {
                         $('#email-error').hide();
                     }, 3000);
                 }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $('#email-error').val("Internal server error! Emails could not be sent.");
+                $('#email-error').show();
+                setTimeout(function () {
+                    $('#email-error').hide();
+                }, 3000);
             }
         });
 
