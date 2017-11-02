@@ -21,6 +21,12 @@ def login_view(request):
     if request.GET.get('logout', False):
         context['logout'] = True
         context['msg'] = "You've been logged out successfully"
+    if request.GET.get('lockout', False):
+        context['lockout'] = True
+        context['msg'] = (
+            "Your account has been locked due to repeated failed login attempts! "
+            "Please contact the system administrator"
+        )
 
     return render(request, "samaritan/login.html", context)
 
@@ -46,4 +52,4 @@ def authenticate_user(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect('/authenticate/login?logout=true')
+    return HttpResponseRedirect(settings.LOGOUT_URL)

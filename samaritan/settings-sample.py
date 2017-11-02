@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes',
     'samaritan',
     'authentication',
 ]
@@ -165,6 +166,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/authenticate/login/'
+
+LOGOUT_URL = '/authenticate/login?logout=true'
+
+AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
 REDIRECT_URL = '/'
 

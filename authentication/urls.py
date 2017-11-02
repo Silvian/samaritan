@@ -6,10 +6,11 @@
 """
 
 from django.conf.urls import url
+from axes.decorators import watch_login
 from . import views
 
 urlpatterns = [
     url(r'^login/', views.login_view, name='login'),
     url(r'^logout/', views.logout_view, name='logout'),
-    url(r'^access/', views.authenticate_user, name='access'),
+    url(r'^access/', watch_login(views.authenticate_user), name='access'),
 ]
