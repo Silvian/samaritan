@@ -35,6 +35,7 @@
           <th>Date of Birth</th>
           <th>Telephone</th>
           <th>Email</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody>
@@ -44,12 +45,17 @@
 
   </div>
 
+{% include "samaritan/modals/member_modal.html" %}
+
+{% include "samaritan/modals/terminate_modal.html" %}
+
 {% endblock %}
 
 {% block jsfiles %}
 
 {% load staticfiles %}
 <script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/members-common.js' %}"></script>
 <script src="{% static 'resources/js/roles-view.js' %}"></script>
 
 {% endblock %}
