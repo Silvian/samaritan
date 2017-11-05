@@ -50,6 +50,10 @@ $(document).ready(function(){
             }
         });
 
+        $('#download-role-members').click(function() {
+            location.href="/export/download/role/excel?id="+id;
+        });
+
     }
 
 });
