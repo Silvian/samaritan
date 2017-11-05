@@ -26,8 +26,8 @@ def get_all_active(request):
         everyone = Member.objects.filter(
             is_active=True
         ).order_by('last_name')
-    data = serializers.serialize("json", everyone)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", everyone)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -36,8 +36,8 @@ def get_all_active_members(request):
         members = Member.objects.filter(
             is_active=True, is_member=True
         ).order_by('last_name')
-    data = serializers.serialize("json", members)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", members)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -46,8 +46,8 @@ def get_all_active_guests(request):
         guests = Member.objects.filter(
             is_active=True, is_member=False
         ).order_by('last_name')
-    data = serializers.serialize("json", guests)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", guests)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -56,24 +56,24 @@ def get_historical_records(request):
         historical = Member.objects.filter(
             is_active=False
         ).order_by('last_name')
-    data = serializers.serialize("json", historical)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", historical)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_church_roles(request):
     if request.is_ajax:
         roles = ChurchRole.objects.all()
-    data = serializers.serialize("json", roles)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", roles)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_role(request):
     if request.is_ajax:
         role = ChurchRole.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", [role])
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", [role])
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -114,26 +114,24 @@ def get_role_members(request):
     if request.is_ajax:
         church_role = get_object_or_404(ChurchRole, pk=request.GET['id'])
         role_members = Member.objects.filter(church_role=church_role, is_active=True)
-
-    data = serializers.serialize("json", role_members)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", role_members)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_membership_types(request):
     if request.is_ajax:
         membership_types = MembershipType.objects.all()
-
-    data = serializers.serialize("json", membership_types)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", membership_types)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_all_addresses(request):
     if request.is_ajax:
         addresses = Address.objects.all()
-    data = serializers.serialize("json", addresses)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", addresses)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -156,24 +154,24 @@ def add_new_address(request):
 def get_member(request):
     if request.is_ajax:
         member = Member.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", [member])
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", [member])
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_address(request):
     if request.is_ajax:
         address = Address.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", [address])
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", [address])
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_membership_type(request):
     if request.is_ajax:
         membership_type = MembershipType.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", [membership_type])
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", [membership_type])
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -227,16 +225,16 @@ def reinstate_member(request):
 def get_all_groups(request):
     if request.is_ajax:
         groups = ChurchGroup.objects.all()
-    data = serializers.serialize("json", groups)
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", groups)
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
 def get_group(request):
     if request.is_ajax:
         group = ChurchGroup.objects.get(pk=request.GET['id'])
-    data = serializers.serialize("json", [group])
-    return HttpResponse(data, content_type='application/json')
+        data = serializers.serialize("json", [group])
+        return HttpResponse(data, content_type='application/json')
 
 
 @login_required
@@ -269,7 +267,7 @@ def delete_group(request):
 def get_group_members(request):
     if request.is_ajax:
         church_group = get_object_or_404(ChurchGroup, id=request.GET['id'])
-        group_members = church_group.members.order_by('last_name')
+        group_members = church_group.members.order_by('last_name').filter(is_active=True)
         data = serializers.serialize("json", group_members)
         return HttpResponse(data, content_type='application/json')
 
