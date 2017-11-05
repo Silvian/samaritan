@@ -11,6 +11,7 @@ from . import views
 
 urlpatterns = [
     url(r'^send/members', views.send_members_mail, name='sendMembersEmail'),
+    url(r'send/guests', views.send_guests_mail, name='sendGuestsEmail'),
     url(r'^send/everyone', views.send_everyone_mail, name='sendEveryoneEmail'),
     url(r'^send/group', views.send_group_mail, name='sendGroupEmail'),
 ]

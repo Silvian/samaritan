@@ -115,6 +115,15 @@ $(document).ready(function(){
         editMember(id[1], guests_table, "Guest details");
     });
 
+    $('#email-guests').click(function(event) {
+        $('#email-modal-label').html("Send email to all guests");
+        $('#email-modal').modal('show');
+    });
+
+    $('#send-email').click(function(event) {
+        sendEmail('/email/send/guests');
+    });
+
     loadAddresses();
 
     loadMembershipTypes();

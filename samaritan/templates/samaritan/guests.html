@@ -17,6 +17,11 @@
     <a type="button" class="btn btn-success btn-md" style="float:left" id="download-members" href="/export/download/guests/excel/">
       <i class="fa fa-file-excel-o fa-fw"></i> Excel
     </a>
+    &nbsp; &nbsp;
+    <!-- Button email modal -->
+    <button type="button" class="btn btn-info btn-md" id="email-guests">
+      <i class="fa fa-envelope-o fa-fw"></i> Email
+    </button>
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-guest-button">
@@ -26,6 +31,21 @@
   </div>
 
   <br/>
+
+  <div id="email-sending" class="alert alert-warning" role="alert" hidden>
+      <i class="fa fa-info fa-fw" aria-hidden="true"></i>
+      Sending emails, please wait...
+  </div>
+
+  <div id="email-success" class="alert alert-success" role="alert" hidden>
+      <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+      Emails have been sent successfully
+  </div>
+
+  <div id="email-error" class="alert alert-danger" role="alert" hidden>
+      <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+      <span id="error-msg">Error:</span>
+  </div>
 
   <div class="well">
 
@@ -49,6 +69,8 @@
   </div>
 
 {% include "samaritan/modals/member_modal.html" %}
+
+{% include "samaritan/modals/email_modal.html" %}
 
 {% include "samaritan/modals/terminate_modal.html" %}
 
