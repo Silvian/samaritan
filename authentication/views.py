@@ -13,20 +13,17 @@ from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from samaritan.constants import SettingsConstants
+from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
 def login_view(request):
     context = SettingsConstants.get_settings(SettingsConstants())
     if request.GET.get('logout', False):
         context['logout'] = True
-        context['msg'] = "You've been logged out successfully"
+        context['msg'] = AuthenticationConstants.LOGOUT_SUCCESS
     if request.GET.get('lockout', False):
         context['lockout'] = True
-        context['msg'] = (
-            "Your account has been locked due to repeated failed login attempts! "
-            "Please contact the system administrator"
-        )
+        context['msg'] = AuthenticationConstants.LOCKOUT_MESSAGE
 
     return render(request, "samaritan/login.html", context)
 
@@ -41,11 +38,11 @@ def authenticate_user(request):
                 login(request, user)
                 return HttpResponseRedirect(settings.REDIRECT_URL)
             else:
-                context['msg'] = "This account has been disabled"
+                context['msg'] = AuthenticationConstants.ACCOUNT_DISABLED
                 return render(request, "samaritan/login.html", context)
         else:
             # the authentication system was unable to verify the username and password
-            context['msg'] = "The username or password is incorrect"
+            context['msg'] = AuthenticationConstants.INVALID_CREDENTIALS
             return render(request, "samaritan/login.html", context)
 
 

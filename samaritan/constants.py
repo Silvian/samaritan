@@ -67,3 +67,15 @@ class WriterConstants:
     def __init__(self):
         return
 
+
+class AuthenticationConstants:
+    LOGOUT_SUCCESS = "You've been logged out successfully"
+    ACCOUNT_DISABLED = "This account has been disabled"
+    INVALID_CREDENTIALS = "The username or password is incorrect"
+    LOCKOUT_MESSAGE = (
+        "Your account has been locked due to repeated failed login attempts! "
+        "Please contact the system administrator"
+    )
+
+    def __init__(self):
+        return

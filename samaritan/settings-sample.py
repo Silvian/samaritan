@@ -199,3 +199,8 @@ BIRTHDAYS_LIST_SUBJECT = ""
 SENDING_DAY = 5
 WEEK_CYCLE = 7
 RECIPIENT_ROLES = []
+
+# Church group rotation configurations
+GROUP_NAME = ""
+GROUP_EMAIL_TITLE = ""
+GROUP_EMAIL_MESSAGE = ""
