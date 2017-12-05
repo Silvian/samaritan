@@ -1,5 +1,5 @@
-Django
-django-axes
-psycopg2
-gunicorn
-XlsxWriter
+Django==1.11.7
+django-axes==2.3.3
+psycopg2==2.7.3
+gunicorn==19.7.1
+XlsxWriter==0.9.8
