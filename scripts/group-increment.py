@@ -25,10 +25,10 @@ os.chdir(proj_path)
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
-from samaritan.models import GroupRotation
+from emailservice.models import GroupRotationConfiguration
 
 
-group_rotation = GroupRotation.load()
+group_rotation = GroupRotationConfiguration.load()
 
 if group_rotation.group_number:
     if group_rotation.group_number == 4:

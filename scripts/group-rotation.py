@@ -25,13 +25,14 @@ os.chdir(proj_path)
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
-from samaritan.models import ChurchGroup, GroupRotation
+from samaritan.models import ChurchGroup
+from emailservice.models import GroupRotationConfiguration
 from emailservice.mail import send_email
 import samaritan.settings as settings
 
 
-group_rotation = GroupRotation.load()
-group_name = "{} {}".format(settings.GROUP_NAME, group_rotation.group_number)
+group_rotation = GroupRotationConfiguration.load()
+group_name = "{} {}".format(group_rotation.group_name, group_rotation.group_number)
 
 print("GROUP NAME: " + group_name)
 
