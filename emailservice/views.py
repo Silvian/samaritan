@@ -6,13 +6,11 @@
 """
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from mail import send_email
+
+from emailservice.utilities import send_mail_utility
+
 from samaritan.models import Member, ChurchGroup
 from django.shortcuts import get_object_or_404
-import json
-
-success_response = {'success': True}
 
 
 @login_required
@@ -22,13 +20,7 @@ def send_members_mail(request):
             is_active=True, is_member=True
         ).order_by('last_name')
 
-        for member in members:
-            if member.email is not None and member.email != "":
-                if not send_email(request.user.email, request.user.first_name, member.first_name,
-                                  member.email, request.POST['subject'], request.POST['message']):
-                    return HttpResponse(json.dumps({'error': "Cannot send email"}), content_type='application/json')
-
-        return HttpResponse(json.dumps(success_response), content_type='application/json')
+        return send_mail_utility(request, members)
 
 
 @login_required
@@ -38,13 +30,7 @@ def send_guests_mail(request):
             is_active=True, is_member=False
         ).order_by('last_name')
 
-        for member in members:
-            if member.email is not None and member.email != "":
-                if not send_email(request.user.email, request.user.first_name, member.first_name,
-                                  member.email, request.POST['subject'], request.POST['message']):
-                    return HttpResponse(json.dumps({'error': "Cannot send email"}), content_type='application/json')
-
-        return HttpResponse(json.dumps(success_response), content_type='application/json')
+        return send_mail_utility(request, members)
 
 
 @login_required
@@ -54,13 +40,7 @@ def send_everyone_mail(request):
             is_active=True
         ).order_by('last_name')
 
-        for member in members:
-            if member.email is not None and member.email != "":
-                if not send_email(request.user.email, request.user.first_name, member.first_name,
-                                  member.email, request.POST['subject'], request.POST['message']):
-                    return HttpResponse(json.dumps({'error': "Cannot send email"}), content_type='application/json')
-
-        return HttpResponse(json.dumps(success_response), content_type='application/json')
+        return send_mail_utility(request, members)
 
 
 @login_required
@@ -69,10 +49,4 @@ def send_group_mail(request):
         church_group = get_object_or_404(ChurchGroup, id=request.POST['id'])
         group_members = church_group.members.order_by('last_name').filter(is_active=True)
 
-        for member in group_members:
-            if member.email is not None and member.email != "":
-                if not send_email(request.user.email, request.user.first_name, member.first_name,
-                                  member.email, request.POST['subject'], request.POST['message']):
-                    return HttpResponse(json.dumps({'error': "Cannot send email"}), content_type='application/json')
-
-        return HttpResponse(json.dumps(success_response), content_type='application/json')
+        return send_mail_utility(request, group_members)
