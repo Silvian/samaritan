@@ -70,6 +70,9 @@ target/
 # Pydev/IntellJ stuff:
 .idea/
 
+# Environment configurations:
+.env
+
 # Ignore anything in static/admin
 static/admin/
 
@@ -84,3 +87,6 @@ static/resources/img/profile_pictures/*
 
 #Ipython Notebook
 .ipynb_checkpoints
+/celerybeat.pid
+celerybeat-schedule
+celerybeat.pid

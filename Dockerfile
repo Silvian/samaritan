@@ -15,5 +15,5 @@ RUN pip install -r requirements.txt
 COPY . /usr/src/app
 
 # Run the app
-CMD ["./run_app.sh"]
+CMD ["./scripts/run_app.sh"]
 

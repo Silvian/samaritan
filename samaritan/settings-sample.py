@@ -15,7 +15,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+from __future__ import absolute_import
+
 import os
+
+from celery.schedules import crontab
 
 # Global settings static variables config
 AUTHOR = "Silvian Dragan"
@@ -146,6 +150,40 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Celery Configurations
+# Celery & Broker settings
+
+CELERY_BROKER_URL = "amqp://localhost"
+CELERY_RESULTS_BACKEND = "amqp://localhost"
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/London'
+
+
+# Celery cron scheduling
+
+CELERY_BEAT_SCHEDULE = {
+    'send_birthday_greeting': {
+        'task': 'emailservice.tasks.send_birthday_greeting',
+        'schedule': crontab(minute='5', hour='8'),
+    },
+    'send_birthdays_list': {
+        'task': 'emailservice.tasks.send_birthdays_list',
+        'schedule': crontab(minute='0', hour='9'),
+    },
+    'group_rotation_schedule': {
+        'task': 'emailservice.tasks.group_rotation_schedule',
+        'schedule': crontab(minute='30', hour='0', day_of_week='0'),
+    },
+    'send_group_schedule_notification': {
+        'task': 'emailservice.tasks.send_group_schedule_notification',
+        'schedule': crontab(minute='35', hour='9', day_of_week='5'),
+    },
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -183,24 +221,3 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
-
-# Church specific email and custom greeting settings
-SEND_GREETINGS = False
-THRESHOLD = 1900
-CHURCH_NAME = ""
-CHURCH_EMAIL = ""
-BIRTHDAY_SUBJECT = ""
-BIRTHDAY_GREETING = ""
-
-# Church specific birthdays list configurations
-SEND_BIRTHDAYS_LIST = False
-BIRTHDAYS_LIST_SUBJECT = ""
-SENDING_DAY = 5
-WEEK_CYCLE = 7
-RECIPIENT_ROLES = []
-
-# Church group rotation configurations
-GROUP_NAME = ""
-GROUP_EMAIL_TITLE = ""
-GROUP_EMAIL_MESSAGE = ""

@@ -90,7 +90,7 @@ $ python manage.py runserver
 # To deploy a Django application to apache it's so easy... two steps:
 
 # 1. install apache and wsgi modules:
-$ sudo yum/apt-get install httpd/apache2 python-setuptools libapache2-mod-wsgi
+$ sudo yum/apt-get install httpd/apache2 python-setuptools libapache2-mod-wsgi rabbitmq-server
 
 # 2. add the config section at the bottom of your apache2.conf or httpd.conf file:
 
