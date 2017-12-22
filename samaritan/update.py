@@ -5,10 +5,10 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
+from __future__ import absolute_import
 
 import os
-import shutil
-import settings
+from django.conf import settings
 settings_sample = __import__('settings-sample')
 STATUS = "Release"
 

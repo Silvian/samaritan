@@ -127,7 +127,7 @@ def send_group_schedule_notification():
     group_rotation = GroupRotationConfiguration.load()
     group_name = "{} {}".format(group_rotation.group_name, group_rotation.group_number)
 
-    if group_rotation.send_email and group_rotation.email_subject and group_rotation.email_message:
+    if group_rotation.send_emails and group_rotation.email_subject and group_rotation.email_message:
         logger.debug("Group name: {}".format(group_name))
         group = ChurchGroup.objects.get(name=group_name)
 
