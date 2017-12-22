@@ -17,7 +17,8 @@ from emailservice.models import (
     ChurchEmailConfiguration,
     BirthdayEmailGreetingConfiguration,
     BirthdaysListConfiguration,
-    GroupRotationConfiguration,)
+    GroupRotationConfiguration,
+)
 
 
 logger = get_task_logger(__name__)
