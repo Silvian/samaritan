@@ -26,10 +26,10 @@ AUTHOR = "Silvian Dragan"
 COPYRIGHT = "Copyright 2017, Samaritan CMA (Church Management Assistant)"
 CREDITS = ['Vlad Neacsu', ]
 LICENCE = "GPLv3"
-VERSION = "0.9"
+VERSION = "1.0"
 MAINTAINER = "Silvian Dragan"
 EMAIL = "silvian.dragan@gmail.com"
-STATUS = "Release"
+STATUS = "Development"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
