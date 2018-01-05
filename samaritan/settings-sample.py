@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
     'axes',
     'api',
     'samaritan',
@@ -185,6 +186,9 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute='35', hour='9', day_of_week='5'),
     },
 }
+
+# Django celery results configurations
+CELERY_RESULT_BACKEND = 'django-db'
 
 
 # Internationalization
