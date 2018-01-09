@@ -24,9 +24,11 @@
     </button>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-guest-button">
-        <i class="fa fa-user-plus fa-fw"></i> New guest
-    </button>
+    {% if request.user.is_staff %}
+      <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-guest-button">
+          <i class="fa fa-user-plus fa-fw"></i> New guest
+      </button>
+    {% endif %}
 
   </div>
 
@@ -72,7 +74,9 @@
 
 {% include "samaritan/modals/email_modal.html" %}
 
-{% include "samaritan/modals/terminate_modal.html" %}
+{% if request.user.is_staff %}
+  {% include "samaritan/modals/terminate_modal.html" %}
+{% endif %}
 
 {% endblock %}
 

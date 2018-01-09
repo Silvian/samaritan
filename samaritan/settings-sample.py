@@ -23,7 +23,7 @@ from celery.schedules import crontab
 
 # Global settings static variables config
 AUTHOR = "Silvian Dragan"
-COPYRIGHT = "Copyright 2017, Samaritan CMA (Church Management Assistant)"
+COPYRIGHT = "Copyright 2018, Samaritan CMA (Church Management Assistant)"
 CREDITS = ['Vlad Neacsu', ]
 LICENCE = "GPLv3"
 VERSION = "1.0"

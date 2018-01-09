@@ -45,7 +45,9 @@
 
 {% include "samaritan/modals/historical_modal.html" %}
 
-{% include "samaritan/modals/delete_modal.html" %}
+{% if request.user.is_staff %}
+  {% include "samaritan/modals/delete_modal.html" %}
+{% endif %}
 
 {% endblock %}
 

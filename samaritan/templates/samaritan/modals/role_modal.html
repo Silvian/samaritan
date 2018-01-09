@@ -26,7 +26,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
-        <button id="save-role" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
+        {% if request.user.is_staff %}
+          <button id="save-role" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -14,9 +14,11 @@
   <div class="container">
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-role-button">
-        <i class="fa fa-compass fa-fw"></i> New Role
-    </button>
+    {% if request.user.is_staff %}
+      <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-role-button">
+         <i class="fa fa-compass fa-fw"></i> New Role
+      </button>
+    {% endif %}
 
   </div>
 
@@ -52,7 +54,9 @@
 
 {% include "samaritan/modals/role_modal.html" %}
 
-{% include "samaritan/modals/delete_modal.html" %}
+{% if request.user.is_staff %}
+  {% include "samaritan/modals/delete_modal.html" %}
+{% endif %}
 
 {% endblock %}
 

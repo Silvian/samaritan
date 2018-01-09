@@ -10,6 +10,7 @@ Please note: All methods and classes in here must be secure (i.e. use @login_req
 """
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse
@@ -37,6 +38,7 @@ def get_address(request):
 
 
 @login_required
+@staff_member_required
 def add_new_address(request):
     if request.method == 'POST':
         form = AddressForm(request.POST)
@@ -45,6 +47,7 @@ def add_new_address(request):
 
 
 @login_required
+@staff_member_required
 def update_address(request):
     if request.method == 'POST':
         address = get_object_or_404(Address, id=request.POST['id'])

@@ -10,6 +10,7 @@ Please note: All methods and classes in here must be secure (i.e. use @login_req
 """
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.http import HttpResponse
@@ -37,6 +38,7 @@ def get_role(request):
 
 
 @login_required
+@staff_member_required
 def add_church_role(request):
     if request.method == 'POST':
         form = RoleForm(request.POST)
@@ -45,6 +47,7 @@ def add_church_role(request):
 
 
 @login_required
+@staff_member_required
 def update_church_role(request):
     if request.method == 'POST':
         role = get_object_or_404(ChurchRole, id=request.POST['id'])
@@ -55,6 +58,7 @@ def update_church_role(request):
 
 
 @login_required
+@staff_member_required
 def delete_church_role(request):
     if request.method == 'POST':
         church_role = ChurchRole.objects.get(pk=request.POST['id'])
