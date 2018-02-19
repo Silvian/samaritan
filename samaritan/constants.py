@@ -11,9 +11,9 @@ from django.conf import settings
 
 
 class SettingsConstants:
+
     author = settings.AUTHOR
     copyright = settings.COPYRIGHT
-    credits = settings.CREDITS
     licence = settings.LICENCE
     version = settings.VERSION
     maintainer = settings.MAINTAINER
@@ -24,13 +24,19 @@ class SettingsConstants:
         return
 
     def get_settings(self):
-        return {'author': self.author, 'copyright': self.copyright,
-                'credits': self.credits, 'licence': self.licence,
-                'version': self.version, 'maintainer': self.maintainer,
-                'email': self.email, 'status': self.status}
+        return {
+            'author': self.author,
+            'copyright': self.copyright,
+            'licence': self.licence,
+            'version': self.version,
+            'maintainer': self.maintainer,
+            'email': self.email,
+            'status': self.status,
+        }
 
 
 class WriterConstants:
+
     TITLE_TEXT = "Report"
 
     FIRST_NAME = "First Name"
@@ -69,6 +75,7 @@ class WriterConstants:
 
 
 class AuthenticationConstants:
+
     LOGOUT_SUCCESS = "You've been logged out successfully"
     ACCOUNT_DISABLED = "This account has been disabled"
     INVALID_CREDENTIALS = "The username or password is incorrect"
