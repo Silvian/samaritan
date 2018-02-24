@@ -11,7 +11,9 @@ from samaritan.models import MembershipType
 
 
 class Command(BaseCommand):
-    help = 'Creates the membership types from the given list.'
+    """Creates the membership types from the given list."""
+
+    help = __doc__
 
     def handle(self, *args, **options):
         membership_types = {

@@ -10,7 +10,9 @@ from samaritan.models import ChurchRole
 
 
 class Command(BaseCommand):
-    help = 'creates default church role for all member types'
+    """creates default church role for all member types."""
+
+    help = __doc__
 
     def handle(self, *args, **options):
         role, created = ChurchRole.objects.get_or_create(
