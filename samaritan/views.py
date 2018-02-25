@@ -8,63 +8,136 @@ This is the main views file for Samaritan CMA app
 
 Please note: All methods and classes in here must be secure (i.e. use @login_required decorators)
 """
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
 from constants import SettingsConstants
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-# this loads teh main settings constants that display
-# information about licence, version etc. on the footer.
-footer_context = SettingsConstants.get_settings(SettingsConstants())
 
 
-@login_required
-def index_view(request):
-    return render(request, "samaritan/index.html", footer_context)
+class IndexView(LoginRequiredMixin, TemplateView):
+    """Index view."""
+
+    template_name = "samaritan/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        return context
 
 
-@login_required
-def members_view(request):
-    return render(request, "samaritan/members.html", footer_context)
+class MembersView(LoginRequiredMixin, TemplateView):
+    """Members view."""
+
+    template_name = "samaritan/members.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(MembersView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'members'
+        return context
 
 
-@login_required
-def guests_view(request):
-    return render(request, "samaritan/guests.html", footer_context)
+class GuestsView(LoginRequiredMixin, TemplateView):
+    """Guests view."""
+
+    template_name = "samaritan/guests.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(GuestsView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'guests'
+        return context
 
 
-@login_required
-def everyone_view(request):
-    return render(request, "samaritan/everyone.html", footer_context)
+class EveryoneView(LoginRequiredMixin, TemplateView):
+    """Everyone view."""
+
+    template_name = "samaritan/everyone.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(EveryoneView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'everyone'
+        return context
 
 
-@login_required
-def groups_view(request):
-    return render(request, "samaritan/groups.html", footer_context)
+class GroupsView(LoginRequiredMixin, TemplateView):
+    """Groups view."""
+
+    template_name = "samaritan/groups.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupsView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'groups'
+        return context
 
 
-@login_required
-def roles_view(request):
-    return render(request, "samaritan/roles.html", footer_context)
+class RolesView(LoginRequiredMixin, TemplateView):
+    """Roles view."""
+
+    template_name = "samaritan/roles.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(RolesView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'roles'
+        return context
 
 
-@login_required
-def historical_view(request):
-    return render(request, "samaritan/history.html", footer_context)
+class HistoricalView(LoginRequiredMixin, TemplateView):
+    """Historical view."""
+
+    template_name = "samaritan/history.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(HistoricalView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'history'
+        return context
 
 
-@login_required
-def role_members_view(request):
-    return render(request, "samaritan/views/role_members_view.html", footer_context)
+class RoleMembersView(LoginRequiredMixin, TemplateView):
+    """Role members view."""
+
+    template_name = "samaritan/views/role_members_view.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(RoleMembersView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'roles'
+        return context
 
 
-@login_required
-def group_members_view(request):
-    return render(request, "samaritan/views/group_members_view.html", footer_context)
+class GroupMembersView(LoginRequiredMixin, TemplateView):
+    """Group members view."""
+
+    template_name = "samaritan/views/group_members_view.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupMembersView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'groups'
+        return context
 
 
-@login_required
-def group_members_add(request):
-    return render(request, "samaritan/views/group_members_add.html", footer_context)
+class GroupMembersAddView(LoginRequiredMixin, TemplateView):
+    """Group members add view."""
 
+    template_name = "samaritan/views/group_members_add.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(GroupMembersAddView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'groups'
+        return context

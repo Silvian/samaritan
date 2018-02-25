@@ -17,7 +17,7 @@ from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
 def login_view(request):
-    context = SettingsConstants.get_settings(SettingsConstants())
+    context = SettingsConstants.get_settings()
     if request.GET.get('logout', False):
         context['logout'] = True
         context['msg'] = AuthenticationConstants.LOGOUT_SUCCESS
@@ -31,7 +31,7 @@ def login_view(request):
 def authenticate_user(request):
     if request.method == 'POST':
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
-        context = SettingsConstants.get_settings(SettingsConstants())
+        context = SettingsConstants.get_settings()
         if user is not None:
             # the password verified for the user
             if user.is_active:

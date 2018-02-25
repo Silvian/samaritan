@@ -23,15 +23,16 @@ class SettingsConstants:
     def __init__(self):
         return
 
-    def get_settings(self):
+    @classmethod
+    def get_settings(cls):
         return {
-            'author': self.author,
-            'copyright': self.copyright,
-            'licence': self.licence,
-            'version': self.version,
-            'maintainer': self.maintainer,
-            'email': self.email,
-            'status': self.status,
+            'author': cls.author,
+            'copyright': cls.copyright,
+            'licence': cls.licence,
+            'version': cls.version,
+            'maintainer': cls.maintainer,
+            'email': cls.email,
+            'status': cls.status,
         }
 
 

@@ -34,12 +34,12 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="{%url 'members' %}"><i class="fa fa-male fa-fw"></i> Members</a></li>
-          <li><a href="{%url 'guests' %}"><i class="fa fa-star fa-fw"></i> Guests</a></li>
-          <li><a href="{%url 'everyone' %}"><i class="fa fa-globe fa-fw"></i> Everyone</a></li>
-          <li><a href="{%url 'groups' %}"><i class="fa fa-users fa-fw"></i> Groups</a></li>
-          <li><a href="{%url 'roles' %}"><i class="fa fa-compass fa-fw"></i> Roles</a></li>
-          <li><a href="{%url 'history' %}"><i class="fa fa-history fa-fw"></i> History</a></li>
+          <li class='{% if activate == "members" %}active{% endif %}'><a href="{%url 'members' %}"><i class="fa fa-male fa-fw"></i> Members</a></li>
+          <li class='{% if activate == "guests" %}active{% endif %}'><a href="{%url 'guests' %}"><i class="fa fa-star fa-fw"></i> Guests</a></li>
+          <li class='{% if activate == "everyone" %}active{% endif %}'><a href="{%url 'everyone' %}"><i class="fa fa-globe fa-fw"></i> Everyone</a></li>
+          <li class='{% if activate == "groups" %}active{% endif %}'><a href="{%url 'groups' %}"><i class="fa fa-users fa-fw"></i> Groups</a></li>
+          <li class='{% if activate == "roles" %}active{% endif %}'><a href="{%url 'roles' %}"><i class="fa fa-compass fa-fw"></i> Roles</a></li>
+          <li class='{% if activate == "history" %}active{% endif %}'><a href="{%url 'history' %}"><i class="fa fa-history fa-fw"></i> History</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/authenticate/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</button></a></li>
