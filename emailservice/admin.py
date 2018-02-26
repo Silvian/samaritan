@@ -13,7 +13,53 @@ from .models import (
     GroupRotationConfiguration,
 )
 
-admin.site.register(ChurchEmailConfiguration)
-admin.site.register(BirthdaysListConfiguration)
-admin.site.register(BirthdayEmailGreetingConfiguration)
-admin.site.register(GroupRotationConfiguration)
+
+@admin.register(ChurchEmailConfiguration)
+class ChurchEmailConfigurationAdmin(admin.ModelAdmin):
+    """ChurchEmailConfiguration admin."""
+
+    list_display = (
+        'name',
+        'church_signature',
+        'church_email',
+    )
+
+
+@admin.register(BirthdayEmailGreetingConfiguration)
+class BirthdayEmailGreetingConfigurationAdmin(admin.ModelAdmin):
+    """BirthdayEmailGreetingConfiguration admin."""
+
+    list_display = (
+        'name',
+        'threshold',
+        'subject',
+        'greeting',
+        'send_emails',
+    )
+
+
+@admin.register(BirthdaysListConfiguration)
+class BirthdaysListConfigurationAdmin(admin.ModelAdmin):
+    """BirthdaysListConfiguration admin."""
+
+    list_display = (
+        'name',
+        'subject',
+        'sending_day',
+        'week_cycle',
+        'send_emails',
+    )
+
+
+@admin.register(GroupRotationConfiguration)
+class GroupRotationConfigurationAdmin(admin.ModelAdmin):
+    """GroupRotationConfiguration admin."""
+
+    list_display = (
+        'name',
+        'group_name',
+        'group_number',
+        'email_subject',
+        'email_message',
+        'send_emails',
+    )
