@@ -1,4 +1,4 @@
-Django==1.11.7
+Django==1.11.11
 django-common-helpers==0.9.1
 django-cron==0.5.0
 django-axes==2.3.3
