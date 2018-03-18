@@ -1,4 +1,5 @@
 # Samaritan CMA (Church Management Assistant)
+[![Build Status](https://travis-ci.org/Silvian/samaritan.svg?branch=master)](https://travis-ci.org/Silvian/samaritan) ![AUR](https://img.shields.io/aur/license/yaourt.svg)
 
 This is the main development project repository for Samaritan CMA
 
