@@ -51,4 +51,4 @@ Note: you can login with the default user created here at http://localhost:8000/
 # Tests:
 
 To run the test pack simply run:
-*docker-compose run --rm web python manage.py test*
+*./scripts/test.sh*
