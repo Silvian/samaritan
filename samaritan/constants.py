@@ -8,17 +8,17 @@ Main file for storing constants classes
 """
 
 from django.conf import settings
+from django.utils.timezone import now
 
 
 class SettingsConstants:
 
     author = settings.AUTHOR
-    copyright = settings.COPYRIGHT
+    copyright = settings.COPYRIGHT.format(year=now().year)
     licence = settings.LICENCE
     version = settings.VERSION
     maintainer = settings.MAINTAINER
     email = settings.EMAIL
-    status = settings.STATUS
 
     def __init__(self):
         return
@@ -32,7 +32,6 @@ class SettingsConstants:
             'version': cls.version,
             'maintainer': cls.maintainer,
             'email': cls.email,
-            'status': cls.status,
         }
 
 

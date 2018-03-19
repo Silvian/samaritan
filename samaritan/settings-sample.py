@@ -23,12 +23,11 @@ from celery.schedules import crontab
 
 # Global settings static variables config
 AUTHOR = "Silvian Dragan"
-COPYRIGHT = "Copyright 2018, Samaritan CMA (Church Management Assistant)"
+COPYRIGHT = "Copyright {year}, Samaritan CMA (Church Management Assistant)"
 LICENCE = "GPLv3"
 VERSION = "1.0"
 MAINTAINER = "Silvian Dragan"
 EMAIL = "silvian.dragan@gmail.com"
-STATUS = "Development"
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
