@@ -32,22 +32,32 @@ EMAIL = "silvian.dragan@gmail.com"
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+STATIC_ROOT = os.getenv('STATIC_ROOT', default='')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'your-secret-key-goes-here'
+SECRET_KEY = os.getenv('SECRET_KEY', default='a@!wnp8fx8rjm4(kmbjblnxi$$53g$-3_8qdva32eh17yk4c@c')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if 'PRODUCTION' in os.environ:
+    DEBUG = False
 
-# SECURITY SETTINGS: ensure the below settings are turned on when running with SSL/TLS active
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = []
+else:
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
+
+    # SECURITY SETTINGS: ensure the below settings are turned on when running with SSL/TLS active
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+
+ALLOWED_HOSTS = ['*']
 
 # Static files
 STATICFILES_FINDERS = (
@@ -60,7 +70,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'static', ),
+    os.path.join(BASE_DIR, 'static', STATIC_ROOT),
 )
 
 # Application definition
@@ -155,13 +165,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Celery Configurations
 # Celery & Broker settings
 
-CELERY_BROKER_URL = "amqp://localhost"
-CELERY_RESULTS_BACKEND = "amqp://localhost"
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default="amqp://guest:guest@rabbitmq")
+CELERY_RESULTS_BACKEND = os.getenv('CELERY_RESULTS_BACKEND', default="amqp://guest:guest@rabbitmq")
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Europe/London'
+CELERY_TIMEZONE = os.getenv('CELERY_TIMEZONE', default='Europe/London')
 
 
 # Celery cron scheduling
@@ -214,15 +224,15 @@ LOGOUT_URL = '/authenticate/login?logout=true'
 
 AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
-REDIRECT_URL = '/'
+REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 
 
 # SMTP settings
 # Note that these settings are environment specific
 
-EMAIL_HOST = ''
-EMAIL_PORT = ''
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_HOST = os.getenv('EMAIL_HOST', default='')
+EMAIL_PORT = os.getenv('EMAIL_PORT', default='')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', default=True)
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', default=False)
