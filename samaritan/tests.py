@@ -31,7 +31,7 @@ class MemberModelTests(TestCase):
                               address=address, email="test@test.com", details="stuff to say",
                               profile_pic="", is_baptised=True, baptismal_date="2001-01-01", baptismal_place="Nowhere",
                               is_member=True, membership_type=membership, membership_date="2001-01-01", is_active=True,
-                              notes="Test notes", church_role=role)
+                              notes="Test notes", gdpr=True, church_role=role)
 
         ChurchGroup.objects.create(name="committee", description="The main committee group")
 
