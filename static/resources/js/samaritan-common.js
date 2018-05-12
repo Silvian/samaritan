@@ -46,6 +46,15 @@ function getEmailLink(email) {
     return '<a href="mailto:'+email+'">'+email+'</a>';
 }
 
+function getGDPR(gdpr) {
+    if(gdpr) {
+        return 'Yes';
+    }
+    else {
+        return 'No';
+    }
+}
+
 // function to protect against cross site scripting by escaping html entities
 function htmlEntities(str) {
     var formatted = "";
