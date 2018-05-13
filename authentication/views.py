@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, get_user, login, logout
 from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
@@ -44,6 +44,35 @@ def authenticate_user(request):
             # the authentication system was unable to verify the username and password
             context['msg'] = AuthenticationConstants.INVALID_CREDENTIALS
             return render(request, "samaritan/login.html", context)
+
+
+@login_required
+def reset_view(request):
+    context = SettingsConstants.get_settings()
+    return render(request, "samaritan/reset.html", context)
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        user = get_user(request)
+        print user.username
+        context = SettingsConstants.get_settings()
+        if user.check_password(request.POST['current_password']):
+            if request.POST['new_password'] != request.POST['current_password']:
+                if request.POST['new_password'] == request.POST['confirm_password']:
+                    user.set_password(request.POST['new_password'])
+                    user.save()
+                    return HttpResponseRedirect(settings.REDIRECT_URL)
+                else:
+                    context['msg'] = AuthenticationConstants.PASSWORD_MISMATCH
+                    return render(request, "samaritan/reset.html", context)
+            else:
+                context['msg'] = AuthenticationConstants.SAME_PASSWORD
+                return render(request, "samaritan/reset.html", context)
+        else:
+            context['msg'] = AuthenticationConstants.INCORRECT_PASSWORD
+            return render(request, "samaritan/reset.html", context)
 
 
 @login_required

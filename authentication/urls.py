@@ -10,6 +10,8 @@ from axes.decorators import watch_login
 from . import views
 
 urlpatterns = [
+    url(r'^reset/', views.reset_view, name='reset'),
+    url(r'^change_password/', views.change_password, name='change_password'),
     url(r'^login/', views.login_view, name='login'),
     url(r'^logout/', views.logout_view, name='logout'),
     url(r'^access/', watch_login(views.authenticate_user), name='access'),

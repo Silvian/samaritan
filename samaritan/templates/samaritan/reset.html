@@ -1,0 +1,41 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+<div>
+  </br>
+  <h2><i class="fa fa-user fa-fw" aria-hidden="true"></i> Change password</h2>
+</div>
+
+{% endblock %}
+
+{% block body %}
+
+{% if msg %}
+    <div class="alert alert-danger" role="alert">
+      <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+      <span class="sr-only">Error:</span>
+      {{ msg }}
+    </div>
+{% endif %}
+
+<h4>Enter the current and the new password</h4>
+
+<div class="col-md-4 well">
+    <form role="form" enctype="multipart/form-data" action="/authenticate/change_password/" method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <input class="form-control" type="password" id="current_password" name="current_password" placeholder="current password" required autofocus>
+        </fieldset>
+        <fieldset class="form-group">
+            <input class="form-control" type="password" id="new_password" name="new_password" placeholder="new password" required>
+        </fieldset>
+        <fieldset class="form-group">
+            <input class="form-control" type="password" id="confirm_password" name="confirm_password" placeholder="confirm new password" required>
+        </fieldset>
+        <button class="btn btn-primary" type = "submit" name = "reset"><i class="fa fa-check fa-fw"></i> Change password</button>
+
+    </form>
+</div>
+
+{% endblock %}
