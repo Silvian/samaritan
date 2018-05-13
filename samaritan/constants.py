@@ -59,6 +59,7 @@ class WriterConstants:
     MEMBERSHIP_TYPE = "Membership Type"
     MEMBERSHIP_DATE = "Membership Date"
     IS_ACTIVE = "Is Active"
+    GDPR = "GDPR"
     CHURCH_ROLE = "Church Role"
     NOTES = "Notes"
 

@@ -65,6 +65,7 @@ class Member(models.Model):
     is_active = models.BooleanField(default=True)
     notes = models.TextField(blank=True, null=True)
     church_role = models.ForeignKey(ChurchRole, on_delete=models.CASCADE)
+    gdpr = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
 
     def publish(self):

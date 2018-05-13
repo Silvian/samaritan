@@ -78,10 +78,12 @@ def write_to_excel(download_data, report_title=None):
     worksheet_s.set_column('Q:Q', 15)
     worksheet_s.write(4, 17, ugettext(WriterConstants.IS_ACTIVE), header)
     worksheet_s.set_column('R:R', 10)
+    worksheet_s.write(4, 17, ugettext(WriterConstants.GDPR), header)
+    worksheet_s.set_column('S:S', 10)
     worksheet_s.write(4, 18, ugettext(WriterConstants.CHURCH_ROLE), header)
-    worksheet_s.set_column('S:S', 15)
+    worksheet_s.set_column('T:T', 15)
     worksheet_s.write(4, 19, ugettext(WriterConstants.NOTES), header)
-    worksheet_s.set_column('T:T', 30)
+    worksheet_s.set_column('U:U', 30)
 
     # Start from the first cell. Rows and columns are zero indexed.
     row = 5
@@ -122,6 +124,10 @@ def write_to_excel(download_data, report_title=None):
         else:
             worksheet_s.write(row, col + 16, WriterConstants.NOT_APPLICABLE)
         if member.is_active:
+            worksheet_s.write(row, col + 17, WriterConstants.YES)
+        else:
+            worksheet_s.write(row, col + 17, WriterConstants.NO)
+        if member.gdpr:
             worksheet_s.write(row, col + 17, WriterConstants.YES)
         else:
             worksheet_s.write(row, col + 17, WriterConstants.NO)

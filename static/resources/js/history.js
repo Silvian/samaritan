@@ -34,6 +34,10 @@ $(document).ready(function(){
                             }
                 },
                 {"mRender": function(data, type, row) {
+                                return getGDPR(htmlEntities(row.fields.gdpr));
+                            }
+                },
+                {"mRender": function(data, type, row) {
                                 return htmlEntities(getRoleName(rolesData, row.fields.church_role));
                             }
                 },

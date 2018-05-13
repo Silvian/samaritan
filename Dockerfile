@@ -16,7 +16,6 @@ RUN wget --no-verbose https://github.com/jwilder/dockerize/releases/download/$DO
 
 # Set PYTHONUNBUFFERED so output is displayed in the Docker log
 ENV PYTHONUNBUFFERED=1
-ENV STATIC_ROOT=/usr/src/app/static/
 
 EXPOSE 8000
 WORKDIR /usr/src/app

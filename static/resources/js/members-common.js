@@ -172,6 +172,12 @@ function submitMember(members_table, addressId) {
          is_baptised = true;
     }
 
+    var gdpr = false;
+
+    if($('#gdpr').prop("checked") == true){
+         gdpr = true;
+    }
+
     /* Send the data using post */
     var posting = $.post( url, {
                       id              : id,
@@ -189,6 +195,7 @@ function submitMember(members_table, addressId) {
                       membership_type : $('select[name=membership-type-select]').val(),
                       membership_date : standardDate($('#membership_date').val()),
                       church_role     : $('select[name=church-role-select]').val(),
+                      gdpr            : gdpr,
                       is_active       : true,
                       csrfmiddlewaretoken : getCookie('csrftoken')
     });
@@ -229,6 +236,7 @@ function editMember(id, members_table, title) {
 
              setCheckbox('#is_member', member.fields.is_member);
              setCheckbox('#is_baptised', member.fields.is_baptised);
+             setCheckbox('#gdpr', member.fields.gdpr);
              $('#baptismal_place').val(member.fields.baptismal_place);
              $('#baptismal_date').val(europeanDate(member.fields.baptismal_date));
              $('#membership_date').val(europeanDate(member.fields.membership_date));
@@ -388,6 +396,7 @@ function clearFields() {
    $('#post_code').val("");
    $('#details').val("");
    $('#is_baptised').prop('checked', false);
+   $('#gdpr').prop('checked', false);
    $('#baptismal_date').val("");
    $('#baptismal_place').val("");
    $('#church-role').html("");
