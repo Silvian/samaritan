@@ -38,21 +38,21 @@ function getProfileDetails() {
 function updateProfileDetails() {
     ecblockui();
 
-        $.ajax({
-            type: 'POST',
-            url: '/api/profile/update',
-            dataType: 'json',
-            data: {
-                        first_name      : $('#first_name').val(),
-                        last_name       : $('#last_name').val(),
-                        email           : $('#email').val(),
-                        mobile_number   : $('#mobile').val(),
-                        username        : $('#username').val(),
-                        csrfmiddlewaretoken : getCookie('csrftoken')
-                    },
-            success: function (data) {
-                ecunblockui();
-                getProfileDetails();
-            }
-        });
+    $.ajax({
+        type: 'POST',
+        url: '/api/profile/update',
+        dataType: 'json',
+        data: {
+                    first_name      : $('#first_name').val(),
+                    last_name       : $('#last_name').val(),
+                    email           : $('#email').val(),
+                    mobile_number   : $('#mobile').val(),
+                    username        : $('#username').val(),
+                    csrfmiddlewaretoken : getCookie('csrftoken')
+                },
+        success: function (data) {
+            ecunblockui();
+            getProfileDetails();
+        }
+    });
 }

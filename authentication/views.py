@@ -11,10 +11,13 @@ Do not change anything here unless you really know what you're doing.
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, get_user, login, logout
+from django.contrib.sites.shortcuts import get_current_site
+from django_common.auth_backends import User
 from django.utils.timezone import now
 
+from api.views import success_response, failure_response
 from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
@@ -48,6 +51,21 @@ def authenticate_user(request):
             # the authentication system was unable to verify the username and password
             context['msg'] = AuthenticationConstants.INVALID_CREDENTIALS
             return render(request, "samaritan/login.html", context)
+
+
+def forgot_view(request):
+    context = SettingsConstants.get_settings()
+    return render(request, "samaritan/forgot.html", context)
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(email=request.POST['email'])
+            user.profile.send_password_email(get_current_site(request).name)
+            return JsonResponse(success_response)
+        except User.DoesNotExist:
+            return JsonResponse(failure_response)
 
 
 @login_required
