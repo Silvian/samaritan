@@ -42,7 +42,9 @@
           <li class='{% if activate == "history" %}active{% endif %}'><a href="{%url 'history' %}"><i class="fa fa-history fa-fw"></i> History</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/authenticate/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</button></a></li>
+          <li class='{% if activate == "user" %}active{% endif %}'><a href="{%url 'user' %}">
+              <i class="fa fa-user fa-fw"></i> {% if request.user.username %} {{ request.user.username }} {% else %} User {% endif %}</a></li>
+          <li><a href="/authenticate/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
         </ul>
         <!--<form class="navbar-form navbar-right" role="search">-->
           <!--<div class="form-group">-->

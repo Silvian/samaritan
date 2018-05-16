@@ -1,0 +1,60 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+<div>
+  </br>
+  <h2><i class="fa fa-user fa-fw" aria-hidden="true"></i> User profile</h2>
+</div>
+
+{% endblock %}
+
+{% block body %}
+
+<h4>User profile settings</h4>
+
+<div class="col-md-6 well">
+    <ul>
+        <li><b>First name</b>
+            <fieldset class="form-group">
+                <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" placeholder="First name" required maxlength="200"/>
+            </fieldset>
+        </li>
+        <li><b>Last name</b>
+            <fieldset class="form-group">
+                <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" placeholder="Last name" required maxlength="200"/>
+            </fieldset>
+        </li>
+        <li><b>Email address</b>
+            <fieldset class="form-group">
+                <input class="form-control" id="email" name="email" path="email" type="email" placeholder="Email address" maxlength="200"/>
+            </fieldset>
+        </li>
+        <li><b>Mobile number</b>
+            <fieldset class="form-group">
+                <input class="form-control" id="mobile" name="mobile" path="mobile" type="text" placeholder="Mobile number" maxlength="200"/>
+            </fieldset>
+        </li>
+        <li><b>User Name</b>
+            <fieldset class="form-group">
+                <input class="form-control" id="username" name="username" path="username" type="username" placeholder="User Name" maxlength="200"/>
+            </fieldset>
+        </li>
+    </ul>
+    <button type="button" class="btn btn-success btn-md" id="save-profile">
+        <i class="fa fa-save fa-fw"></i> Save settings
+    </button>
+    <button type="button" class="btn btn-primary btn-md" id="password-reset">
+        <i class="fa fa-key fa-fw"></i> Change password
+    </button>
+</div>
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/user.js' %}"></script>
+
+{% endblock %}

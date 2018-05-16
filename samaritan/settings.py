@@ -235,6 +235,8 @@ LOGIN_URL = '/authenticate/login/'
 
 LOGOUT_URL = '/authenticate/login?logout=true'
 
+RESET_URL = '/authenticate/reset/'
+
 AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
 REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')

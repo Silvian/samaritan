@@ -6,7 +6,7 @@
 """
 
 from django.conf.urls import url
-from views import address, members, guests, everyone, history, roles, groups
+from views import address, members, guests, everyone, history, roles, groups, profile
 
 
 urlpatterns = [
@@ -41,4 +41,6 @@ urlpatterns = [
     url(r'^groups/membersToAdd', groups.get_members_to_add, name='getGroupMembersToAdd'),
     url(r'^groups/memberAdd', groups.add_group_member, name='addGroupMembers'),
     url(r'^groups/memberDelete', groups.delete_group_member, name='deleteGroupMember'),
+    url(r'^profile/get', profile.get_user_profile, name='getUserProfile'),
+    url(r'^profile/update', profile.update_user_profile, name='updateUserProfile'),
 ]

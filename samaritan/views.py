@@ -141,3 +141,16 @@ class GroupMembersAddView(LoginRequiredMixin, TemplateView):
         context.update(footer_context)
         context['activate'] = 'groups'
         return context
+
+
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    """Group members add view."""
+
+    template_name = "samaritan/profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'user'
+        return context

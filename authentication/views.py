@@ -13,6 +13,8 @@ from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, get_user, login, logout
+from django.utils.timezone import now
+
 from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
@@ -36,6 +38,8 @@ def authenticate_user(request):
             # the password verified for the user
             if user.is_active:
                 login(request, user)
+                if user.profile.password_reset:
+                    return HttpResponseRedirect(settings.RESET_URL)
                 return HttpResponseRedirect(settings.REDIRECT_URL)
             else:
                 context['msg'] = AuthenticationConstants.ACCOUNT_DISABLED
@@ -56,12 +60,13 @@ def reset_view(request):
 def change_password(request):
     if request.method == 'POST':
         user = get_user(request)
-        print user.username
         context = SettingsConstants.get_settings()
         if user.check_password(request.POST['current_password']):
             if request.POST['new_password'] != request.POST['current_password']:
                 if request.POST['new_password'] == request.POST['confirm_password']:
                     user.set_password(request.POST['new_password'])
+                    user.profile.password_reset = False
+                    user.profile.password_last_updated = now()
                     user.save()
                     return HttpResponseRedirect(settings.REDIRECT_URL)
                 else:
