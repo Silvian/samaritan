@@ -125,6 +125,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'samaritan.wsgi.application'
 
 
+# Cache configurations
+# Memcached standard configurations
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
+if 'MEMCACHED_HOST' in os.environ:
+    CACHES['default']['LOCATION'] = os.getenv('MEMCACHED_HOST')
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
