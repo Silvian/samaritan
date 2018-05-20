@@ -53,6 +53,10 @@ function updateProfileDetails() {
         success: function (data) {
             ecunblockui();
             getProfileDetails();
+            $('#saved-success').show();
+            setTimeout(function () {
+                $('#saved-success').hide();
+            }, 3000);
         }
     });
 }
