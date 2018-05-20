@@ -16,7 +16,7 @@ services:
     hostname: memcached
     env_file: .env
     ports:
-      - "11211:11211"
+      - "12211:12211"
 
   rabbitmq:
     image: rabbitmq:3.6-management
