@@ -10,6 +10,7 @@ from samaritan.models import ChurchRole
 
 
 class SingletonModel(models.Model):
+    """Singleton abstract model."""
 
     class Meta:
         abstract = True
@@ -28,6 +29,8 @@ class SingletonModel(models.Model):
 
 
 class ChurchEmailConfiguration(SingletonModel):
+    """ChurchEmailConfiguration data model."""
+
     name = models.CharField(
         max_length=200,
         default='Church Email Configurations',
@@ -40,6 +43,8 @@ class ChurchEmailConfiguration(SingletonModel):
 
 
 class BirthdayEmailGreetingConfiguration(SingletonModel):
+    """BirthdayEmailGreetingConfiguration data model."""
+
     name = models.CharField(
         max_length=200,
         default='Birthdays Email Greeting Configurations',
@@ -54,6 +59,8 @@ class BirthdayEmailGreetingConfiguration(SingletonModel):
 
 
 class BirthdaysListConfiguration(SingletonModel):
+    """BirthdaysListConfiguration data model."""
+
     name = models.CharField(
         max_length=200,
         default='Birthday List Configurations',
@@ -69,6 +76,8 @@ class BirthdaysListConfiguration(SingletonModel):
 
 
 class GroupRotationConfiguration(SingletonModel):
+    """GroupRotationConfiguration data model."""
+
     name = models.CharField(
         max_length=200,
         default='Church Group Rotation Configurations',
@@ -84,6 +93,8 @@ class GroupRotationConfiguration(SingletonModel):
 
 
 class PasswordResetEmailConfiguration(SingletonModel):
+    """PasswordResetEmailConfiguration data model."""
+
     name = models.CharField(
         max_length=200,
         default='Password Reset Email Configurations',

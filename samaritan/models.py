@@ -12,11 +12,27 @@ from django.utils import timezone
 
 
 class Address(models.Model):
-    number = models.CharField(max_length=100, blank=True, null=True)
-    street = models.CharField(max_length=200)
-    locality = models.CharField(max_length=200, blank=True, null=True)
-    city = models.CharField(max_length=200)
-    post_code = models.CharField(max_length=50)
+    """Address data model."""
+
+    number = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+    street = models.CharField(
+        max_length=200,
+    )
+    locality = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+    )
+    city = models.CharField(
+        max_length=200,
+    )
+    post_code = models.CharField(
+        max_length=50,
+    )
 
     def publish(self):
         self.save()
@@ -26,8 +42,15 @@ class Address(models.Model):
 
 
 class MembershipType(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True)
+    """MembershipType data model."""
+
+    name = models.CharField(
+        max_length=200,
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
 
     def publish(self):
         self.save()
@@ -37,8 +60,15 @@ class MembershipType(models.Model):
 
 
 class ChurchRole(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True)
+    """ChurchRole data model."""
+
+    name = models.CharField(
+        max_length=200,
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
 
     def publish(self):
         self.save()
@@ -48,25 +78,81 @@ class ChurchRole(models.Model):
 
 
 class Member(models.Model):
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    date_of_birth = models.DateField()
-    telephone = models.CharField(max_length=200, blank=True, null=True)
-    address = models.ForeignKey(Address)
-    email = models.CharField(max_length=200, blank=True, null=True)
-    details = models.TextField(blank=True, null=True)
-    profile_pic = models.CharField(max_length=200, blank=True, null=True)
-    is_baptised = models.BooleanField(default=False)
-    baptismal_date = models.DateField(blank=True, null=True)
-    baptismal_place = models.CharField(max_length=200, blank=True, null=True)
-    is_member = models.BooleanField()
-    membership_type = models.ForeignKey(MembershipType, blank=True, null=True)
-    membership_date = models.DateField(blank=True, null=True)
-    is_active = models.BooleanField(default=True)
-    notes = models.TextField(blank=True, null=True)
-    church_role = models.ForeignKey(ChurchRole, on_delete=models.CASCADE)
-    gdpr = models.BooleanField(default=False)
-    created_date = models.DateTimeField(default=timezone.now)
+    """Member data model."""
+
+    first_name = models.CharField(
+        max_length=200,
+    )
+    last_name = models.CharField(
+        max_length=200,
+    )
+    date_of_birth = models.DateField(
+
+    )
+    telephone = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+    )
+    address = models.ForeignKey(
+        Address,
+        on_delete=models.PROTECT,
+    )
+    email = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+    )
+    details = models.TextField(
+        blank=True,
+        null=True,
+    )
+    profile_pic = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+    )
+    is_baptised = models.BooleanField(
+        default=False,
+    )
+    baptismal_date = models.DateField(
+        blank=True,
+        null=True,
+    )
+    baptismal_place = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+    )
+    is_member = models.BooleanField(
+
+    )
+    membership_type = models.ForeignKey(
+        MembershipType,
+        blank=True,
+        null=True,
+    )
+    membership_date = models.DateField(
+        blank=True,
+        null=True,
+    )
+    is_active = models.BooleanField(
+        default=True,
+    )
+    notes = models.TextField(
+        blank=True,
+        null=True,
+    )
+    church_role = models.ForeignKey(
+        ChurchRole,
+        on_delete=models.CASCADE,
+    )
+    gdpr = models.BooleanField(
+        default=False,
+    )
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
 
     def publish(self):
         self.created_date = timezone.now()
@@ -77,9 +163,19 @@ class Member(models.Model):
 
 
 class ChurchGroup(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True)
-    members = models.ManyToManyField(Member, blank=True)
+    """ChurchGroup data model."""
+
+    name = models.CharField(
+        max_length=200,
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
+    members = models.ManyToManyField(
+        Member,
+        blank=True,
+    )
 
     def publish(self):
         self.save()

@@ -17,6 +17,8 @@ from .tasks import send_email
 
 
 class Profile(models.Model):
+    """Profile data model."""
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
