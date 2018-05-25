@@ -84,6 +84,9 @@ class AuthenticationConstants:
         "Your account has been locked due to repeated failed login attempts! "
         "Please contact the system administrator"
     )
+    INCORRECT_PASSWORD = "Your current password is incorrect"
+    PASSWORD_MISMATCH = "The new password did not match password confirmation"
+    SAME_PASSWORD = "The new password cannot be the same as existing password"
 
     def __init__(self):
         return

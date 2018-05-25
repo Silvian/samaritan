@@ -206,6 +206,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'emailservice.tasks.send_group_schedule_notification',
         'schedule': crontab(minute='35', hour='9', day_of_week='5'),
     },
+    'password_expiry': {
+        'task': 'authentication.tasks.password_expiry',
+        'schedule': crontab(minute='0', hour='5'),
+    }
 }
 
 # Django celery results configurations
@@ -235,9 +239,13 @@ LOGIN_URL = '/authenticate/login/'
 
 LOGOUT_URL = '/authenticate/login?logout=true'
 
+RESET_URL = '/authenticate/reset/'
+
 AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
 REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
+
+PASSWORD_RESET_THRESHOLD = 60
 
 
 # SMTP settings

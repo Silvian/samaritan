@@ -1,0 +1,45 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+<div>
+  </br>
+  <h2><i class="fa fa-user fa-fw" aria-hidden="true"></i> Forgot password</h2>
+</div>
+
+{% endblock %}
+
+{% block body %}
+
+<div id="success-email" class="alert alert-success" role="alert" hidden>
+  <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+    An email containing your temporary login credentials has been send to your email address provided. Back to <a href="/authenticate/login">login</a>
+</div>
+
+<div id="invalid-email" class="alert alert-danger" role="alert" hidden>
+  <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+  <span class="sr-only">Error:</span>
+  Invalid email address provided
+</div>
+
+<h4>Enter your email address and we'll send you recovery instructions.</h4>
+
+<div class="col-md-4 well">
+    <form id="email-submit-form" role="form">
+        <fieldset class="form-group">
+            <input class="form-control" type="email" id="email" name="email" placeholder="email" required autofocus>
+        </fieldset>
+        <button id="send-recovery-email" class="btn btn-primary" type = "submit" name="login"><i class="fa fa-envelope fa-fw"></i> Send Recovery Email</button>
+
+    </form>
+</div>
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/forgot.js' %}"></script>
+
+{% endblock %}
