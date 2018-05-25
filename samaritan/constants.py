@@ -12,6 +12,7 @@ from django.utils.timezone import now
 
 
 class SettingsConstants:
+    """Settings constants."""
 
     author = settings.AUTHOR
     copyright = settings.COPYRIGHT.format(year=now().year)
@@ -36,6 +37,7 @@ class SettingsConstants:
 
 
 class WriterConstants:
+    """Writer constants."""
 
     TITLE_TEXT = "Report"
 
@@ -76,6 +78,7 @@ class WriterConstants:
 
 
 class AuthenticationConstants:
+    """Authentication constants."""
 
     LOGOUT_SUCCESS = "You've been logged out successfully"
     ACCOUNT_DISABLED = "This account has been disabled"

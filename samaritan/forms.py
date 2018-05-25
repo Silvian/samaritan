@@ -12,26 +12,53 @@ from models import Member, Address, ChurchRole, ChurchGroup
 
 
 class MemberForm(forms.ModelForm):
+    """Member model form."""
+
     def __init__(self, *args, **kwargs):
         super(MemberForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Member
-        fields = ('first_name', 'last_name', 'date_of_birth', 'telephone', 'email', 'address',
-                  'details', 'is_baptised', 'baptismal_date', 'baptismal_place', 'is_member',
-                  'membership_type', 'membership_date', 'church_role', 'is_active', 'gdpr')
+        fields = (
+            'first_name',
+            'last_name',
+            'date_of_birth',
+            'telephone',
+            'email',
+            'address',
+            'details',
+            'is_baptised',
+            'baptismal_date',
+            'baptismal_place',
+            'is_member',
+            'membership_type',
+            'membership_date',
+            'church_role',
+            'is_active',
+            'gdpr',
+        )
 
 
 class AddressForm(forms.ModelForm):
+    """Address model form."""
+
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Address
-        fields = ('number', 'street', 'locality', 'city', 'post_code')
+        fields = (
+            'number',
+            'street',
+            'locality',
+            'city',
+            'post_code',
+        )
 
 
 class RoleForm(forms.ModelForm):
+    """ChurchRole model form."""
+
     def __init__(self, *args, **kwargs):
         super(RoleForm, self).__init__(*args, **kwargs)
 
@@ -41,6 +68,8 @@ class RoleForm(forms.ModelForm):
 
 
 class GroupForm(forms.ModelForm):
+    """ChurchGroup model form."""
+
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
 

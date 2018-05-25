@@ -8,6 +8,7 @@ Main test file describing database model test cases for the Samaritan CMA app.
 """
 
 from django.core.urlresolvers import reverse
+from django.db.models import ProtectedError
 from django.utils import timezone
 from django.test import TestCase
 
@@ -18,22 +19,57 @@ class MemberModelTests(TestCase):
 
     def setUp(self):
 
-        Address.objects.create(number="1", street="Infinite Loop", locality="", city="Cupertino", post_code="10001")
-        MembershipType.objects.create(name="Baptismal", description="Baptismal details")
-        ChurchRole.objects.create(name="regular", description="Regular church member")
+        Address.objects.create(
+            number="1",
+            street="Infinite Loop",
+            locality="",
+            city="Cupertino",
+            post_code="10001",
+        )
+        MembershipType.objects.create(
+            name="Baptismal",
+            description="Baptismal details",
+        )
+        ChurchRole.objects.create(
+            name="regular",
+            description="Regular church member",
+        )
 
-        address = Address.objects.get(post_code="10001")
-        membership = MembershipType.objects.get(name="Baptismal")
-        role = ChurchRole.objects.get(name="regular")
+        address = Address.objects.get(
+            post_code="10001",
+        )
+        membership = MembershipType.objects.get(
+            name="Baptismal",
+        )
+        role = ChurchRole.objects.get(
+            name="regular",
+        )
 
-        Member.objects.create(first_name="John", last_name="Smith",
-                              date_of_birth="2001-01-01", telephone="555-2525",
-                              address=address, email="test@test.com", details="stuff to say",
-                              profile_pic="", is_baptised=True, baptismal_date="2001-01-01", baptismal_place="Nowhere",
-                              is_member=True, membership_type=membership, membership_date="2001-01-01", is_active=True,
-                              notes="Test notes", gdpr=True, church_role=role)
+        Member.objects.create(
+            first_name="John",
+            last_name="Smith",
+            date_of_birth="2001-01-01",
+            telephone="555-2525",
+            address=address,
+            email="test@test.com",
+            details="stuff to say",
+            profile_pic="",
+            is_baptised=True,
+            baptismal_date="2001-01-01",
+            baptismal_place="Nowhere",
+            is_member=True,
+            membership_type=membership,
+            membership_date="2001-01-01",
+            is_active=True,
+            notes="Test notes",
+            gdpr=True,
+            church_role=role,
+        )
 
-        ChurchGroup.objects.create(name="committee", description="The main committee group")
+        ChurchGroup.objects.create(
+            name="committee",
+            description="The main committee group",
+        )
 
     def test_created_member(self):
 
@@ -103,8 +139,19 @@ class MemberModelTests(TestCase):
 
         address = Address.objects.get(post_code="10001")
 
-        self.assertTrue(address.delete())
+        self.assertRaisesMessage(
+            ProtectedError,
+            "Cannot delete some instances of model 'Address' because "
+            "they are referenced through a protected foreign key: 'Member.address'"
+        )
+
+        test_member = Member.objects.get(last_name="Smith")
+
+        self.assertTrue(test_member.delete())
         self.assertEquals(len(Member.objects.all()), 0)
+
+        self.assertTrue(address.delete())
+        self.assertEquals(len(Address.objects.all()), 0)
 
     def test_remove_member(self):
 
