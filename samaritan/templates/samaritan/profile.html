@@ -11,6 +11,11 @@
 
 {% block body %}
 
+<div id="required-fields-alert" class="alert alert-danger" role="alert" hidden>
+  <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+    Required fields cannot be empty
+</div>
+
 <div id="saved-success" class="alert alert-success" role="alert" hidden>
   <i class="fa fa-check fa-fw" aria-hidden="true"></i>
     User profile settings have been updated successfully
@@ -32,7 +37,7 @@
         </li>
         <li><b>Email address</b>
             <fieldset class="form-group">
-                <input class="form-control" id="email" name="email" path="email" type="email" placeholder="Email address" maxlength="200"/>
+                <input class="form-control" id="email" name="email" path="email" type="email" placeholder="Email address *" maxlength="200" required/>
             </fieldset>
         </li>
         <li><b>Mobile number</b>
@@ -40,9 +45,9 @@
                 <input class="form-control" id="mobile" name="mobile" path="mobile" type="text" placeholder="Mobile number" maxlength="200"/>
             </fieldset>
         </li>
-        <li><b>User Name</b>
+        <li><b>User name</b>
             <fieldset class="form-group">
-                <input class="form-control" id="username" name="username" path="username" type="username" placeholder="User Name" maxlength="200"/>
+                <input class="form-control" id="username" name="username" path="username" type="username" placeholder="User name *" maxlength="200" required/>
             </fieldset>
         </li>
     </ul>

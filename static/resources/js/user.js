@@ -37,6 +37,13 @@ function getProfileDetails() {
 
 function updateProfileDetails() {
     ecblockui();
+    $('#required-fields-alert').hide();
+
+    if($('#username').val()=="" || $('#email').val()=="") {
+        $('#required-fields-alert').show();
+        ecunblockui();
+        return
+    }
 
     $.ajax({
         type: 'POST',
