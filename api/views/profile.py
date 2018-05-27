@@ -32,11 +32,12 @@ def get_user_profile(request):
 @login_required
 def update_user_profile(request):
     if request.method == 'POST':
-        user = get_user(request)
-        user.username = request.POST['username']
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-        user.profile.mobile_number = request.POST['mobile_number']
-        user.save()
-        return JsonResponse(success_response)
+        if request.POST['username'] and request.POST['email']:
+            user = get_user(request)
+            user.username = request.POST['username']
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.email = request.POST['email']
+            user.profile.mobile_number = request.POST['mobile_number']
+            user.save()
+            return JsonResponse(success_response)
