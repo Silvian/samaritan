@@ -6,9 +6,14 @@
 
 Celery tasks.
 """
+
+import calendar
+
 from datetime import date
 
 from celery.utils.log import get_task_logger
+
+from django.utils.timezone import now
 
 from samaritan.celery import app
 from samaritan.models import Member, ChurchGroup
@@ -111,7 +116,8 @@ def group_rotation_schedule():
     group_rotation = GroupRotationConfiguration.load()
 
     if group_rotation.group_number:
-        if group_rotation.group_number == 4:
+        if (group_rotation.group_number == len(
+                [1 for i in calendar.monthcalendar(now().year, now().month) if i[5] != 0])):
             group_rotation.group_number = 1
         else:
             group_rotation.group_number += 1
