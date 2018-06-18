@@ -38,8 +38,6 @@ DATABASE_PASSWORD=postgres
 MEMCACHED_HOST=memcached
 ```
 
-Also don't forget to create a /static/media/upload folder in project base.
-
 Inside the project base directory where docker-compose.yml file can be found, run the following commands:
 *docker-compose up --build*
 
