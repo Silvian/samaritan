@@ -6,6 +6,7 @@ This is the main development project repository for Samaritan CMA
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2018, Samaritan CMA - Published under GNU General Public Licence v3 - please read the LICENSE included.
+@Contributors: Abel Hristodor
 
 For any issues, queries or bugs please contact me directly: silvian.dragan@gmail.com
 
@@ -25,13 +26,17 @@ Install docker and docker-compose specific to your operating system. See https:/
 
 git clone the project and in the project base directory create a .env file with the following inside:
 
-`DATABASE_HOST=postgres`
+```
+# Database credentials
 
-`DATABASE_NAME=postgres`
+DATABASE_HOST=postgres
+DATABASE_NAME=postgres
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
 
-`DATABASE_USER=postgres`
-
-`DATABASE_PASSWORD=postgres`
+# Memcached host
+MEMCACHED_HOST=memcached
+```
 
 Also don't forget to create a /static/media/upload folder in project base.
 
