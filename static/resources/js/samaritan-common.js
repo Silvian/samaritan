@@ -124,3 +124,17 @@ function getURLParameter(sParam){
 		}
 	}
 }
+
+// function to see if a date is inserted in a valid format
+
+function dateFormatValidator(date){
+    patt = /\d\d.\d\d.\d\d\d\d/i
+    if (date.search(patt) == -1){
+
+        return "False"
+    }
+    else{
+
+        return "True"
+    }
+}

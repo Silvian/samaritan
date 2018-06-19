@@ -87,13 +87,14 @@ function addMember(members_table) {
         }
     }
 
-    if($('#first_name').val()=="" || $('#last_name').val()=="" || $('#date_of_birth').val()=="" ||
-         $('select[name=church-role-select]').val()==null) {
-
+    if($('#first_name').val()=="" || $('#last_name').val()=="" || $('select[name=church-role-select]').val()==null){
         $('#required-fields-alert').show();
 
     }
+    else if(dateFormatValidator($('#date_of_birth').val())== "False"){
+        $('#date-format-alert').show();
 
+    }
     else {
 
         if(new_address || $('#post_code').val()!="") {
