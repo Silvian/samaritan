@@ -87,11 +87,11 @@ function addMember(members_table) {
         }
     }
 
-    if($('#first_name').val()=="" || $('#last_name').val()=="" || $('select[name=church-role-select]').val()==null){
+    if($('#first_name').val()=="" || $('#last_name').val()=="" || $('select[name=church-role-select]').val()==null || $('#date_of_birth').val()==""){
         $('#required-fields-alert').show();
 
     }
-    else if(dateFormatValidator($('#date_of_birth').val())== "False"){
+    else if(!dateFormatValidator($('#date_of_birth').val()) && $('#date_of_birth').val()!=""){
         $('#date-format-alert').show();
 
     }
@@ -227,7 +227,12 @@ function editMember(id, members_table, title) {
              $('#member-id').val(member.pk);
              $('#first_name').val(member.fields.first_name);
              $('#last_name').val(member.fields.last_name);
-             $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
+             if (!dateFormatValidator($('#date_of_birth').val())){
+                $('date-format-alert').show();
+            }
+            else{
+                $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
+            }
              $('#telephone').val(member.fields.telephone);
              $('#email').val(member.fields.email);
              $('#address-id').val(member.fields.address);
@@ -239,9 +244,20 @@ function editMember(id, members_table, title) {
              setCheckbox('#is_baptised', member.fields.is_baptised);
              setCheckbox('#gdpr', member.fields.gdpr);
              $('#baptismal_place').val(member.fields.baptismal_place);
-             $('#baptismal_date').val(europeanDate(member.fields.baptismal_date));
-             $('#membership_date').val(europeanDate(member.fields.membership_date));
 
+             if (!dateFormatValidator($('#baptismal_date').val())){
+                $('date-format-alert').show();
+            }
+            else{
+               $('#baptismal_date').val(europeanDate(member.fields.baptismal_date));
+            }
+
+            if (!dateFormatValidator($('#membership_date').val())){
+                 $('date-format-alert').show();
+             }
+            else{
+                $('#membership_date').val(europeanDate(member.fields.membership_date));
+             }
              editMembershipType(member.fields.membership_type);
 
              editRole(member.fields.church_role);
