@@ -131,10 +131,10 @@ function dateFormatValidator(date){
     patt = /\d\d.\d\d.\d\d\d\d/i;
     if (date.search(patt) == -1){
 
-        return false
+        return false;
     }
     else{
 
-        return true
+        return true;
     }
 }
