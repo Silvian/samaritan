@@ -24,7 +24,7 @@ from samaritan.models import ChurchRole, Member
 @login_required
 def get_church_roles(request):
     if request.is_ajax:
-        roles = ChurchRole.objects.all()
+        roles = ChurchRole.objects.all().order_by('name')
         data = serializers.serialize("json", roles)
         return HttpResponse(data, content_type='application/json')
 

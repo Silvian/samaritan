@@ -23,7 +23,7 @@ from samaritan.models import ChurchGroup, Member
 @login_required
 def get_all_groups(request):
     if request.is_ajax:
-        groups = ChurchGroup.objects.all()
+        groups = ChurchGroup.objects.all().order_by('name')
         data = serializers.serialize("json", groups)
         return HttpResponse(data, content_type='application/json')
 
