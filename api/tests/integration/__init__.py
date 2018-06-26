@@ -19,11 +19,11 @@ class UserFactory(DjangoModelFactory):
 class AddressFactory(DjangoModelFactory):
     """Factory for address."""
 
-    number = factory.Faker('text')
-    street = factory.Faker('text')
-    locality = factory.Faker('text')
-    city = factory.Faker('text')
-    post_code = factory.Faker('text')
+    number = factory.Faker('word')
+    street = factory.Faker('name')
+    locality = factory.Faker('name')
+    city = factory.Faker('name')
+    post_code = factory.Faker('word')
 
     class Meta:
         model = Address
