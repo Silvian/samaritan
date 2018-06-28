@@ -50,3 +50,17 @@ class TestAddressIntegrationTestCase(TestCase):
             response.status_code,
             200,
         )
+
+    def test_delete_address(self):
+        """Test that an authenticated user can delete an existing address."""
+        self.client.force_login(user=self.user)
+        response = self.client.get("/api/addresses/getAll")
+
+        self.assertEquals(
+            response.status_code,
+            200,
+        )
+        response_json = response.json()
+        del response_json[0]
+
+        self.assertEquals(len(response_json), 0)
