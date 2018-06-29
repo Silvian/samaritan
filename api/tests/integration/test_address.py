@@ -64,3 +64,83 @@ class TestAddressIntegrationTestCase(TestCase):
         del response_json[0]
 
         self.assertEquals(len(response_json), 0)
+
+    def test_update_address(self):
+        """Test that an authenticated user can update an existing address."""
+        self.client.force_login(user=self.admin_user)
+        new_address = AddressFactory()
+        response = self.client.post(
+            "/api/addresses/update/",
+            {
+                "id": self.address.id,
+                "number": new_address.number,
+                "city": new_address.city,
+                "locality": new_address.locality,
+                "post_code": new_address.post_code,
+                "street": new_address.street,
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+    def test_user_power_list_addresses(self):
+        """Test that a not authenticated user cannot do list addresses."""
+        response = self.client.get("/api/addresses/getAll")
+
+        self.assertEqual(
+            response.status_code,
+            302
+        )
+
+    def test_user_power_get_address(self):
+        """Test that a not authenticated user cannot list an address."""
+        response = self.client.get("/api/addresses/getAddress")
+
+        self.assertEqual(
+            response.status_code,
+            302
+        )
+
+    def test_user_power_create_address(self):
+        """Test that a not authenticated user create an address."""
+        new_address = AddressFactory()
+        response = self.client.post(
+            "/api/addresses/add",
+            {
+                "number": new_address.number,
+                "street": new_address.street,
+                "locality": new_address.locality,
+                "city": new_address.city,
+                "post_code": new_address.post_code,
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            302
+        )
+
+    def test_user_power_update_address(self):
+        """Test that a not authenticated user cannot update an address."""
+        new_address = AddressFactory()
+        response = self.client.post(
+            "/api/addresses/update/",
+            {
+                "id": self.address.id,
+                "number": new_address.number,
+                "city": new_address.city,
+                "locality": new_address.locality,
+                "post_code": new_address.post_code,
+                "street": new_address.street,
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            302
+        )
+
+
