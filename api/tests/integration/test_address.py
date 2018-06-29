@@ -53,17 +53,18 @@ class TestAddressIntegrationTestCase(TestCase):
 
     def test_delete_address(self):
         """Test that an authenticated user can delete an existing address."""
-        self.client.force_login(user=self.user)
-        response = self.client.get("/api/addresses/getAll")
-
-        self.assertEquals(
-            response.status_code,
-            200,
+        self.client.force_login(user=self.admin_user)
+        new_address = AddressFactory()
+        response = self.client.post(
+            "/api/addresses/delete/",
+            {
+                "id": new_address.id,
+            }
         )
-        response_json = response.json()
-        del response_json[0]
-
-        self.assertEquals(len(response_json), 0)
+        self.assertEqual(
+            response.status_code,
+            200
+        )
 
     def test_update_address(self):
         """Test that an authenticated user can update an existing address."""
@@ -86,7 +87,7 @@ class TestAddressIntegrationTestCase(TestCase):
             200,
         )
 
-    def test_user_power_list_addresses(self):
+    def test_not_authenticated_list_addresses(self):
         """Test that a not authenticated user cannot do list addresses."""
         response = self.client.get("/api/addresses/getAll")
 
@@ -95,7 +96,7 @@ class TestAddressIntegrationTestCase(TestCase):
             302
         )
 
-    def test_user_power_get_address(self):
+    def test_not_authenticated_get_address(self):
         """Test that a not authenticated user cannot list an address."""
         response = self.client.get("/api/addresses/getAddress")
 
@@ -104,8 +105,8 @@ class TestAddressIntegrationTestCase(TestCase):
             302
         )
 
-    def test_user_power_create_address(self):
-        """Test that a not authenticated user create an address."""
+    def test_not_authenticated_create_address(self):
+        """Test that a not authenticated user cannot create an address."""
         new_address = AddressFactory()
         response = self.client.post(
             "/api/addresses/add",
@@ -123,7 +124,7 @@ class TestAddressIntegrationTestCase(TestCase):
             302
         )
 
-    def test_user_power_update_address(self):
+    def test_not_authenticated_update_address(self):
         """Test that a not authenticated user cannot update an address."""
         new_address = AddressFactory()
         response = self.client.post(
@@ -143,4 +144,40 @@ class TestAddressIntegrationTestCase(TestCase):
             302
         )
 
+    def test_non_staff_cannot_update_address(self):
+        """Test that a non-staff user cannot update an address"""
+        self.client.force_login(user=self.user)
+        new_address = AddressFactory()
 
+        response = self.client.post(
+            "/api/addresses/update/",
+            {
+                "id": self.address.id,
+                "number": new_address.number,
+                "city": new_address.city,
+                "locality": new_address.locality,
+                "post_code": new_address.post_code,
+                "street": new_address.street,
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            302
+        )
+
+    def test_non_staff_cannot_delete_address(self):
+        """Test that a non-staff user cannot delete an address"""
+        self.client.force_login(user=self.user)
+        new_address = AddressFactory()
+
+        response = self.client.post(
+            "/api/addresses/delete/",
+            {
+                "id": new_address.id,
+            }
+        )
+        self.assertEqual(
+            response.status_code,
+            302
+        )

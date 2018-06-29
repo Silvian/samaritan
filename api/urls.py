@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^addresses/update', address.update_address, name='updateAddress'),
     url(r'^addresses/getAddress', address.get_address, name='getAddress'),
     url(r'^addresses/getAll', address.get_all_addresses, name='addresses'),
+    url(r'^addresses/delete', address.delete_address, name='deleteAddress'),
     url(r'^groups/getAll', groups.get_all_groups, name='getAllGroups'),
     url(r'^groups/getSingle', groups.get_group, name='getGroup'),
     url(r'^groups/add', groups.add_new_group, name='addGroup'),
