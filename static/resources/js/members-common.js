@@ -91,7 +91,7 @@ function addMember(members_table) {
         $('#required-fields-alert').show();
 
     }
-    else if(!dateFormatValidator($('#date_of_birth').val()) && $('#date_of_birth').val()!=""){
+    else if(!dateFormatValidator($('#date_of_birth').val())){
         $('#date-format-alert').show();
 
     }
@@ -227,12 +227,7 @@ function editMember(id, members_table, title) {
              $('#member-id').val(member.pk);
              $('#first_name').val(member.fields.first_name);
              $('#last_name').val(member.fields.last_name);
-             if (!dateFormatValidator($('#date_of_birth').val())){
-                $('date-format-alert').show();
-            }
-            else{
-                $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
-            }
+             $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
              $('#telephone').val(member.fields.telephone);
              $('#email').val(member.fields.email);
              $('#address-id').val(member.fields.address);
@@ -279,6 +274,7 @@ function editMember(id, members_table, title) {
              $('#additional-notes').val(member.fields.notes);
 
              $('#required-fields-alert').hide();
+             $('#date-format-alert').hide();
              $('#member-modal-label').html(title);
              $('#terminate-member').show();
              $("#add-member-modal").modal('show');
