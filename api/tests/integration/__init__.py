@@ -4,7 +4,7 @@ import factory
 from django_common.auth_backends import User
 
 from factory.django import DjangoModelFactory
-from samaritan.models import Address
+from samaritan.models import Address, ChurchRole
 
 
 class UserFactory(DjangoModelFactory):
@@ -27,3 +27,13 @@ class AddressFactory(DjangoModelFactory):
 
     class Meta:
         model = Address
+
+
+class RoleFactory(DjangoModelFactory):
+    """Factory for Roles."""
+
+    name = factory.Faker('name')
+    description = factory.Faker('text')
+
+    class Meta:
+        model = ChurchRole
