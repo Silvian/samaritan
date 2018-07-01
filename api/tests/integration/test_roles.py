@@ -24,6 +24,7 @@ class TestRoleIntegrationTestCase(TestCase):
 
         response_json = response.json()
 
+        self.assertEqual(self.role.id, response_json[0]['pk'])
         self.assertEqual(self.role.name, response_json[0]['fields']['name'])
         self.assertEqual(self.role.description, response_json[0]['fields']['description'])
 
@@ -39,6 +40,7 @@ class TestRoleIntegrationTestCase(TestCase):
 
         response_json = response.json()
 
+        self.assertEqual(self.role.id, response_json[0]['pk'])
         self.assertEqual(self.role.name, response_json[0]['fields']['name'])
         self.assertEqual(self.role.description, response_json[0]['fields']['description'])
 
