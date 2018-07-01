@@ -13,6 +13,7 @@ from django.contrib.auth import get_user
 from django.http import JsonResponse
 
 from api.views import success_response
+from authentication.forms import UserForm
 
 
 @login_required
@@ -32,12 +33,9 @@ def get_user_profile(request):
 @login_required
 def update_user_profile(request):
     if request.method == 'POST':
-        if request.POST['username'] and request.POST['email']:
-            user = get_user(request)
-            user.username = request.POST['username']
-            user.first_name = request.POST['first_name']
-            user.last_name = request.POST['last_name']
-            user.email = request.POST['email']
+        user = get_user(request)
+        form = UserForm(request.POST or None, instance=user)
+        if form.is_valid():
             user.profile.mobile_number = request.POST['mobile_number']
-            user.save()
+            form.save()
             return JsonResponse(success_response)
