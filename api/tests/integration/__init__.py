@@ -4,7 +4,7 @@ import factory
 from django_common.auth_backends import User
 
 from factory.django import DjangoModelFactory
-from samaritan.models import Address, ChurchRole
+from samaritan.models import Address, ChurchRole, MembershipType, ChurchGroup, Member
 
 
 class UserFactory(DjangoModelFactory):
@@ -37,3 +37,54 @@ class RoleFactory(DjangoModelFactory):
 
     class Meta:
         model = ChurchRole
+
+
+class GroupFactory(DjangoModelFactory):
+    """Factory for Groups."""
+
+    name = factory.Faker('name')
+    description = factory.Faker('text')
+
+    class Meta:
+        model = ChurchGroup
+
+    @factory.post_generation
+    def members(self, create, extracted, **kwargs):
+        if create and extracted:
+            for member in extracted:
+                self.members.add(member)
+
+
+class MembershipTypeFactory(DjangoModelFactory):
+    """Membership Type Factory."""
+    name = factory.Faker('name')
+    description = factory.Faker('text')
+
+    class Meta:
+        model = MembershipType
+
+
+class MemberFactory(DjangoModelFactory):
+    """Factory for Members."""
+    first_name = factory.Faker('name')
+    last_name = factory.Faker('name')
+    date_of_birth = factory.Faker('date_this_century')
+    telephone = factory.Faker('random_int', min=0, max=999999999999)
+    address = factory.SubFactory(AddressFactory)
+    email = factory.Faker('email')
+    details = factory.Faker('text')
+    profile_pic = factory.Faker('text')
+    is_baptised = factory.Faker('boolean')
+    baptismal_date = factory.Faker('date_this_century')
+    baptismal_place = factory.Faker('name')
+    is_member = factory.Faker('boolean')
+    membership_type = factory.SubFactory(MembershipTypeFactory)
+    membership_date = factory.Faker('date_this_year')
+    is_active = factory.Faker('boolean')
+    notes = factory.Faker('text')
+    church_role = factory.SubFactory(RoleFactory)
+    gdpr = factory.Faker('boolean')
+    created_date = factory.Faker('date_time_this_year', after_now=False, before_now=True)
+
+    class Meta:
+        model = Member
