@@ -83,6 +83,7 @@ $(document).ready(function(){
         $('#address-id').val("");
         $('#create-address').show();
         $('#required-fields-alert').hide();
+        $('#date-format-alert').hide();
         $('#member-modal-label').html("Add new member");
         $('#is_member').prop('checked', true);
         $('#terminate-member').hide();
