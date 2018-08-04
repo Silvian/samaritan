@@ -77,35 +77,56 @@ function getRoleName(data, key) {
 
 function addMember(members_table) {
 
-    new_address = false;
+    var new_address = false;
 
     if($('select[name=address-select]').val()==null && $('#member-id').val()=="") {
         new_address = true;
         if($('#street').val()=="" || $('#city').val()=="" || $('#post_code').val()=="") {
 
            $('#required-fields-alert').show();
+
+           return;
         }
     }
 
     if($('#first_name').val()=="" || $('#last_name').val()=="" || $('select[name=church-role-select]').val()==null || $('#date_of_birth').val()==""){
         $('#required-fields-alert').show();
 
+        return;
     }
-    else if(!dateFormatValidator($('#date_of_birth').val())){
+
+    if($('#date_of_birth').val() != "" && !dateFormatValidator($('#date_of_birth').val())){
         $('#date-format-alert').show();
 
+        return;
     }
+
+    if($('#baptismal_date').val() != "" && !dateFormatValidator($('#baptismal_date').val())) {
+       $('#date-format-alert').show();
+
+       return;
+    }
+
+    if($('#baptismal_date').val() != "" && !dateFormatValidator($('#baptismal_date').val())) {
+       $('#date-format-alert').show();
+
+       return;
+    }
+
+    if($('#membership_date').val() != "" && !dateFormatValidator($('#membership_date').val())) {
+       $('#date-format-alert').show();
+
+       return;
+    }
+
+    if(new_address || $('#post_code').val()!="") {
+        submitAddress(members_table);
+    }
+
     else {
-
-        if(new_address || $('#post_code').val()!="") {
-            submitAddress(members_table);
-        }
-
-        else {
-            submitMember(members_table, null);
-        }
-
+        submitMember(members_table, null);
     }
+
 
 }
 
@@ -238,21 +259,11 @@ function editMember(id, members_table, title) {
              setCheckbox('#is_member', member.fields.is_member);
              setCheckbox('#is_baptised', member.fields.is_baptised);
              setCheckbox('#gdpr', member.fields.gdpr);
+
              $('#baptismal_place').val(member.fields.baptismal_place);
+             $('#baptismal_date').val(europeanDate(member.fields.baptismal_date));
+             $('#membership_date').val(europeanDate(member.fields.membership_date));
 
-             if (!dateFormatValidator($('#baptismal_date').val())){
-                $('date-format-alert').show();
-            }
-            else{
-               $('#baptismal_date').val(europeanDate(member.fields.baptismal_date));
-            }
-
-            if (!dateFormatValidator($('#membership_date').val())){
-                 $('date-format-alert').show();
-             }
-            else{
-                $('#membership_date').val(europeanDate(member.fields.membership_date));
-             }
              editMembershipType(member.fields.membership_type);
 
              editRole(member.fields.church_role);
