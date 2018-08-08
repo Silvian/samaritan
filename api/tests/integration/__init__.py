@@ -69,7 +69,7 @@ class MemberFactory(DjangoModelFactory):
     first_name = factory.Faker('name')
     last_name = factory.Faker('name')
     date_of_birth = factory.Faker('date_this_century')
-    telephone = factory.Faker('random_int', min=0, max=999999999999)
+    telephone = factory.Faker('random_int', min=0, max=99999999)
     address = factory.SubFactory(AddressFactory)
     email = factory.Faker('email')
     details = factory.Faker('text')
@@ -84,7 +84,6 @@ class MemberFactory(DjangoModelFactory):
     notes = factory.Faker('text')
     church_role = factory.SubFactory(RoleFactory)
     gdpr = factory.Faker('boolean')
-    created_date = factory.Faker('date_time_this_year', after_now=False, before_now=True)
 
     class Meta:
         model = Member
