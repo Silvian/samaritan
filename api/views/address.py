@@ -55,3 +55,12 @@ def update_address(request):
         if form.is_valid():
             form.save()
             return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+
+@login_required
+@staff_member_required
+def delete_address(request):
+    if request.method == 'POST':
+        address = Address.objects.get(pk=request.POST['id'])
+        address.delete()
+        return HttpResponse(json.dumps(success_response), content_type='application/json')
