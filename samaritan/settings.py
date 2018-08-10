@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'authentication',
     'emailservice',
     'export',
+    'messageservice',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -247,6 +248,10 @@ REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 
 PASSWORD_RESET_THRESHOLD = 60
 
+#SMS Service settings
+
+SMS_URL = os.getenv('SMS_URL', default="https://textbelt.com/text")
+SMS_TOKEN = os.getenv('SMS_TOKEN', default="textbelt")
 
 # SMTP settings
 # Note that these settings are environment specific
