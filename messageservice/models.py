@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+"""Message service models."""
+
 from emailservice.models import SingletonModel
 from django.db import models
 
-
-# Create your models here.
 
 class SMSMessageConfiguration(SingletonModel):
     name = models.CharField(

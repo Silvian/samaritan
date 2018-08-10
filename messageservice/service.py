@@ -1,4 +1,5 @@
-"""SMS service implementation"""
+"""SMS service implementation."""
+
 import requests
 from django.conf import settings
 
@@ -12,14 +13,14 @@ class SMSService:
         self.service_url = service_url
         self.api_token = api_token
 
-    def send_sms(self, message, mobile):
+    def send_sms(self, message, phone):
         """Send SMS"""
-        response = requests.post(self.service_url,
-        {
-            'phone': mobile,
-            'message': message,
-            'key': self.api_token
-         }
-         ).json()
+        response = requests.post(
+            self.service_url,
+            {
+                'phone': phone,
+                'message': message,
+                'key': self.api_token
+            }).json()
 
         return response

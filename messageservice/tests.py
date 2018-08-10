@@ -1,36 +1,77 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+"""Message service tests."""
 
-from unittest.mock import patch
+import mock
 from django.test import TestCase
 
-import factory
-
 from messageservice import tasks
-from samaritan.models import Member
-from api.tests.integration import UserFactory, GroupFactory
-
-# Create your tests here.
+from api.tests.integration import UserFactory, GroupFactory, MemberFactory
 
 
 class TestSMSMessageTaskTestCase(TestCase):
     """Test the sms message task test case."""
     @classmethod
     def setUpTestData(cls):
-        cls.sms_message = factory.Faker('text')
-        cls.user = UserFactory(is_superuser=True)
-        cls.group = GroupFactory()
+        cls.member = MemberFactory()
 
-    @patch("messageservice.service.SMSService.send_sms")
+    @mock.patch("messageservice.service.SMSService.send_sms")
     def test_send_sms_message_task(self, send_sms_mock):
         """Test send sms message task"""
-        member = Member.objects.get(user=self.user)
-        member.telephone = "+441234567890"
-        member.save()
+        message = "Hello World"
+        self.member.telephone = "+441234567890"
+        self.member.save()
 
-        tasks.send_sms_task(message=self.sms_message, mobile=member.telephone)
+        tasks.send_sms_task(message=message, phone=self.member.telephone)
 
         send_sms_mock.assert_called_once_with(
-            message=self.sms_message,
-            mobile=member.telephone
+            message,
+            self.member.telephone
+        )
+
+
+class TestMessageIntegrationTestCase(TestCase):
+    """Test the message integration."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory(is_superuser=True)
+        cls.member = MemberFactory(is_active=True)
+        cls.group = GroupFactory(members=[cls.member])
+
+    @mock.patch("messageservice.tasks.send_sms_task.delay")
+    def test_send_group_message(self, send_sms_task_mock):
+        """Test send group message."""
+        self.client.force_login(user=self.user)
+        message = "Hello World"
+
+        response = self.client.post(
+            '/message/send/group',
+            {
+                "id": self.group.id,
+                "message": message,
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+        send_sms_task_mock.assert_called_once_with(
+            message=message,
+            phone=str(self.member.telephone),
+        )
+
+    def test_not_authenticated_send_group_message(self):
+        """Test that a non-authenticated user cannot send group message."""
+        response = self.client.post(
+            '/message/send/group',
+            {
+                "id": self.group.id,
+                "message": "Hello",
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            302,
         )

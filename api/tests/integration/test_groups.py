@@ -2,6 +2,7 @@
 from django.test import TestCase
 from api.tests.integration import UserFactory, GroupFactory, MemberFactory
 
+
 class TestGroupsIntegrationTestCase(TestCase):
 
     def setUp(self):
@@ -288,4 +289,3 @@ class TestGroupsIntegrationTestCase(TestCase):
             response.status_code,
             302
         )
-        

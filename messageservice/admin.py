@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+"""Message service admin."""
 
 from django.contrib import admin
 from messageservice.models import SMSMessageConfiguration
-
-# Register your models here.
 
 
 @admin.register(SMSMessageConfiguration)
