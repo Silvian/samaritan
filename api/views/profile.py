@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user
 from django.http import JsonResponse
 
-from api.views import success_response
+from api.views import success_response, failure_response
 from authentication.forms import UserForm
 
 
@@ -39,3 +39,5 @@ def update_user_profile(request):
             user.profile.mobile_number = request.POST['mobile_number']
             form.save()
             return JsonResponse(success_response)
+
+        return JsonResponse(failure_response)

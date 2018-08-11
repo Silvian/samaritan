@@ -35,12 +35,16 @@ class TestProfileIntegrationTesting(TestCase):
                 "/api/profile/update",
                 {
                     "username": "randomname",
-                    "first_name":"firstname",
+                    "first_name": "firstname",
                     "last_name": "lastname",
-                    "email": "sample@email",
+                    "email": "sample@email.com",
+                    "mobile_number": "+441234566",
                 }
             )
         self.assertEqual(
             response.status_code,
             200
         )
+
+        response_json = response.json()
+        self.assertEqual(response_json["success"], True)
