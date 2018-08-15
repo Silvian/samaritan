@@ -63,7 +63,6 @@ $(document).ready(function(){
                 });
 
                 $('#email-group-members').click(function(event) {
-                    console.log('Email clicked')
                     $('#email-modal-label').html("Send email to all "+htmlEntities(group.fields.name)+" group members");
                     $('#email-modal').modal('show');
                 });
