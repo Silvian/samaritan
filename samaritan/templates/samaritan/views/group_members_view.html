@@ -20,6 +20,10 @@
       <button type="button" class="btn btn-info btn-md" id="email-group-members">
         <i class="fa fa-envelope-o fa-fw"></i> Email
       </button>
+      <!-- Button sms modal-->
+      <button type="button" class="btn btn-info btn-md" id="sms-group-members">
+        <i class="fa fa-comment fw" aria-hidden="true"></i> Message
+      </button>
 
       <!-- Button add group members -->
       <button type="button" class="btn btn-primary btn-md" style="float:right" id="add-group-members">
@@ -30,6 +34,7 @@
 
   <br/>
 
+  <!-- Email alerts-->
   <div id="email-sending" class="alert alert-warning" role="alert" hidden="true">
       <i class="fa fa-info fa-fw" aria-hidden="true"></i>
       Sending emails, please wait...
@@ -41,6 +46,22 @@
   </div>
 
   <div id="email-error" class="alert alert-danger" role="alert" hidden="true">
+      <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+      <span id="error-msg">Error:</span>
+  </div>
+
+  <!-- SMS alers-->
+  <div id="sms-sending" class="alert alert-warning" role="alert" hidden="true">
+      <i class="fa fa-info fa-fw" aria-hidden="true"></i>
+      Sending messages, please wait...
+  </div>
+
+  <div id="sms-success" class="alert alert-success" role="alert" hidden="true">
+      <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+      Messages have been sent successfully
+  </div>
+
+  <div id="sms-error" class="alert alert-danger" role="alert" hidden="true">
       <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
       <span id="error-msg">Error:</span>
   </div>
@@ -65,6 +86,8 @@
   </div>
 
 {% include "samaritan/modals/email_modal.html" %}
+
+{% include "samaritan/modals/message_modal.html" %}
 
 {% include "samaritan/modals/delete_modal.html" %}
 
