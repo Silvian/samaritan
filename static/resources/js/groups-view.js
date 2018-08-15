@@ -66,13 +66,16 @@ $(document).ready(function(){
                     $('#email-modal-label').html("Send email to all "+htmlEntities(group.fields.name)+" group members");
                     $('#email-modal').modal('show');
                 });
+
                 $('#sms-group-members').click(function(event) {
                     $('#sms-modal-label').html("Send sms to all "+htmlEntities(group.fields.name)+" group members");
                     $('#sms-modal').modal('show');
                 });
+
                 $('#send-sms').click(function (event) { 
                     sendGroupSMS(id);
                  });
+                 
                 $('#send-email').click(function(event) {
                     sendGroupEmail(id);
                 });
