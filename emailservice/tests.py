@@ -1,8 +1,38 @@
 """Tests for emailservice module"""
-
+import mock
 from django.test import TestCase
-from api.tests.integration import UserFactory, GroupFactory
+from api.tests.integration import UserFactory, GroupFactory, MemberFactory
+from emailservice import tasks
 
+
+class TestEmailTaskTestCase(TestCase):
+    """ Test the email service task test case. """
+    @classmethod
+    def setUpTestData(cls):
+        cls.member = MemberFactory()
+
+    @mock.patch("emailservice.mail.send_email")
+    def test_send_email_task(self, send_email_mock):
+        """Test send mail task"""
+        subject = "Test subject"
+        message = "Test message"
+        sender_email = "test@test.com"
+        sender_name = "Test name"
+        tasks.send_email_task(
+            from_email=sender_email, 
+            from_name=sender_name, 
+            subject=subject, 
+            message=message,
+            member_email=self.member.email,
+            member_first_name = self.member.first_name,
+            member_last_name= self.member.last_name,
+        )
+        send_email_mock.assert_called_once_with(
+            sender_email,
+            sender_name,
+            subject,
+            message
+        )
 
 class EmailServiceTestIntegrationTestCase(TestCase):
 
