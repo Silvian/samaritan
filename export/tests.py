@@ -10,7 +10,7 @@ class ExportTestIntegrationTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory(is_superuser=True)
         self.admin_user = UserFactory(is_staff=True)
-        self.role = RoleFactory()
+        self.role = RoleFactory(name="Test Name")
 
     def test_download_members(self):
         """Test that an authenticated user can download a list of members"""
