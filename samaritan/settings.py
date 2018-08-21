@@ -250,7 +250,7 @@ PASSWORD_RESET_THRESHOLD = 60
 
 # SMS Service settings
 
-SMS_URL = os.getenv('SMS_URL', default="https://textbelt.com/text")
+SMS_URL = os.getenv('SMS_URL', default="https://textbelt.com")
 SMS_TOKEN = os.getenv('SMS_TOKEN', default="textbelt")
 
 # SMTP settings

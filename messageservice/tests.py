@@ -3,8 +3,20 @@
 import mock
 from django.test import TestCase
 
+from factory.django import DjangoModelFactory
+
 from messageservice import tasks
 from api.tests.integration import UserFactory, GroupFactory, MemberFactory
+from messageservice.models import SMSMessageConfiguration
+
+
+class SMSMessageConfigurationFactory(DjangoModelFactory):
+    """Factory for SMS Message Configuration."""
+
+    send_message = True
+
+    class Meta:
+        model = SMSMessageConfiguration
 
 
 class TestSMSMessageTaskTestCase(TestCase):
@@ -12,10 +24,16 @@ class TestSMSMessageTaskTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.member = MemberFactory()
+        cls.sms_config = SMSMessageConfigurationFactory()
 
     @mock.patch("messageservice.service.SMSService.send_sms")
     def test_send_sms_message_task(self, send_sms_mock):
         """Test send sms message task"""
+        send_sms_mock.return_value = {
+            'success': True,
+            'quotaRemaining': 1,
+            'textId': 12345,
+        }
         message = "Hello World"
         self.member.telephone = "+441234567890"
         self.member.save()
@@ -26,6 +44,9 @@ class TestSMSMessageTaskTestCase(TestCase):
             message,
             self.member.telephone
         )
+
+        self.sms_config.refresh_from_db()
+        self.assertEqual(self.sms_config.quota_remaining, 1)
 
 
 class TestMessageIntegrationTestCase(TestCase):

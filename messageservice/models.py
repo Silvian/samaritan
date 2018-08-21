@@ -12,9 +12,13 @@ class SMSMessageConfiguration(SingletonModel):
     send_message = models.BooleanField(
         default=False,
     )
-    counter = models.PositiveIntegerField()
+    counter = models.PositiveIntegerField(
+        default=0,
+    )
 
-    quota_remaining = models.PositiveIntegerField()
+    quota_remaining = models.PositiveIntegerField(
+        default=0,
+    )
 
     def __str__(self):
         """Return the string representation"""
