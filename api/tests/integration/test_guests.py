@@ -17,4 +17,3 @@ class TestGuestsIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
-
