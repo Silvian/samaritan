@@ -67,6 +67,15 @@ $(document).ready(function(){
                     $('#email-modal').modal('show');
                 });
 
+                $('#sms-group-members').click(function(event) {
+                    $('#sms-modal-label').html("Send sms to all "+htmlEntities(group.fields.name)+" group members");
+                    $('#sms-modal').modal('show');
+                });
+
+                $('#send-sms').click(function (event) { 
+                    sendGroupSMS(id);
+                 });
+                 
                 $('#send-email').click(function(event) {
                     sendGroupEmail(id);
                 });
@@ -141,3 +150,41 @@ function sendGroupEmail(group_id) {
     }
 
 }
+
+function sendGroupSMS(group_id) {
+    $('#sms-required-fields-alert').hide();
+    if($('#sms-message').val() != "") {
+        $('#sms-modal').modal('hide');
+        $('#sms-sending').show();
+        $.ajax({
+            type: 'POST',
+            url: '/message/send/group',
+            dataType: 'JSON',
+            data: {
+                id: group_id,
+                message: $('#sms-message').val(),
+                csrfmiddlewaretoken : getCookie('csrftoken')
+            },
+            success: function (data) { 
+                $('#sms-sending').hide();
+                if(data.success) {
+                    $('#sms-success').show();
+                    setTimeout(function () { 
+                        $('#sms-success').hide();
+                     }, 3000);
+                }
+                else {
+                    $('#sms-error').val(data.error);
+                    $('#sms-error').show();
+                    setTimeout(function () {
+                        $('#sms-error').hide();
+                    }, 3000);
+                }
+             }
+        });
+
+    }
+    else {
+        $('#sms-required-fields-alert').show();
+    }
+};
