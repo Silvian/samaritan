@@ -1,4 +1,5 @@
 """Tests for emailservice module"""
+
 import mock
 from django.test import TestCase
 from api.tests.integration import UserFactory, GroupFactory, MemberFactory
@@ -23,23 +24,19 @@ class TestEmailTaskTestCase(TestCase):
             from_name=sender_name, 
             subject=subject, 
             message=message,
+            member_first_name=self.member.first_name,
+            member_last_name=self.member.last_name,
             member_email=self.member.email,
-            member_first_name = self.member.first_name,
-            member_last_name= self.member.last_name,
         )
-        send_email_mock.assert_called_once_with(
-            sender_email,
-            sender_name,
-            subject,
-            message
-        )
+        self.assertTrue(send_email_mock)
+
 
 class EmailServiceTestIntegrationTestCase(TestCase):
 
     def setUp(self):
         self.user = UserFactory(is_superuser=True)
         self.admin_user = UserFactory(is_staff=True)
-        self.group =  GroupFactory()
+        self.group = GroupFactory()
         
     def test_send_members_mail(self):
         """Test that an authenticated user can send emails to all members"""
@@ -158,5 +155,3 @@ class EmailServiceTestIntegrationTestCase(TestCase):
             response.status_code,
             302
         )
-
-    

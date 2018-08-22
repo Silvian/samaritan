@@ -4,7 +4,6 @@ from django.test import TestCase
 from api.tests.integration import UserFactory, RoleFactory
 
 
-
 class ExportTestIntegrationTestCase(TestCase):
 
     def setUp(self):
