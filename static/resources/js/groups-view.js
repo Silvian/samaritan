@@ -68,6 +68,7 @@ $(document).ready(function(){
                 });
 
                 $('#sms-group-members').click(function(event) {
+                    getSMSQuota();
                     $('#sms-modal-label').html("Send sms to all "+htmlEntities(group.fields.name)+" group members");
                     $('#sms-modal').modal('show');
                 });
@@ -187,4 +188,26 @@ function sendGroupSMS(group_id) {
     else {
         $('#sms-required-fields-alert').show();
     }
-};
+}
+
+function getSMSQuota() {
+    ecblockui();
+    $.ajax({
+        type: 'GET',
+        url: '/message/getQuota',
+        dataType: 'json',
+        success: function (data) {
+            ecunblockui();
+            var quota = data.result;
+            $('#remaining-quota').html("<p>SMS remaining quota: <b>"+ quota +"</b></p>");
+
+            if(quota < 1) {
+                $('#remaining-quota-alert').show();
+            }
+            else {
+                $('#remaining-quota-alert').hide();
+            }
+        }
+    });
+
+}

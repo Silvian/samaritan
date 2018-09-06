@@ -48,6 +48,17 @@ class TestSMSMessageTaskTestCase(TestCase):
         self.sms_config.refresh_from_db()
         self.assertEqual(self.sms_config.quota_remaining, 1)
 
+    @mock.patch("messageservice.service.SMSService.get_quota")
+    def test_get_sms_quota_task(self, get_sms_quota_mock):
+        """Test get sms quota task"""
+        get_sms_quota_mock.return_value = {
+            'success': True,
+            'quotaRemaining': 1,
+        }
+
+        tasks.get_sms_quota()
+        get_sms_quota_mock.assert_called_once()
+
 
 class TestMessageIntegrationTestCase(TestCase):
     """Test the message integration."""
@@ -95,4 +106,28 @@ class TestMessageIntegrationTestCase(TestCase):
         self.assertEqual(
             response.status_code,
             302,
+        )
+
+
+class TestQuotaRemainingIntegrationTestCase(TestCase):
+    """Test the quota remaining integration."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory(is_superuser=True)
+        cls.sms_config = SMSMessageConfigurationFactory(quota_remaining=10)
+
+    def test_get_quota(self):
+        self.client.force_login(user=self.user)
+        response = self.client.get('/message/getQuota')
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+        response_json = response.json()
+        self.assertEqual(
+            response_json["result"],
+            self.sms_config.quota_remaining,
         )
