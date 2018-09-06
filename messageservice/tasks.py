@@ -23,3 +23,16 @@ def send_sms_task(message, phone):
             logger.info("Successfully sent message to: {}".format(phone))
         else:
             logger.error("Failed to send sms to the following mobile number: {}".format(phone))
+
+
+@app.task
+def get_sms_quota():
+    """Get the sms quota remaining."""
+    sms_config = SMSMessageConfiguration.load()
+    response = SMSService().get_quota()
+    if response['success']:
+        logger.info("SMS Quota remaining {}".format(response['quotaRemaining']))
+        sms_config.quota_remaining = response['quotaRemaining']
+        sms_config.save()
+    else:
+        logger.error("Failed to retrieve remaining sms quota.")

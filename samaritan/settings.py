@@ -25,7 +25,7 @@ from celery.schedules import crontab
 AUTHOR = "Silvian Dragan"
 COPYRIGHT = "Copyright {year}, Samaritan CMA (Church Management Assistant)"
 LICENCE = "GPLv3"
-VERSION = "1.2"
+VERSION = "1.3"
 MAINTAINER = "Silvian Dragan"
 EMAIL = "silvian.dragan@gmail.com"
 
@@ -210,6 +210,10 @@ CELERY_BEAT_SCHEDULE = {
     'password_expiry': {
         'task': 'authentication.tasks.password_expiry',
         'schedule': crontab(minute='0', hour='5'),
+    },
+    'get_sms_quota': {
+        'task': 'messageservice.tasks.get_sms_quota',
+        'schedule': crontab(minute='29', hour='*'),
     }
 }
 
