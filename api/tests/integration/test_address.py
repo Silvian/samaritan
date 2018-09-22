@@ -29,6 +29,7 @@ class TestAddressIntegrationTestCase(TestCase):
         self.assertEqual(self.address.locality, response_json[0]['fields']['locality'])
         self.assertEqual(self.address.city, response_json[0]['fields']['city'])
         self.assertEqual(self.address.post_code, response_json[0]['fields']['post_code'])
+        self.assertEqual(self.address.post_code, response_json[0]['fields']['foo'])
 
     def test_create_address(self):
         """ Test that an authenticated user can create a new address."""
