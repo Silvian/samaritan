@@ -60,13 +60,14 @@ def forgot_view(request):
 
 def forgot_password(request):
     if request.method == 'POST':
-        if not request.POST['email']: 
+        if request.POST['email']:
             try:
                 user = User.objects.get(email=request.POST['email'].lower())
                 user.profile.send_password_email(get_current_site(request).name)
                 return JsonResponse(success_response)
             except User.DoesNotExist:
                 return JsonResponse(failure_response)
+        return JsonResponse(failure_response)
     
 
 
