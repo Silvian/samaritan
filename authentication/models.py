@@ -5,15 +5,13 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
-import hashlib
-import os
-
 from django.db import models
 from django.db.models.signals import post_save
 from django_common.auth_backends import User
 from django.dispatch import receiver
 
 from .tasks import send_email
+from .utils import generate_password
 
 
 class Profile(models.Model):
@@ -44,10 +42,9 @@ class Profile(models.Model):
     def generate_temp_password(self):
         """Generate temporary password."""
         self.password_reset = True
-        passwd = hashlib.sha1(os.urandom(128)).hexdigest()
+        passwd = generate_password()
         self.user.set_password(passwd)
         self.user.save()
-
         return passwd
 
     def __str__(self):
