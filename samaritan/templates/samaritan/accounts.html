@@ -1,0 +1,27 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+<div>
+  </br>
+  <h2><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> User accounts</h2>
+</div>
+
+{% endblock %}
+
+{% block body %}
+
+<div id="success-password-reset" class="alert alert-success" role="alert" hidden>
+  <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+
+</div>
+
+{% endblock %}
+
+{% block jsfiles %}
+
+{% load staticfiles %}
+<script src="{% static 'resources/js/samaritan-common.js' %}"></script>
+<script src="{% static 'resources/js/accounts.js' %}"></script>
+
+{% endblock %}

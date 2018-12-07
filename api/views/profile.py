@@ -1,5 +1,5 @@
 """
-This is the main members file for Samaritan CMA app
+This is the main user profile file for Samaritan CMA app
 
 @author: Silvian Dragan
 @Date: 06/12/2018

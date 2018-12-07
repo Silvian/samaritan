@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from constants import SettingsConstants
+from .mixins import StaffRoleRequiredMixin
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -144,7 +145,7 @@ class GroupMembersAddView(LoginRequiredMixin, TemplateView):
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
-    """Group members add view."""
+    """User profile view."""
 
     template_name = "samaritan/profile.html"
 
@@ -153,4 +154,17 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         footer_context = SettingsConstants.get_settings()
         context.update(footer_context)
         context['activate'] = 'user'
+        return context
+
+
+class UserAccountsView(LoginRequiredMixin, StaffRoleRequiredMixin, TemplateView):
+    """User accounts view."""
+
+    template_name = "samaritan/accounts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserAccountsView, self).get_context_data(**kwargs)
+        footer_context = SettingsConstants.get_settings()
+        context.update(footer_context)
+        context['activate'] = 'accounts'
         return context

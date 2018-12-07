@@ -12,6 +12,7 @@ from .models import (
     BirthdaysListConfiguration,
     GroupRotationConfiguration,
     PasswordResetEmailConfiguration,
+    WelcomeEmailConfiguration,
 )
 
 
@@ -69,6 +70,18 @@ class GroupRotationConfigurationAdmin(admin.ModelAdmin):
 @admin.register(PasswordResetEmailConfiguration)
 class PasswordResetEmailConfigurationAdmin(admin.ModelAdmin):
     """PasswordResetEmailConfiguration admin."""
+
+    list_display = (
+        'name',
+        'email_subject',
+        'email_message',
+        'send_email',
+    )
+
+
+@admin.register(WelcomeEmailConfiguration)
+class WelcomeEmailConfigurationAdmin(admin.ModelAdmin):
+    """WelcomeEmailConfiguration admin."""
 
     list_display = (
         'name',

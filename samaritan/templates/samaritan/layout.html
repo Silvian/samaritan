@@ -42,6 +42,9 @@
           <li class='{% if activate == "history" %}active{% endif %}'><a href="{%url 'history' %}"><i class="fa fa-history fa-fw"></i> History</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+          {% if request.user.is_staff %}
+            <li class='{% if activate == "accounts" %}active{% endif %}'><a href="{%url 'accounts' %}"><i class="fa fa-user-plus fa-fw"></i> Accounts</a></li>
+          {% endif %}
           <li class='{% if activate == "user" %}active{% endif %}'>
             <a href="{%url 'user' %}">
               <i class="fa fa-user fa-fw"></i>
