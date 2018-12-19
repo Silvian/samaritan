@@ -104,6 +104,10 @@ $(document).ready(function(){
         deleteUser($('#delete-id').val(), users_table);
     });
 
+    $('#resend-activation').click(function() {
+        resendActivationEmail($('#user-id').val());
+    });
+
 });
 
 function clearFields() {
@@ -253,6 +257,27 @@ function deleteUser(id, users_table) {
                 $('#accounts-error').show();
                 setTimeout(function () {
                     $('#accounts-error').hide();
+                }, 3000);
+            }
+        }
+    });
+}
+
+function resendActivationEmail(id) {
+    ecblockui();
+    $.ajax({
+        type: 'POST',
+        url: '/api/accounts/resendEmail',
+        dataType: 'json',
+        data: {    id : id,
+                   csrfmiddlewaretoken : getCookie('csrftoken')
+                },
+        success: function (data) {
+            ecunblockui();
+            if(data.success) {
+                $('#activation-sent-alert').show();
+                setTimeout(function () {
+                    $('#activation-sent-alert').hide();
                 }, 3000);
             }
         }
