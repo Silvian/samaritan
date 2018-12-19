@@ -105,3 +105,15 @@ class PasswordResetEmailConfiguration(SingletonModel):
 
     def __str__(self):
         return self.name
+
+
+class WelcomeEmailConfiguration(SingletonModel):
+    """WelcomeEmailConfiguration data model."""
+
+    name = models.CharField(
+        max_length=200,
+        default='Welcome Email Configurations',
+    )
+    email_subject = models.CharField(max_length=200)
+    email_message = models.TextField()
+    send_email = models.BooleanField(default=False)

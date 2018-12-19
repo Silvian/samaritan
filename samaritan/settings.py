@@ -25,7 +25,7 @@ from celery.schedules import crontab
 AUTHOR = "Silvian Dragan"
 COPYRIGHT = "Copyright {year}, Samaritan CMA (Church Management Assistant)"
 LICENCE = "GPLv3"
-VERSION = "1.4"
+VERSION = "1.5"
 MAINTAINER = "Silvian Dragan"
 EMAIL = "silvian.dragan@gmail.com"
 
@@ -250,6 +250,8 @@ AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
 REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 
+
+# Password reset number of days before expiry
 PASSWORD_RESET_THRESHOLD = 60
 
 # SMS Service settings
@@ -264,5 +266,5 @@ EMAIL_HOST = os.getenv('EMAIL_HOST', default='')
 EMAIL_PORT = os.getenv('EMAIL_PORT', default='')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', default='')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', default=True)
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', default=False)
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', default=False)

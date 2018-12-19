@@ -1,0 +1,54 @@
+{% block user_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="user-modal" role="dialog" aria-labelledby="accountUserModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="user-modal-label"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input id="user-id" type="hidden" value="">
+          <fieldset class="form-group">
+            <input class="form-control" id="user_name" name="user_name" path="user_name" type="text" placeholder="User name*" required maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="first_name" name="first_name" path="first_name" type="text" placeholder="First name" required maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="last_name" name="last_name" path="last_name" type="text" placeholder="Last name" required maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="email" name="email" path="email" type="email" placeholder="email*" maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input class="form-control" id="mobile" name="mobile" path="mobile" type="text" placeholder="mobile number" maxlength="200"/>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="is_staff" style="float:left;margin-right:5px;">Admin user?</label>
+            <input id="is_staff" name="is_staff" path="is_staff" type="checkbox" placeholder="is_admin"/>
+          </fieldset>
+          <div id="required-fields-alert" class="alert alert-danger" role="alert" hidden="true">
+            <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            Please fill in all the required fields marked with an asterisk *
+          </div>
+          <div id="activation-sent-alert" class="alert alert-info" role="alert" hidden="true">
+            Welcome pack email has been resent successfully
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="clear-user" type="button" class="btn btn-warning" style="float:left"><i class="fa fa-eraser fa-fw"></i> Clear</button>
+        <button id="resend-activation" type="button" class="btn btn-info" style="float:left"><i class="fa fa-envelope-o fa-fw"></i> Resend</button>
+        <button id="delete-user" type="button" class="btn btn-danger" style="float:left"><i class="fa fa-trash fa-fw"></i> Delete</button>
+        <button id="save-user" type="button" class="btn btn-success"><i class="fa fa-floppy-o fa-fw"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

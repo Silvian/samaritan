@@ -13,7 +13,12 @@ from django.utils.timezone import now
 from django_common.auth_backends import User
 
 from samaritan.celery import app
-from emailservice.models import PasswordResetEmailConfiguration, ChurchEmailConfiguration
+from emailservice.models import (
+    ChurchEmailConfiguration,
+    PasswordResetEmailConfiguration,
+    WelcomeEmailConfiguration,
+)
+
 from emailservice.mail import send_password_email
 
 logger = get_task_logger(__name__)
@@ -39,6 +44,29 @@ def send_email(user_id, site_url, temp_passwd):
             domain=site_url,
         )
         logger.info("Sending email to: {}".format(user.email))
+        logger.info("Site domain url: {}".format(site_url))
+
+
+@app.task
+def send_welcome_pack(user_id, site_url, temp_passwd):
+    """Send the user's welcome pack email when a new user is created."""
+    email_config = ChurchEmailConfiguration.load()
+    welcome_email = WelcomeEmailConfiguration.load()
+
+    if welcome_email.send_email and welcome_email.email_subject and welcome_email.email_message:
+        user = User.objects.get(id=user_id)
+        send_password_email(
+            sender_email=email_config.church_email,
+            sender_name=email_config.church_signature,
+            recipient_first_name=user.first_name,
+            recipient_email=user.email,
+            subject=welcome_email.email_subject,
+            message=welcome_email.email_message,
+            username=user.username,
+            password=temp_passwd,
+            domain=site_url,
+        )
+        logger.info("Sending welcome pack to: {}".format(user.email))
         logger.info("Site domain url: {}".format(site_url))
 
 

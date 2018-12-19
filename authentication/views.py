@@ -70,7 +70,6 @@ def forgot_password(request):
         return JsonResponse(failure_response)
     
 
-
 @login_required
 def reset_view(request):
     context = SettingsConstants.get_settings()

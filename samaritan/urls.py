@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^roles/', views.RolesView.as_view(), name='roles'),
     url(r'^history/', views.HistoricalView.as_view(), name='history'),
     url(r'^user/', views.UserProfileView.as_view(), name='user'),
+    url(r'^accounts/', views.UserAccountsView.as_view(), name='accounts'),
     url(r'^views/role_members', views.RoleMembersView.as_view(), name='roleMembers'),
     url(r'^views/group_members', views.GroupMembersView.as_view(), name='groupMembers'),
     url(r'^views/group_add', views.GroupMembersAddView.as_view(), name='addGroupMembers'),
