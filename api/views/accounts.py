@@ -76,6 +76,8 @@ def update_user(request):
 
         if form.is_valid():
             user.profile.mobile_number = request.POST['mobile_number']
+            if user.id == request.user.id:
+                user.is_staff = True
             form.save()
             return JsonResponse(success_response)
         return JsonResponse(failure_response)

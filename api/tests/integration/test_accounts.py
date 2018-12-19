@@ -206,7 +206,7 @@ class TestAccountsIntegrationTesting(TestCase):
 
 
 class TestUserActivateAndDeleteIntegrationTesting(TestCase):
-    """Test user cannot deactivate or delete its own account."""
+    """Test user cannot deactivate, remove privileges or delete its own account."""
 
     def setUp(self):
         self.admin_user = UserFactory(is_staff=True)
@@ -229,6 +229,49 @@ class TestUserActivateAndDeleteIntegrationTesting(TestCase):
         response_json = response.json()
 
         self.assertFalse(response_json["success"])
+
+    def test_update_admin_user(self):
+        """Test that the same user cannot remove admin privileges for his/her own account."""
+        self.client.force_login(user=self.admin_user)
+        response = self.client.post(
+            "/api/accounts/update",
+            {
+                "id": self.admin_user.pk,
+                "username": "updatedname",
+                "first_name": "firstname",
+                "last_name": "lastname",
+                "email": "updated@email.com",
+                "mobile_number": "+4412345667",
+                "is_staff": False,
+            }
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200
+        )
+        response_json = response.json()
+
+        self.assertTrue(response_json['success'])
+
+        response = self.client.get(
+            "/api/accounts/getSingle",
+            {
+                "id": self.admin_user.id
+            },
+        )
+        self.assertEqual(
+            response.status_code,
+            200
+        )
+        response_json = response.json()
+
+        self.assertEqual(response_json["username"], "updatedname")
+        self.assertEqual(response_json["first_name"], "firstname")
+        self.assertEqual(response_json["last_name"], "lastname")
+        self.assertEqual(response_json["email"], "updated@email.com")
+        self.assertEqual(response_json["mobile_number"], "+4412345667")
+        self.assertEqual(response_json["is_staff"], True)
 
     def test_delete_user(self):
         """Test that the same user cannot delete his/her own account."""
