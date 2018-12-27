@@ -14,6 +14,7 @@ from django.http import JsonResponse
 
 from api.views import success_response, failure_response
 from authentication.forms import UserForm
+from samaritan.settings import MEDIA_URL
 
 
 @login_required
@@ -26,6 +27,7 @@ def get_user_profile(request):
             "last_name": user.last_name,
             "email": user.email,
             "mobile_number": user.profile.mobile_number,
+            "profile_image": user.profile.profile_pic.url
         }
         return JsonResponse(response)
 

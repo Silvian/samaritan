@@ -28,6 +28,7 @@ function getProfileDetails() {
                 $('#email').val(data['email']);
                 $('#mobile').val(data['mobile_number']);
                 $('#username').val(data['username']);
+                $('#profile_image').attr('src', data['profile_image'])
             }
 
         }
