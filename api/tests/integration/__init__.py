@@ -57,6 +57,7 @@ class GroupFactory(DjangoModelFactory):
 
 class MembershipTypeFactory(DjangoModelFactory):
     """Membership Type Factory."""
+
     name = factory.Faker('name')
     description = factory.Faker('text')
 
@@ -66,6 +67,7 @@ class MembershipTypeFactory(DjangoModelFactory):
 
 class MemberFactory(DjangoModelFactory):
     """Factory for Members."""
+
     first_name = factory.Faker('name')
     last_name = factory.Faker('name')
     date_of_birth = factory.Faker('date_this_century')

@@ -21,12 +21,9 @@ def send_members_mail(request):
         members = Member.objects.filter(
             is_active=True, is_member=True
         ).order_by('last_name')
-
         for member in members:
             if member.email:
                 send_email_task.delay(
-                    from_email=request.user.email,
-                    from_name=request.user.first_name,
                     subject=request.POST['subject'],
                     message=request.POST['message'],
                     member_first_name=member.first_name,
@@ -47,8 +44,6 @@ def send_guests_mail(request):
         for member in members:
             if member.email:
                 send_email_task.delay(
-                    from_email=request.user.email,
-                    from_name=request.user.first_name,
                     subject=request.POST['subject'],
                     message=request.POST['message'],
                     member_first_name=member.first_name,
@@ -69,8 +64,6 @@ def send_everyone_mail(request):
         for member in members:
             if member.email:
                 send_email_task.delay(
-                    from_email=request.user.email,
-                    from_name=request.user.first_name,
                     subject=request.POST['subject'],
                     message=request.POST['message'],
                     member_first_name=member.first_name,
@@ -90,8 +83,6 @@ def send_group_mail(request):
         for member in group_members:
             if member.email:
                 send_email_task.delay(
-                    from_email=request.user.email,
-                    from_name=request.user.first_name,
                     subject=request.POST['subject'],
                     message=request.POST['message'],
                     member_first_name=member.first_name,

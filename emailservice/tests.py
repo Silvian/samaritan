@@ -17,11 +17,7 @@ class TestEmailTaskTestCase(TestCase):
         """Test send mail task"""
         subject = "Test subject"
         message = "Test message"
-        sender_email = "test@test.com"
-        sender_name = "Test name"
         tasks.send_email_task(
-            from_email=sender_email, 
-            from_name=sender_name, 
             subject=subject, 
             message=message,
             member_first_name=self.member.first_name,
@@ -37,66 +33,105 @@ class EmailServiceTestIntegrationTestCase(TestCase):
         self.user = UserFactory(is_superuser=True)
         self.admin_user = UserFactory(is_staff=True)
         self.group = GroupFactory()
-        
-    def test_send_members_mail(self):
+        self.subject = "Testing subject"
+        self.message = "Testing message"
+
+    @mock.patch("emailservice.tasks.send_email_task.delay")
+    def test_send_members_mail(self, send_email_task_mock):
         """Test that an authenticated user can send emails to all members"""
         self.client.force_login(user=self.user)
+        member = MemberFactory(is_active=True, is_member=True)
         response = self.client.post(
             "/email/send/members",
             {
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
             response.status_code,
             200
         )
-    
-    def test_send_guests_mail(self):
+        send_email_task_mock.assert_called_once_with(
+            subject=self.subject,
+            message=self.message,
+            member_first_name=member.first_name,
+            member_last_name=member.last_name,
+            member_email=member.email,
+        )
+
+    @mock.patch("emailservice.tasks.send_email_task.delay")
+    def test_send_guests_mail(self, send_email_task_mock):
         """Test that an authenticated user can send emails to all guests"""
         self.client.force_login(user=self.user)
+        member = MemberFactory(is_active=True, is_member=False)
         response = self.client.post(
             "/email/send/guests",
             {
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
             response.status_code,
             200
         )
-    
-    def test_send_everyone_mail(self):
+        send_email_task_mock.assert_called_once_with(
+            subject=self.subject,
+            message=self.message,
+            member_first_name=member.first_name,
+            member_last_name=member.last_name,
+            member_email=member.email,
+        )
+
+    @mock.patch("emailservice.tasks.send_email_task.delay")
+    def test_send_everyone_mail(self, send_email_task_mock):
         """Test that an authenticated user can send emails to everyone"""
         self.client.force_login(user=self.user)
+        member = MemberFactory(is_active=True)
         response = self.client.post(
             "/email/send/everyone",
             {
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
             response.status_code,
             200
         )
-    
-    def test_send_group_mail(self):
+        send_email_task_mock.assert_called_once_with(
+            subject=self.subject,
+            message=self.message,
+            member_first_name=member.first_name,
+            member_last_name=member.last_name,
+            member_email=member.email,
+        )
+
+    @mock.patch("emailservice.tasks.send_email_task.delay")
+    def test_send_group_mail(self, send_email_task_mock):
         """Test that an authenticated user can send emails to a group"""
         self.client.force_login(user=self.user)
+        member = MemberFactory(is_active=True)
+        self.group.members.add(member)
         response = self.client.post(
             "/email/send/group",
             {
                 "id": self.group.id,
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
             response.status_code,
             200
+        )
+        send_email_task_mock.assert_called_once_with(
+            subject=self.subject,
+            message=self.message,
+            member_first_name=member.first_name,
+            member_last_name=member.last_name,
+            member_email=member.email,
         )
     
     def test_not_authenticated_send_members_mail(self):
@@ -104,8 +139,8 @@ class EmailServiceTestIntegrationTestCase(TestCase):
         response = self.client.post(
             "/email/send/members",
             {
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
@@ -118,8 +153,8 @@ class EmailServiceTestIntegrationTestCase(TestCase):
         response = self.client.post(
             "/email/send/guests",
             {
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
@@ -132,8 +167,8 @@ class EmailServiceTestIntegrationTestCase(TestCase):
         response = self.client.post(
             "/email/send/everyone",
             {
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
@@ -147,8 +182,8 @@ class EmailServiceTestIntegrationTestCase(TestCase):
             "/email/send/group",
             {
                 "id": self.group.id,
-                "subject": "Testing subject",
-                "message": "Testing message"
+                "subject": self.subject,
+                "message": self.message,
             }
         )
         self.assertEqual(
