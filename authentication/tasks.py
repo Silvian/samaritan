@@ -25,7 +25,7 @@ logger = get_task_logger(__name__)
 
 
 @app.task
-def send_email(user_id, site_url, temp_passwd):
+def send_reset_email(user_id, site_url, temp_passwd):
     """Send forgot password email to reset password."""
     email_config = ChurchEmailConfiguration.load()
     password_reset = PasswordResetEmailConfiguration.load()

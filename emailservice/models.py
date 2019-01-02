@@ -117,3 +117,6 @@ class WelcomeEmailConfiguration(SingletonModel):
     email_subject = models.CharField(max_length=200)
     email_message = models.TextField()
     send_email = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

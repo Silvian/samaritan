@@ -10,7 +10,7 @@ from django.db.models.signals import post_save
 from django_common.auth_backends import User
 from django.dispatch import receiver
 
-from .tasks import send_email, send_welcome_pack
+from .tasks import send_reset_email, send_welcome_pack
 from .utils import generate_password
 
 
@@ -37,7 +37,7 @@ class Profile(models.Model):
     def send_password_email(self, site_url):
         """Send email with temporary password."""
         temp_passwd = self.generate_temp_password()
-        send_email.delay(self.user.id, site_url, temp_passwd)
+        send_reset_email.delay(self.user.id, site_url, temp_passwd)
 
     def send_welcome_email(self, site_url):
         """Send the welcome pack email."""
