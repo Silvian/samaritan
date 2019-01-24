@@ -11,10 +11,13 @@ Please note: All methods and classes in here must be secure (i.e. use @login_req
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user
 from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
+
 
 from api.views import success_response, failure_response
 from authentication.forms import UserForm
-from samaritan.settings import MEDIA_URL
+
+fs = FileSystemStorage()
 
 
 @login_required
@@ -37,9 +40,12 @@ def update_user_profile(request):
     if request.method == 'POST':
         user = get_user(request)
         form = UserForm(request.POST or None, instance=user)
-        if form.is_valid():
+        profile_image = request.FILES['profile_image']
+        if form.is_valid() and profile_image:
             user.profile.mobile_number = request.POST['mobile_number']
+            user.profile.profile_pic = profile_image
             form.save()
+            fs.save(profile_image.name, profile_image)
             return JsonResponse(success_response)
 
         return JsonResponse(failure_response)

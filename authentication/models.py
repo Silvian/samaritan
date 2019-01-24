@@ -29,7 +29,8 @@ class Profile(models.Model):
     profile_pic = models.ImageField(
         max_length=100,
         blank=True,
-        upload_to='profile_image'
+        default='images/guest.png',
+        upload_to='profile_images',
     )
     password_reset = models.BooleanField(
         default=False,
