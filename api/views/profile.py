@@ -11,8 +11,6 @@ Please note: All methods and classes in here must be secure (i.e. use @login_req
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user
 from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
-
 
 from api.views import success_response, failure_response
 from authentication.forms import UserForm
