@@ -110,7 +110,7 @@ class Member(models.Model):
     profile_pic = models.ImageField(
         max_length=100,
         blank=True,
-        upload_to='profile_image',
+        upload_to='profile_images_members',
         null=True
     )
     is_baptised = models.BooleanField(

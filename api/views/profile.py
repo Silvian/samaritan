@@ -17,8 +17,6 @@ from django.core.files.storage import FileSystemStorage
 from api.views import success_response, failure_response
 from authentication.forms import UserForm
 
-fs = FileSystemStorage()
-
 
 @login_required
 def get_user_profile(request):
@@ -45,7 +43,6 @@ def update_user_profile(request):
             user.profile.mobile_number = request.POST['mobile_number']
             user.profile.profile_pic = profile_image
             form.save()
-            fs.save(profile_image.name, profile_image)
             return JsonResponse(success_response)
 
         return JsonResponse(failure_response)
