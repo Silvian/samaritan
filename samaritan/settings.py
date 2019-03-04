@@ -118,6 +118,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -250,6 +251,8 @@ AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
 REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'samaritan/media')
+MEDIA_URL = '/media/'
 
 # Password reset number of days before expiry
 PASSWORD_RESET_THRESHOLD = 60

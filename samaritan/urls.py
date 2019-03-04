@@ -18,6 +18,8 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib import admin
 from . import views
@@ -41,4 +43,4 @@ urlpatterns = [
     url(r'^views/group_members', views.GroupMembersView.as_view(), name='groupMembers'),
     url(r'^views/group_add', views.GroupMembersAddView.as_view(), name='addGroupMembers'),
     url(r'^$', views.IndexView.as_view(), name='index'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

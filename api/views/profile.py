@@ -26,6 +26,7 @@ def get_user_profile(request):
             "last_name": user.last_name,
             "email": user.email,
             "mobile_number": user.profile.mobile_number,
+            "profile_image": user.profile.profile_pic.url
         }
         return JsonResponse(response)
 
@@ -35,8 +36,10 @@ def update_user_profile(request):
     if request.method == 'POST':
         user = get_user(request)
         form = UserForm(request.POST or None, instance=user)
-        if form.is_valid():
+        profile_image = request.FILES['profile_image']
+        if form.is_valid() and profile_image:
             user.profile.mobile_number = request.POST['mobile_number']
+            user.profile.profile_pic = profile_image
             form.save()
             return JsonResponse(success_response)
 

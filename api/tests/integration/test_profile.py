@@ -2,6 +2,8 @@
 
 from django.test import TestCase
 from api.tests.integration import UserFactory
+from django.core.files.uploadedfile import SimpleUploadedFile
+from samaritan.settings import MEDIA_ROOT
 
 
 class TestProfileIntegrationTesting(TestCase):
@@ -31,6 +33,11 @@ class TestProfileIntegrationTesting(TestCase):
     def test_update_user_profile(self):
         """Test that an authenticate user can update his profile"""
         self.client.force_login(user=self.user)
+        profile_image = SimpleUploadedFile(
+            name='guest.png',
+            content=open(str(MEDIA_ROOT + '/images/guest.png'), 'rb').read(),
+            content_type='image/png'
+        )
         response = self.client.post(
                 "/api/profile/update",
                 {
@@ -39,6 +46,7 @@ class TestProfileIntegrationTesting(TestCase):
                     "last_name": "lastname",
                     "email": "sample@email.com",
                     "mobile_number": "+441234566",
+                    "profile_image": profile_image,
                 }
             )
         self.assertEqual(

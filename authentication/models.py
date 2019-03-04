@@ -26,6 +26,12 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
+    profile_pic = models.ImageField(
+        max_length=100,
+        blank=True,
+        default='images/guest.png',
+        upload_to='profile_images',
+    )
     password_reset = models.BooleanField(
         default=False,
     )

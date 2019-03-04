@@ -28,6 +28,7 @@ function getProfileDetails() {
                 $('#email').val(data['email']);
                 $('#mobile').val(data['mobile_number']);
                 $('#username').val(data['username']);
+                $('#profile_image').attr('src', data['profile_image'])
             }
 
         }
@@ -45,18 +46,21 @@ function updateProfileDetails() {
         return
     }
 
+    var formData = new FormData()
+    formData.append('first_name', $('#first_name').val());
+    formData.append('last_name', $('#last_name').val());
+    formData.append('email', $('#email').val());
+    formData.append('mobile_number', $('#mobile').val());
+    formData.append('username', $('#username').val());
+    formData.append('profile_image', $('#profile_pic')[0].files[0])
+    formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
     $.ajax({
         type: 'POST',
         url: '/api/profile/update',
-        dataType: 'json',
-        data: {
-                    first_name      : $('#first_name').val(),
-                    last_name       : $('#last_name').val(),
-                    email           : $('#email').val(),
-                    mobile_number   : $('#mobile').val(),
-                    username        : $('#username').val(),
-                    csrfmiddlewaretoken : getCookie('csrftoken')
-                },
+        data: formData,
+        contentType: false,
+        processData: false,
         success: function (data) {
             ecunblockui();
             getProfileDetails();
