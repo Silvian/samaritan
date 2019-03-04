@@ -200,27 +200,43 @@ function submitMember(members_table, addressId) {
          gdpr = true;
     }
 
+    var formData = new FormData();
+    formData.append("id", id);
+    formData.append("first_name", $('#first_name').val());
+    formData.append("last_name", $('#last_name').val());
+    formData.append("date_of_birth", standardDate($('#date_of_birth').val()));
+    formData.append("telephone", $('#telephone').val());
+    formData.append("email", $('#email').val());
+    formData.append("address", address);
+    formData.append("details", $('#details').val());
+    formData.append("is_baptised", is_baptised);
+    formData.append("baptismal_date", standardDate($('#baptismal_date').val()));
+    formData.append("baptismal_place", $('#baptismal_place').val());
+    formData.append("is_member", is_member);
+    formData.append("membership_type", $('select[name=membership-type-select]').val());
+    formData.append("membership_date", standardDate($('#membership_date').val()));
+    formData.append("church_role", $('select[name=church-role-select]').val());
+    formData.append("gdpr", gdpr);
+    formData.append("is_active", true);
+    formData.append("csrfmiddlewaretoken", getCookie('csrftoken'));
+    formData.append("profile_pic", $('#profile_pic_input')[0].files[0]);
+
+    /* For debugging */
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+    }
+
     /* Send the data using post */
-    var posting = $.post( url, {
-                      id              : id,
-                      first_name      : $('#first_name').val(),
-                      last_name       : $('#last_name').val(),
-                      date_of_birth   : standardDate($('#date_of_birth').val()),
-                      telephone       : $('#telephone').val(),
-                      email           : $('#email').val(),
-                      address         : address,
-                      details         : $('#details').val(),
-                      is_baptised     : is_baptised,
-                      baptismal_date  : standardDate($('#baptismal_date').val()),
-                      baptismal_place : $('#baptismal_place').val(),
-                      is_member       : is_member,
-                      membership_type : $('select[name=membership-type-select]').val(),
-                      membership_date : standardDate($('#membership_date').val()),
-                      church_role     : $('select[name=church-role-select]').val(),
-                      gdpr            : gdpr,
-                      is_active       : true,
-                      csrfmiddlewaretoken : getCookie('csrftoken')
-    });
+    var posting = $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        error: function (data) {
+            console.log(data);
+        }
+    })
 
     /* Alerts the results */
     posting.done(function( data ) {
@@ -491,4 +507,25 @@ function sendEmail(url) {
         $('#email-required-fields-alert').show();
     }
 
+}
+
+function get_profile_image(id) {
+    if(id!=''){
+        $.ajax({
+            type: 'GET',
+            url: '/api/members/getMember',
+            dataType: 'json',
+            data: {id},
+            success: function (data) {
+                console.log(data);
+                //$('#profile_pic').attr('src',)
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+    else {
+        $('#profile_pic').attr('src', '/media/images/guest.png');
+    }
 }

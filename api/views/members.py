@@ -59,7 +59,7 @@ def get_member(request):
 @staff_member_required
 def add_new_members(request):
     if request.method == 'POST':
-        form = MemberForm(request.POST)
+        form = MemberForm(request.POST, request.FILES or None)
         form.save()
         return HttpResponse(json.dumps(success_response), content_type='application/json')
 

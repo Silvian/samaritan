@@ -109,7 +109,7 @@ class Member(models.Model):
     )
     profile_pic = models.ImageField(
         max_length=100,
-        blank=True,
+        blank=True,   
         upload_to='profile_images_members',
         null=True
     )

@@ -36,6 +36,7 @@ class MemberForm(forms.ModelForm):
             'church_role',
             'is_active',
             'gdpr',
+            'profile_pic',
         )
 
 
