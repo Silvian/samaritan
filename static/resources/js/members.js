@@ -89,7 +89,6 @@ $(document).ready(function(){
         $('#terminate-member').hide();
         $('#membership_details').show();
         $("#add-member-modal").modal('show');
-        get_profile_image($('#member-id').val());
     });
 
     $('#is_baptised').click(function() {

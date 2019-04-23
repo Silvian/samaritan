@@ -13,7 +13,7 @@ class Command(BaseCommand):
         """Create default super user."""
         if not User.objects.filter(username='root').first():
             user = User.objects.create_superuser('root', 'root@admin.com', 'root')
-            print("Default super user created:", user.username)
+            print "Default super user created: {}".format(user.username)
 
         else:
-            print("Default super user already exists")
+            print "Default super user already exists"

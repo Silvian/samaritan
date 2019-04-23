@@ -17,4 +17,4 @@ class Command(BaseCommand):
         for user in users:
             if not Profile.objects.filter(user=user):
                 Profile.objects.create(user=user)
-                print("Profile created for user:", user.username)
+                print "Profile created for user: {}".format(user.username)

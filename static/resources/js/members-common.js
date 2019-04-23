@@ -24,6 +24,7 @@ function loadAddresses() {
 function loadMembershipTypes() {
     ecblockui();
     $("#membership-type-select").html("");
+    var default_membership_type = 0;
     $.ajax({
         type: 'GET',
         url: '/api/membership/getTypes',
@@ -33,12 +34,17 @@ function loadMembershipTypes() {
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
+                if(data[i].fields.name == "Not a member") {
+                    default_membership_type = data[i].pk
+                }
                 options += '<option value="' + htmlEntities(data[i].pk) + '">' + htmlEntities(data[i].fields.name) + '</option> ';
             });
             $("#membership-type-select").append(options);
             $("#membership-type-select").select2('val', 1);
         }
     });
+
+    return default_membership_type;
 }
 
 function loadChurchRoles() {
@@ -89,7 +95,12 @@ function addMember(members_table) {
         }
     }
 
-    if($('#first_name').val()=="" || $('#last_name').val()=="" || $('select[name=church-role-select]').val()==null || $('#date_of_birth').val()==""){
+    if(
+        $('#first_name').val()=="" ||
+        $('#last_name').val()=="" ||
+        $('select[name=church-role-select]').val()==null ||
+        $('#date_of_birth').val()==""
+    ){
         $('#required-fields-alert').show();
 
         return;
@@ -200,31 +211,55 @@ function submitMember(members_table, addressId) {
          gdpr = true;
     }
 
+    var date_of_birth = "";
+
+    if($('#date_of_birth').val() != "") {
+        date_of_birth = standardDate($('#date_of_birth').val());
+    }
+
+    var baptismal_date = "";
+    if($('#baptismal_date').val() != "") {
+        baptismal_date = standardDate($('#baptismal_date').val());
+    }
+
+    var membership_type = loadMembershipTypes();
+
+    if($('select[name=membership-type-select]').val()!=null) {
+        membership_type = $('select[name=membership-type-select]').val();
+    }
+
+    var membership_date = "";
+
+    if($('#membership_date').val() != "") {
+        membership_date = standardDate($('#membership_date').val());
+    }
+
+    var church_role = 1;
+
+    if($('select[name=church-role-select]').val() != "" != null) {
+        church_role = $('select[name=church-role-select]').val();
+    }
+
     var formData = new FormData();
     formData.append("id", id);
+    formData.append("profile_pic", $('#profile_pic_input')[0].files[0]);
     formData.append("first_name", $('#first_name').val());
     formData.append("last_name", $('#last_name').val());
-    formData.append("date_of_birth", standardDate($('#date_of_birth').val()));
+    formData.append("date_of_birth", date_of_birth);
     formData.append("telephone", $('#telephone').val());
     formData.append("email", $('#email').val());
     formData.append("address", address);
     formData.append("details", $('#details').val());
     formData.append("is_baptised", is_baptised);
-    formData.append("baptismal_date", standardDate($('#baptismal_date').val()));
+    formData.append("baptismal_date", baptismal_date);
     formData.append("baptismal_place", $('#baptismal_place').val());
     formData.append("is_member", is_member);
-    formData.append("membership_type", $('select[name=membership-type-select]').val());
-    formData.append("membership_date", standardDate($('#membership_date').val()));
-    formData.append("church_role", $('select[name=church-role-select]').val());
+    formData.append("membership_type", membership_type);
+    formData.append("membership_date", membership_date);
+    formData.append("church_role", church_role);
     formData.append("gdpr", gdpr);
     formData.append("is_active", true);
     formData.append("csrfmiddlewaretoken", getCookie('csrftoken'));
-    formData.append("profile_pic", $('#profile_pic_input')[0].files[0]);
-
-    /* For debugging */
-    for (var pair of formData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]); 
-    }
 
     /* Send the data using post */
     var posting = $.ajax({
@@ -234,9 +269,8 @@ function submitMember(members_table, addressId) {
         processData: false,
         contentType: false,
         error: function (data) {
-            console.log(data);
         }
-    })
+    });
 
     /* Alerts the results */
     posting.done(function( data ) {
@@ -262,6 +296,7 @@ function editMember(id, members_table, title) {
 	         var member = data[0];
 
              $('#member-id').val(member.pk);
+             $('#profile_pic').attr('src', "/media/" + member.fields.profile_pic);
              $('#first_name').val(member.fields.first_name);
              $('#last_name').val(member.fields.last_name);
              $('#date_of_birth').val(europeanDate(member.fields.date_of_birth));
@@ -443,6 +478,7 @@ function clearFields() {
    $('#membership-type').html("");
    $('#membership_date').val("");
    $('#baptismal_details').hide();
+   $('#profile_pic').attr('src', "/media/images/guest.png");
 
 
 }
@@ -507,25 +543,4 @@ function sendEmail(url) {
         $('#email-required-fields-alert').show();
     }
 
-}
-
-function get_profile_image(id) {
-    if(id!=''){
-        $.ajax({
-            type: 'GET',
-            url: '/api/members/getMember',
-            dataType: 'json',
-            data: {id},
-            success: function (data) {
-                console.log(data);
-                //$('#profile_pic').attr('src',)
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        })
-    }
-    else {
-        $('#profile_pic').attr('src', '/media/images/guest.png');
-    }
 }

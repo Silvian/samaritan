@@ -21,6 +21,7 @@ class Command(BaseCommand):
             'Transfer': 'Transferred membership to this church from another church of the same faith.',
             'Testimony of faith':
                 'Became member by pronouncing a testimony of faith after being baptised in a similar church.',
+            'Not a member': 'Default membership type.',
         }
 
         for name, description in membership_types.items():
@@ -33,7 +34,7 @@ class Command(BaseCommand):
             )
 
             if created:
-                print("Membership type created: ", membership_type.name)
+                print "Membership type created: {}".format(membership_type.name)
 
             else:
-                print("Membership type already exists: ", membership_type.name)
+                print "Membership type already exists: {}".format(membership_type.name)

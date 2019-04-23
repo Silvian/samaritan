@@ -27,8 +27,8 @@ class Profile(models.Model):
         null=True,
     )
     profile_pic = models.ImageField(
-        max_length=100,
         blank=True,
+        null=True,
         default='images/guest.png',
         upload_to='profile_images',
     )
@@ -57,6 +57,12 @@ class Profile(models.Model):
         self.user.set_password(passwd)
         self.user.save()
         return passwd
+
+    def save(self, *args, **kwargs):
+        if not self.profile_pic:
+            self.profile_pic = 'images/guest.png'
+
+        super(Profile, self).save(*args, **kwargs)
 
     def __str__(self):
         """Return the string representation."""

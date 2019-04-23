@@ -52,7 +52,7 @@ function updateProfileDetails() {
     formData.append('email', $('#email').val());
     formData.append('mobile_number', $('#mobile').val());
     formData.append('username', $('#username').val());
-    formData.append('profile_image', $('#profile_pic')[0].files[0])
+    formData.append('profile_image', $('#profile_pic')[0].files[0]);
     formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
 
     $.ajax({
