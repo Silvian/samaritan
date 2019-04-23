@@ -75,7 +75,6 @@ class MemberFactory(DjangoModelFactory):
     address = factory.SubFactory(AddressFactory)
     email = factory.Faker('email')
     details = factory.Faker('text')
-    profile_pic = factory.Faker('text')
     is_baptised = factory.Faker('boolean')
     baptismal_date = factory.Faker('date_this_century')
     baptismal_place = factory.Faker('name')

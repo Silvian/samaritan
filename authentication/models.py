@@ -26,6 +26,12 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
+    profile_pic = models.ImageField(
+        blank=True,
+        null=True,
+        default='images/guest.png',
+        upload_to='profile_images',
+    )
     password_reset = models.BooleanField(
         default=False,
     )
@@ -51,6 +57,12 @@ class Profile(models.Model):
         self.user.set_password(passwd)
         self.user.save()
         return passwd
+
+    def save(self, *args, **kwargs):
+        if not self.profile_pic:
+            self.profile_pic = 'images/guest.png'
+
+        super(Profile, self).save(*args, **kwargs)
 
     def __str__(self):
         """Return the string representation."""

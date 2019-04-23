@@ -23,7 +23,7 @@ class Command(BaseCommand):
         )
 
         if created:
-            print("Default role created: ", role.name)
+            print "Default role created: {}".format(role.name)
 
         else:
-            print("Default role already exists")
+            print "Default role already exists"

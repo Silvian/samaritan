@@ -16,7 +16,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
-from api.views import success_response
+from api.views import success_response, failure_response
 from samaritan.forms import MemberForm
 from samaritan.models import MembershipType, Member
 
@@ -59,9 +59,16 @@ def get_member(request):
 @staff_member_required
 def add_new_members(request):
     if request.method == 'POST':
-        form = MemberForm(request.POST)
-        form.save()
-        return HttpResponse(json.dumps(success_response), content_type='application/json')
+        form = MemberForm(request.POST or None)
+        if form.is_valid():
+            member = form.save()
+            profile_image = request.FILES.get(['profile_pic'][0], default=None)
+            if profile_image:
+                member.profile_pic = profile_image
+                member.save()
+            return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+        return HttpResponse(json.dumps(failure_response), content_type='application/json')
 
 
 @login_required
@@ -71,8 +78,13 @@ def update_member(request):
         member = get_object_or_404(Member, id=request.POST['id'])
         form = MemberForm(request.POST or None, instance=member)
         if form.is_valid():
+            profile_image = request.FILES.get(['profile_pic'][0], default=None)
+            if profile_image:
+                member.profile_pic = profile_image
             form.save()
             return HttpResponse(json.dumps(success_response), content_type='application/json')
+
+        return HttpResponse(json.dumps(failure_response), content_type='application/json')
 
 
 @login_required

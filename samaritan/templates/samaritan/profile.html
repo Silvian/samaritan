@@ -24,6 +24,9 @@
 <h4>User profile settings</h4>
 
 <div class="col-md-6 well">
+    <div class="text-center my-3">
+        <img class="img" src="" id="profile_image" height="128" width="128">
+    </div>
     <ul>
         <li><b>First name</b>
             <fieldset class="form-group">
@@ -50,6 +53,12 @@
                 <input class="form-control" id="username" name="username" path="username" type="username" placeholder="User name *" maxlength="200" required/>
             </fieldset>
         </li>
+        <li><b>Profile picture</b>
+            <fieldset class="form-group">
+                <input class="form-control" id="profile_pic" name="profile_pic" type="file" placeholder="Profile Image" accept=".png,.jpeg,.jpg"/>
+          </fieldset>
+        </li>
+
     </ul>
     <button type="button" class="btn btn-success btn-md" id="save-profile">
         <i class="fa fa-save fa-fw"></i> Save settings

@@ -107,10 +107,11 @@ class Member(models.Model):
         blank=True,
         null=True,
     )
-    profile_pic = models.CharField(
-        max_length=200,
+    profile_pic = models.ImageField(
         blank=True,
         null=True,
+        upload_to='profile_images_members',
+        default='images/guest.png',
     )
     is_baptised = models.BooleanField(
         default=False,
@@ -129,8 +130,7 @@ class Member(models.Model):
     )
     membership_type = models.ForeignKey(
         MembershipType,
-        blank=True,
-        null=True,
+        on_delete=models.CASCADE,
     )
     membership_date = models.DateField(
         blank=True,
@@ -153,6 +153,12 @@ class Member(models.Model):
     created_date = models.DateTimeField(
         default=timezone.now,
     )
+
+    def save(self, *args, **kwargs):
+        if not self.profile_pic:
+            self.profile_pic = 'images/guest.png'
+
+        super(Member, self).save(*args, **kwargs)
 
     def publish(self):
         self.created_date = timezone.now()
