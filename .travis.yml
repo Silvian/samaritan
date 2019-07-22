@@ -18,4 +18,4 @@ script:
 
 # Push the results back to codecov
 after_success:
-  - codecov
+  - codecov -t CODECOV_TOKEN
