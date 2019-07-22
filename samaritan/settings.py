@@ -251,7 +251,7 @@ AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
 
 REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'samaritan/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Password reset number of days before expiry
