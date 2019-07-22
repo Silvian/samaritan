@@ -16,6 +16,3 @@ before_install:
 script:
   - scripts/test.sh
 
-# Push the results back to codecov
-after_success:
-  - codecov -t CODECOV_TOKEN
