@@ -116,6 +116,8 @@ function clearFields() {
     $('#last_name').val("");
     $('#email').val("");
     $('#mobile').val("");
+    $('#profile_pic_input').val("");
+    $('#profile_pic').attr("src", "/media/images/guest.png");
 }
 
 function activeButton(is_active, row_id) {
@@ -160,16 +162,24 @@ function submitUser(users_table) {
         url = '/api/accounts/update';
     }
 
+    var formData = new FormData();
+    formData.append("id", id);
+    formData.append("username", $('#user_name').val());
+    formData.append("first_name", $('#first_name').val());
+    formData.append("last_name", $('#last_name').val());
+    formData.append("email", $('#email').val());
+    formData.append("mobile_number", $('#mobile').val());
+    formData.append("profile_pic", $('#profile_pic_input')[0].files[0]);
+    formData.append("is_staff", is_staff);
+    formData.append("csrfmiddlewaretoken", getCookie('csrftoken'));
+
     /* Send the data using post */
-    var posting = $.post( url, {
-                      id              : id,
-                      username        : $('#user_name').val(),
-                      first_name      : $('#first_name').val(),
-                      last_name       : $('#last_name').val(),
-                      email           : $('#email').val(),
-                      mobile_number   : $('#mobile').val(),
-                      is_staff        : is_staff,
-                      csrfmiddlewaretoken : getCookie('csrftoken')
+    var posting = $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
     });
 
     /* Alerts the results */
@@ -193,14 +203,15 @@ function editUsers(id, users_table, title) {
 	    data: { id: id},
 	    success: function(data) {
 	         ecunblockui();
-	         var user = data;
-
+             var user = data;
+             
              $('#user-id').val(id);
              $('#user_name').val(user.username);
              $('#first_name').val(user.first_name);
              $('#last_name').val(user.last_name);
              $('#email').val(user.email);
              $('#mobile').val(user.mobile_number);
+             $('#profile_pic').attr('src', "/media/" + data.profile_image);
              setCheckbox('#is_staff', user.is_staff);
 
              $('#required-fields-alert').hide();
