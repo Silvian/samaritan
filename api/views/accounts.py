@@ -46,6 +46,7 @@ def get_user_details(request):
             "mobile_number": user.profile.mobile_number,
             "is_active": user.is_active,
             "is_staff": user.is_staff,
+            "profile_image": str(user.profile.profile_pic)
         }
         return JsonResponse(response)
 
@@ -59,6 +60,9 @@ def create_new_user(request):
             new_user = form.save()
             new_user.profile.mobile_number = request.POST['mobile_number']
             new_user.is_active = True
+            profile_image = request.FILES.get(['profile_pic'][0], default=None)
+            if profile_image:
+			    new_user.profile.profile_pic = profile_image
             new_user.save()
 
             # Send the user's welcome pack email
@@ -76,6 +80,9 @@ def update_user(request):
 
         if form.is_valid():
             user.profile.mobile_number = request.POST['mobile_number']
+            profile_image = request.FILES.get(['profile_pic'][0], default=None)
+            if profile_image:
+                user.profile.profile_pic = profile_image
             if user.id == request.user.id:
                 user.is_staff = True
             form.save()
