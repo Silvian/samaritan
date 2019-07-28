@@ -203,7 +203,8 @@ function editUsers(id, users_table, title) {
 	    data: { id: id},
 	    success: function(data) {
 	         ecunblockui();
-	         var user = data;
+             var user = data;
+             
              $('#user-id').val(id);
              $('#user_name').val(user.username);
              $('#first_name').val(user.first_name);
