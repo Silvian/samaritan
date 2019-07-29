@@ -62,7 +62,7 @@ def create_new_user(request):
             new_user.is_active = True
             profile_image = request.FILES.get(['profile_pic'][0], default=None)
             if profile_image:
-			    new_user.profile.profile_pic = profile_image
+                new_user.profile.profile_pic = profile_image
             new_user.save()
 
             # Send the user's welcome pack email
