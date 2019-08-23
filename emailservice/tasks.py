@@ -67,7 +67,7 @@ def send_birthday_greeting():
             # check each member's date of birth matches current day and month
             if member.date_of_birth.month == today.month and member.date_of_birth.day == today.day \
                     and member.date_of_birth.year > birthday_config.threshold:
-                if member.church_role not in birthday_config.excluded_roles:
+                if member.church_role not in birthday_config.excluded_roles.all():
                     if member.email is not None and member.email != "":
                         logger.info("Sending greeting to: {} {}".format(member.last_name, member.first_name))
                         if not send_email(
@@ -106,7 +106,7 @@ def send_birthdays_list():
 
             for member in everyone:
                 if member.date_of_birth.month == last_month and member.date_of_birth.year > greeting_config.threshold:
-                    if member.church_role not in greeting_config.excluded_roles:
+                    if member.church_role not in greeting_config.excluded_roles.all():
                         birthdays_list.append(member)
 
     # get church roles from config
