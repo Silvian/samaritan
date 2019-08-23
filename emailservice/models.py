@@ -52,6 +52,7 @@ class BirthdayEmailGreetingConfiguration(SingletonModel):
     threshold = models.IntegerField(default=1900)
     subject = models.CharField(max_length=500)
     greeting = models.TextField()
+    excluded_roles = models.ManyToManyField(ChurchRole)
     send_emails = models.BooleanField(default=False)
 
     def __str__(self):
