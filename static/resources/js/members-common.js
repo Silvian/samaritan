@@ -24,7 +24,7 @@ function loadAddresses() {
 function loadMembershipTypes() {
     ecblockui();
     $("#membership-type-select").html("");
-    var default_membership_type = 0;
+
     $.ajax({
         type: 'GET',
         url: '/api/membership/getTypes',
@@ -34,9 +34,6 @@ function loadMembershipTypes() {
             ecunblockui();
             var options = '';
             $.each(data, function(i, item) {
-                if(data[i].fields.name == "Not a member") {
-                    default_membership_type = data[i].pk
-                }
                 options += '<option value="' + htmlEntities(data[i].pk) + '">' + htmlEntities(data[i].fields.name) + '</option> ';
             });
             $("#membership-type-select").append(options);
@@ -44,7 +41,6 @@ function loadMembershipTypes() {
         }
     });
 
-    return default_membership_type;
 }
 
 function loadChurchRoles() {
@@ -146,12 +142,12 @@ function submitAddress(members_table) {
     url = '/api/addresses/add';
 
     var posting = $.post( url, {
-                  number    : $('#number').val(),
-                  street    : $('#street').val(),
-                  locality  : $('#locality').val(),
-                  city      : $('#city').val(),
-                  post_code : $('#post_code').val(),
-                  csrfmiddlewaretoken : getCookie('csrftoken')
+        number    : $('#number').val(),
+        street    : $('#street').val(),
+        locality  : $('#locality').val(),
+        city      : $('#city').val(),
+        post_code : $('#post_code').val(),
+        csrfmiddlewaretoken : getCookie('csrftoken')
     });
 
         posting.done(function( data ) {
@@ -222,9 +218,9 @@ function submitMember(members_table, addressId) {
         baptismal_date = standardDate($('#baptismal_date').val());
     }
 
-    var membership_type = loadMembershipTypes();
+    var membership_type = 1;
 
-    if($('select[name=membership-type-select]').val()!=null) {
+    if($('select[name=membership-type-select]').val() != "" != null) {
         membership_type = $('select[name=membership-type-select]').val();
     }
 
@@ -434,9 +430,9 @@ function terminateMember(members_table) {
         /* Send the data using post */
         ecblockui();
         var posting = $.post( url, {
-                          id    : id,
-                          notes : notes,
-                          csrfmiddlewaretoken : getCookie('csrftoken')
+            id    : id,
+            notes : notes,
+            csrfmiddlewaretoken : getCookie('csrftoken')
         });
 
         /* Alerts the results */
@@ -508,10 +504,11 @@ function sendEmail(url) {
             type: 'POST',
             url: url,
             dataType: 'json',
-            data: {subject: $('#email-subject').val(),
-                   message: $('#email-message').val(),
-                   csrfmiddlewaretoken : getCookie('csrftoken')
-                   },
+            data: {
+                subject: $('#email-subject').val(),
+                message: $('#email-message').val(),
+                csrfmiddlewaretoken : getCookie('csrftoken')
+            },
             success: function (data) {
                 $('#email-sending').hide();
                 if(data.success) {

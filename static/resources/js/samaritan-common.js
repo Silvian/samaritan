@@ -14,7 +14,6 @@ function getFormattedDate(date) {
 }
 
 function standardDate(date_string) {
-
     if(date_string != "") {
 
         var date = date_string.split("/");
@@ -28,7 +27,6 @@ function standardDate(date_string) {
 }
 
 function europeanDate(date_string) {
-
     if(date_string != null) {
 
         date = new Date(date_string);
@@ -83,21 +81,18 @@ function getCookie(name) {
 }
 
 function ecblockui() {
-
     $.blockUI({ message: '', baseZ: 2000});
     $.fancybox.showLoading();
 
 }
 
 function ecunblockui() {
-
     $.unblockUI();
     $.fancybox.hideLoading();
 
 }
 
 function setCheckbox(checkboxId, value) {
-
      if(value) {
         $(checkboxId).prop('checked', true);
      }
@@ -110,7 +105,6 @@ function setCheckbox(checkboxId, value) {
 
 // function to retrieve any parameter directly from URL, simply call function and specify parameter name you wish to retrieve.
 function getURLParameter(sParam){
-
 	var sPageURL = window.location.search.substring(1);
 	var sURLVariables = sPageURL.split('&');
 
@@ -128,6 +122,7 @@ function getURLParameter(sParam){
 // function to see if a date is inserted in a valid format
 function dateFormatValidator(date){
     patt = /\d\d.\d\d.\d\d\d\d/i;
+
     if(date.search(patt) === -1){
         return false;
     }
