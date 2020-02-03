@@ -236,6 +236,10 @@ function submitMember(members_table, addressId) {
         church_role = $('select[name=church-role-select]').val();
     }
 
+    if(!membership_type) {
+        membership_type = 1
+    }
+
     var formData = new FormData();
     formData.append("id", id);
     formData.append("profile_pic", $('#profile_pic_input')[0].files[0]);
