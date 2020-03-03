@@ -33,9 +33,25 @@ DATABASE_HOST=postgres
 DATABASE_NAME=postgres
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
+POSTGRES_HOST_AUTH_METHOD=trust
 
 # Memcached host
+
 MEMCACHED_HOST=memcached
+
+# Email Host SMTP Settings
+
+EMAIL_HOST=your.email.host
+EMAIL_PORT=port
+EMAIL_HOST_USER=user
+EMAIL_HOST_PASSWORD=password
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+
+# SMS Service Settings
+
+SMS_URL=https://textbelt.com
+SMS_TOKEN=your.token
 ```
 
 Inside the project base directory where docker-compose.yml file can be found, run the following commands:
