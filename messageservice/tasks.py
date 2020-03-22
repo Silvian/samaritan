@@ -14,6 +14,7 @@ def send_sms_task(message, phone):
     """Send batch sms task."""
     sms_config = SMSMessageConfiguration.load()
     if sms_config.send_message:
+        message = message.encode('utf-8')
         logger.info("Sending:{} to: {}".format(message, phone))
         response = SMSService().send_sms(message, phone)
         if response['success']:
