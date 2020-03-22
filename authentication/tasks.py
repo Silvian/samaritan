@@ -73,7 +73,7 @@ def send_welcome_pack(user_id, site_url, temp_passwd):
 @app.task
 def password_expiry():
     """Reset passwords for all users over configured number of days."""
-    users = User.objects.all()
+    users = User.objects.filter(is_superuser=False)
 
     def threshold_delta():
         if user.profile.password_last_updated:
