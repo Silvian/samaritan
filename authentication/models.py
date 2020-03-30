@@ -11,7 +11,11 @@ from django_common.auth_backends import User
 from django.dispatch import receiver
 
 from .tasks import send_reset_email, send_welcome_pack
-from .utils import generate_password
+from .utils import (
+    PasswordGenerator,
+    PasswordPwnedChecker,
+    PasswordEntropyCalculator,
+)
 
 
 class Profile(models.Model):
@@ -31,6 +35,13 @@ class Profile(models.Model):
         null=True,
         default='images/guest.png',
         upload_to='profile_images',
+    )
+    password_strength = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+    )
+    password_breached = models.BooleanField(
+        default=False,
     )
     password_reset = models.BooleanField(
         default=False,
@@ -53,10 +64,36 @@ class Profile(models.Model):
     def generate_temp_password(self):
         """Generate temporary password."""
         self.password_reset = True
-        passwd = generate_password()
+        generator = PasswordGenerator()
+        passwd = generator.generate_password()
         self.user.set_password(passwd)
         self.user.save()
         return passwd
+
+    def verify_password_strength(self, password):
+        """Verify if password is strong enough."""
+        entropy_cal = PasswordEntropyCalculator()
+        entropy = entropy_cal.calculate(password)
+        self.password_strength = entropy
+        self.save()
+
+        if entropy >= entropy_cal.threshold:
+            return True
+
+        return False
+
+    def verify_password_breached(self, password):
+        """Verify if password has been breached."""
+        checker = PasswordPwnedChecker()
+        if checker.pwned_check(password):
+            self.password_breached = True
+            self.save()
+            return True
+
+        else:
+            self.password_breached = False
+            self.save()
+            return False
 
     def save(self, *args, **kwargs):
         if not self.profile_pic:

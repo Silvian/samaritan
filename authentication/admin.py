@@ -16,6 +16,8 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = (
         'user',
         'mobile_number',
+        'password_strength',
+        'password_breached',
         'password_reset',
         'password_last_updated',
     )
