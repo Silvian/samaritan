@@ -90,6 +90,8 @@ class AuthenticationConstants:
     INCORRECT_PASSWORD = "Your current password is incorrect"
     PASSWORD_MISMATCH = "The new password did not match password confirmation"
     SAME_PASSWORD = "The new password cannot be the same as existing password"
+    WEAK_PASSWORD = "The password is too weak and cannot be used"
+    BREACHED_PASSWORD = "The password has been breached and cannot be used"
 
     def __init__(self):
         return

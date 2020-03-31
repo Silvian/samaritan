@@ -254,8 +254,15 @@ REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# Password settings
 # Password reset number of days before expiry
 PASSWORD_RESET_THRESHOLD = 60
+PASSWORD_ENTROPY_THRESHOLD = 60
+
+# HIBP settings
+PWNED_API_URL = "https://api.pwnedpasswords.com/range/"
+PWNED_API_TIMEOUT = 1
+PWNED_API_RETRIES = 2
 
 # SMS Service settings
 

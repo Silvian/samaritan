@@ -26,6 +26,7 @@ def login_view(request):
     if request.GET.get('logout', False):
         context['logout'] = True
         context['msg'] = AuthenticationConstants.LOGOUT_SUCCESS
+
     if request.GET.get('lockout', False):
         context['lockout'] = True
         context['msg'] = AuthenticationConstants.LOCKOUT_MESSAGE
@@ -37,16 +38,26 @@ def authenticate_user(request):
     if request.method == 'POST':
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         context = SettingsConstants.get_settings()
+
         if user is not None:
             # the password verified for the user
             if user.is_active:
                 login(request, user)
                 if user.profile.password_reset:
                     return HttpResponseRedirect(settings.RESET_URL)
+
+                if user.profile.password_breached:
+                    return HttpResponseRedirect(settings.RESET_URL)
+
+                if user.profile.password_strength < settings.PASSWORD_ENTROPY_THRESHOLD:
+                    return HttpResponseRedirect(settings.RESET_URL)
+
                 return HttpResponseRedirect(settings.REDIRECT_URL)
+
             else:
                 context['msg'] = AuthenticationConstants.ACCOUNT_DISABLED
                 return render(request, "samaritan/login.html", context)
+
         else:
             # the authentication system was unable to verify the username and password
             context['msg'] = AuthenticationConstants.INVALID_CREDENTIALS
@@ -65,8 +76,13 @@ def forgot_password(request):
                 user = User.objects.get(email=request.POST['email'].lower())
                 user.profile.send_password_email(get_current_site(request).name)
                 return JsonResponse(success_response)
+
             except User.DoesNotExist:
-                return JsonResponse(failure_response)
+                pass
+
+            except User.MultipleObjectsReturned:
+                pass
+
         return JsonResponse(failure_response)
     
 
@@ -81,20 +97,33 @@ def change_password(request):
     if request.method == 'POST':
         user = get_user(request)
         context = SettingsConstants.get_settings()
+
         if user.check_password(request.POST['current_password']):
             if request.POST['new_password'] != request.POST['current_password']:
                 if request.POST['new_password'] == request.POST['confirm_password']:
+                    # validate password strength and if not breached
+                    if not user.profile.verify_password_strength(request.POST['new_password']):
+                        context['msg'] = AuthenticationConstants.WEAK_PASSWORD
+                        return render(request, "samaritan/reset.html", context)
+
+                    if user.profile.verify_password_breached(request.POST['new_password']):
+                        context['msg'] = AuthenticationConstants.BREACHED_PASSWORD
+                        return render(request, "samaritan/reset.html", context)
+
                     user.set_password(request.POST['new_password'])
                     user.profile.password_reset = False
                     user.profile.password_last_updated = now()
                     user.save()
                     return HttpResponseRedirect(settings.REDIRECT_URL)
+
                 else:
                     context['msg'] = AuthenticationConstants.PASSWORD_MISMATCH
                     return render(request, "samaritan/reset.html", context)
+
             else:
                 context['msg'] = AuthenticationConstants.SAME_PASSWORD
                 return render(request, "samaritan/reset.html", context)
+
         else:
             context['msg'] = AuthenticationConstants.INCORRECT_PASSWORD
             return render(request, "samaritan/reset.html", context)
