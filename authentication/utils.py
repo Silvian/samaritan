@@ -1,6 +1,8 @@
 import hashlib
 import math
+import random
 import requests
+import time
 
 from os import urandom
 from random import choice
@@ -170,3 +172,35 @@ class PasswordPwnedChecker:
 
         return None
 
+
+class MultiFactorCodeGenerator:
+    """Multi factor unique random code generator."""
+
+    def __init__(self, salt=settings.SECRET_KEY):
+        self.salt = salt
+
+    def generate_random_hash(self):
+        """Generate random hash based on secure random and time."""
+        random_bits = random.getrandbits(256)
+        unique_time = time.time()
+        random_string = self.salt + str(random_bits) + str(unique_time)
+        h = hashlib.sha1()
+        encoded_string = random_string.encode("utf-8")
+        h.update(encoded_string)
+        return h.hexdigest()
+
+    @staticmethod
+    def calculate_six_digit_code(input_hash):
+        """Calculate six digit code."""
+        six_digit_pin = str(int(input_hash, 16))[:6]
+        return six_digit_pin
+
+    def hash_six_digit_code(self, code):
+        """Hash the six digit code for db storage and comparisons."""
+        h = hashlib.sha256()
+        code = str(code)
+        encoded_value = code.encode("utf-8")
+        encoded_salt = self.salt.encode("utf-8")
+        hash_value = encoded_salt + encoded_value
+        h.update(hash_value)
+        return h.hexdigest()

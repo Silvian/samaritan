@@ -259,6 +259,9 @@ MEDIA_URL = '/media/'
 PASSWORD_RESET_THRESHOLD = 60
 PASSWORD_ENTROPY_THRESHOLD = 60
 
+# MFA settings
+TOKEN_EXPIRY_THRESHOLD = 300
+
 # HIBP settings
 PWNED_API_URL = "https://api.pwnedpasswords.com/range/"
 PWNED_API_TIMEOUT = 1

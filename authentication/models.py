@@ -5,10 +5,14 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
+from datetime import timedelta
+
 from django.db import models
 from django.db.models.signals import post_save
 from django_common.auth_backends import User
 from django.dispatch import receiver
+from django.conf import settings
+from django.utils import timezone
 
 from .tasks import send_reset_email, send_welcome_pack
 from .utils import (
@@ -104,6 +108,39 @@ class Profile(models.Model):
     def __str__(self):
         """Return the string representation."""
         return self.user.username
+
+
+class MFACode(models.Model):
+    """Multi factor authentication codes."""
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    code = models.CharField(
+        max_length=64,
+    )
+    expiry_date = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    @property
+    def expired(self):
+        if timezone.now() > self.expiry_date:
+            return True
+        return False
+
+    def __str__(self):
+        """Return the string representation."""
+        return self.code
+
+    def save(self, *args, **kwargs):
+        self.expiry_date = timezone.now() + timedelta(seconds=settings.TOKEN_EXPIRY_THRESHOLD)
+        super(MFACode, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=User)

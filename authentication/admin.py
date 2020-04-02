@@ -6,7 +6,7 @@
 """
 
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, MFACode
 
 
 @admin.register(Profile)
@@ -20,4 +20,17 @@ class ProfileAdmin(admin.ModelAdmin):
         'password_breached',
         'password_reset',
         'password_last_updated',
+    )
+
+
+@admin.register(MFACode)
+class MFACodeAdmin(admin.ModelAdmin):
+    """MFACode admin."""
+
+    list_display = (
+        'code',
+        'user',
+        'expiry_date',
+        'created_date',
+        'expired',
     )
