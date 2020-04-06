@@ -15,7 +15,9 @@ def send_email(
         recipient_first_name,
         recipient_email,
         subject,
-        message):
+        message,
+        attachment=None,
+):
     text_template = get_template('samaritan/email/group_email.txt')
     html_template = get_template('samaritan/email/group_email.html')
 
@@ -27,8 +29,16 @@ def send_email(
     text_content = text_template.render(context)
     html_content = html_template.render(context)
 
-    msg = EmailMultiAlternatives(subject, text_content, sender_email, [recipient_email])
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=sender_email,
+        to=[recipient_email],
+    )
+
     msg.attach_alternative(html_content, "text/html")
+    if attachment:
+        msg.attach_file(attachment.path)
     return msg.send()
 
 
@@ -50,7 +60,12 @@ def send_list_email(
     text_content = text_template.render(context)
     html_content = html_template.render(context)
 
-    msg = EmailMultiAlternatives(subject, text_content, sender_email, [recipient_email])
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=sender_email,
+        to=[recipient_email],
+    )
     msg.attach_alternative(html_content, "text/html")
     return msg.send()
 
@@ -80,6 +95,11 @@ def send_password_email(
     text_content = text_template.render(context)
     html_content = html_template.render(context)
 
-    msg = EmailMultiAlternatives(subject, text_content, sender_email, [recipient_email])
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=sender_email,
+        to=[recipient_email],
+    )
     msg.attach_alternative(html_content, "text/html")
     return msg.send()

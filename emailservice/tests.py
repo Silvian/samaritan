@@ -2,8 +2,22 @@
 
 import mock
 from django.test import TestCase
+
+from factory.django import DjangoModelFactory
+
 from api.tests.integration import UserFactory, GroupFactory, MemberFactory
 from emailservice import tasks
+from emailservice.models import EmailOutbox
+
+
+class EmailOutboxFactory(DjangoModelFactory):
+    """Factory for Email Outbox model."""
+
+    subject = "Test subject"
+    message = "Test message"
+
+    class Meta:
+        model = EmailOutbox
 
 
 class TestEmailTaskTestCase(TestCase):
@@ -11,18 +25,14 @@ class TestEmailTaskTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.member = MemberFactory()
+        cls.outbox = EmailOutboxFactory()
 
     @mock.patch("emailservice.mail.send_email")
     def test_send_email_task(self, send_email_mock):
         """Test send mail task"""
-        subject = "Test subject"
-        message = "Test message"
         tasks.send_email_task(
-            subject=subject, 
-            message=message,
-            member_first_name=self.member.first_name,
-            member_last_name=self.member.last_name,
-            member_email=self.member.email,
+            outbox_id=self.outbox.id,
+            member_id=self.member.id,
         )
         self.assertTrue(send_email_mock)
 
@@ -52,13 +62,13 @@ class EmailServiceTestIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
+        outbox = EmailOutbox.objects.all().last()
+        self.assertIsNotNone(outbox)
         send_email_task_mock.assert_called_once_with(
-            subject=self.subject,
-            message=self.message,
-            member_first_name=member.first_name,
-            member_last_name=member.last_name,
-            member_email=member.email,
+            outbox_id=outbox.id, member_id=member.id,
         )
+        response_json = response.json()
+        self.assertTrue(response_json["success"])
 
     @mock.patch("emailservice.tasks.send_email_task.delay")
     def test_send_guests_mail(self, send_email_task_mock):
@@ -76,13 +86,13 @@ class EmailServiceTestIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
+        outbox = EmailOutbox.objects.all().last()
+        self.assertIsNotNone(outbox)
         send_email_task_mock.assert_called_once_with(
-            subject=self.subject,
-            message=self.message,
-            member_first_name=member.first_name,
-            member_last_name=member.last_name,
-            member_email=member.email,
+            outbox_id=outbox.id, member_id=member.id,
         )
+        response_json = response.json()
+        self.assertTrue(response_json["success"])
 
     @mock.patch("emailservice.tasks.send_email_task.delay")
     def test_send_everyone_mail(self, send_email_task_mock):
@@ -100,13 +110,13 @@ class EmailServiceTestIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
+        outbox = EmailOutbox.objects.all().last()
+        self.assertIsNotNone(outbox)
         send_email_task_mock.assert_called_once_with(
-            subject=self.subject,
-            message=self.message,
-            member_first_name=member.first_name,
-            member_last_name=member.last_name,
-            member_email=member.email,
+            outbox_id=outbox.id, member_id=member.id,
         )
+        response_json = response.json()
+        self.assertTrue(response_json["success"])
 
     @mock.patch("emailservice.tasks.send_email_task.delay")
     def test_send_group_mail(self, send_email_task_mock):
@@ -126,13 +136,13 @@ class EmailServiceTestIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
+        outbox = EmailOutbox.objects.all().last()
+        self.assertIsNotNone(outbox)
         send_email_task_mock.assert_called_once_with(
-            subject=self.subject,
-            message=self.message,
-            member_first_name=member.first_name,
-            member_last_name=member.last_name,
-            member_email=member.email,
+            outbox_id=outbox.id, member_id=member.id,
         )
+        response_json = response.json()
+        self.assertTrue(response_json["success"])
     
     def test_not_authenticated_send_members_mail(self):
         """Test that a non-authenticated user cannot send emails to all members"""

@@ -6,6 +6,8 @@
 """
 
 from django.db import models
+from django.utils import timezone
+
 from samaritan.models import ChurchRole
 
 
@@ -26,6 +28,28 @@ class SingletonModel(models.Model):
     def load(cls):
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
+
+
+class EmailOutbox(models.Model):
+    """Email outbox model."""
+
+    subject = models.CharField(
+        max_length=255,
+    )
+    message = models.TextField()
+
+    attachment = models.FileField(
+        blank=True,
+        null=True,
+        upload_to='attachments',
+    )
+
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    def __str__(self):
+        return self.message
 
 
 class ChurchEmailConfiguration(SingletonModel):
