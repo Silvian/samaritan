@@ -19,6 +19,7 @@ from samaritan.celery import app
 from samaritan.models import Member, ChurchGroup
 from emailservice.mail import send_email, send_list_email
 from emailservice.models import (
+    EmailOutbox,
     ChurchEmailConfiguration,
     BirthdayEmailGreetingConfiguration,
     BirthdaysListConfiguration,
@@ -30,23 +31,22 @@ logger = get_task_logger(__name__)
 
 
 @app.task
-def send_email_task(
-        subject,
-        message,
-        member_first_name,
-        member_last_name,
-        member_email):
+def send_email_task(outbox_id, member_id):
     """Send batch emails task."""
+    email_outbox = EmailOutbox.objects.get(id=outbox_id)
     email_config = ChurchEmailConfiguration.load()
-    logger.info("Sending email to: {} {}".format(member_last_name, member_first_name))
+    member = Member.objects.get(id=member_id)
+    logger.info("Sending email to: {} {}".format(member.last_name, member.first_name))
     if not send_email(
-            sender_email=email_config.church_email,
-            sender_name=email_config.church_signature,
-            recipient_first_name=member_first_name,
-            recipient_email=member_email,
-            subject=subject,
-            message=message):
-        logger.warn("Failed to send email to the following recipient: {}".format(member_email))
+        sender_email=email_config.church_email,
+        sender_name=email_config.church_signature,
+        recipient_first_name=member.first_name,
+        recipient_email=member.email,
+        subject=email_outbox.subject,
+        message=email_outbox.message,
+        attachment=email_outbox.attachment,
+    ):
+        logger.warn("Failed to send email to the following recipient: {}".format(member.email))
 
 
 @app.task
@@ -71,12 +71,13 @@ def send_birthday_greeting():
                     if member.email is not None and member.email != "":
                         logger.info("Sending greeting to: {} {}".format(member.last_name, member.first_name))
                         if not send_email(
-                                sender_email=email_config.church_email,
-                                sender_name=email_config.church_signature,
-                                recipient_first_name=member.first_name,
-                                recipient_email=member.email,
-                                subject=birthday_config.subject,
-                                message=birthday_config.greeting):
+                            sender_email=email_config.church_email,
+                            sender_name=email_config.church_signature,
+                            recipient_first_name=member.first_name,
+                            recipient_email=member.email,
+                            subject=birthday_config.subject,
+                            message=birthday_config.greeting,
+                        ):
                             logger.warn("Failed to send email to the following recipient: {}".format(member.email))
 
 
@@ -122,12 +123,13 @@ def send_birthdays_list():
         for recipient in recipients_list:
             logger.info("Sending birthdays list to: {} {}".format(recipient.last_name, recipient.first_name))
             if not send_list_email(
-                    sender_email=email_config.church_email,
-                    sender_name=email_config.church_signature,
-                    recipient_first_name=recipient.first_name,
-                    recipient_email=recipient.email,
-                    subject=birthdays_list_config.subject,
-                    member_list=birthdays_list):
+                sender_email=email_config.church_email,
+                sender_name=email_config.church_signature,
+                recipient_first_name=recipient.first_name,
+                recipient_email=recipient.email,
+                subject=birthdays_list_config.subject,
+                member_list=birthdays_list,
+            ):
                 logger.warn("Failed to send email to the following recipient: {}".format(recipient.email))
 
 
@@ -161,10 +163,11 @@ def send_group_schedule_notification():
             if member.email:
                 logger.info("Sending group notification to: {} {}".format(member.last_name, member.first_name))
                 if not send_email(
-                        sender_email=email_config.church_email,
-                        sender_name=email_config.church_signature,
-                        recipient_first_name=member.first_name,
-                        recipient_email=member.email,
-                        subject=group_rotation.email_subject,
-                        message=group_rotation.email_message):
+                    sender_email=email_config.church_email,
+                    sender_name=email_config.church_signature,
+                    recipient_first_name=member.first_name,
+                    recipient_email=member.email,
+                    subject=group_rotation.email_subject,
+                    message=group_rotation.email_message,
+                ):
                     logger.warn("Failed to send email to the following recipient: {}".format(member.email))

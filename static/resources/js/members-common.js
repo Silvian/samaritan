@@ -504,15 +504,19 @@ function sendEmail(url) {
 
         $('#email-modal').modal('hide');
         $('#email-sending').show();
+
+        var formData = new FormData();
+        formData.append("subject", $('#email-subject').val());
+        formData.append("message", $('#email-message').val());
+        formData.append("attachment", $('#file-attachment')[0].files[0]);
+        formData.append("csrfmiddlewaretoken", getCookie('csrftoken'));
+
         $.ajax({
             type: 'POST',
             url: url,
-            dataType: 'json',
-            data: {
-                subject: $('#email-subject').val(),
-                message: $('#email-message').val(),
-                csrfmiddlewaretoken : getCookie('csrftoken')
-            },
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function (data) {
                 $('#email-sending').hide();
                 if(data.success) {

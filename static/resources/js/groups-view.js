@@ -117,15 +117,21 @@ function sendGroupEmail(group_id) {
 
         $('#email-modal').modal('hide');
         $('#email-sending').show();
+
+        var formData = new FormData();
+        formData.append("id", group_id);
+        formData.append("subject", $('#email-subject').val());
+        formData.append("message", $('#email-message').val());
+        formData.append("attachment", $('#file-attachment')[0].files[0]);
+        formData.append("csrfmiddlewaretoken", getCookie('csrftoken'));
+
         $.ajax({
             type: 'POST',
             url: '/email/send/group',
             dataType: 'json',
-            data: {id     : group_id,
-                   subject: $('#email-subject').val(),
-                   message: $('#email-message').val(),
-                   csrfmiddlewaretoken : getCookie('csrftoken')
-                   },
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function (data) {
                 $('#email-sending').hide();
                 if(data.success) {

@@ -7,6 +7,7 @@
 
 from django.contrib import admin
 from .models import (
+    EmailOutbox,
     ChurchEmailConfiguration,
     BirthdayEmailGreetingConfiguration,
     BirthdaysListConfiguration,
@@ -14,6 +15,18 @@ from .models import (
     PasswordResetEmailConfiguration,
     WelcomeEmailConfiguration,
 )
+
+
+@admin.register(EmailOutbox)
+class EmailOutbox(admin.ModelAdmin):
+    """EmailOutbox admin."""
+
+    list_display = (
+        'subject',
+        'message',
+        'attachment',
+        'created_date',
+    )
 
 
 @admin.register(ChurchEmailConfiguration)
