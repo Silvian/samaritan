@@ -184,7 +184,7 @@ class MultiFactorCodeGenerator:
         random_bits = random.getrandbits(256)
         unique_time = time.time()
         random_string = self.salt + str(random_bits) + str(unique_time)
-        h = hashlib.sha1()
+        h = hashlib.sha256()
         encoded_string = random_string.encode("utf-8")
         h.update(encoded_string)
         return h.hexdigest()
@@ -194,13 +194,3 @@ class MultiFactorCodeGenerator:
         """Calculate six digit code."""
         six_digit_pin = str(int(input_hash, 16))[:6]
         return six_digit_pin
-
-    def hash_six_digit_code(self, code):
-        """Hash the six digit code for db storage and comparisons."""
-        h = hashlib.sha256()
-        code = str(code)
-        encoded_value = code.encode("utf-8")
-        encoded_salt = self.salt.encode("utf-8")
-        hash_value = encoded_salt + encoded_value
-        h.update(hash_value)
-        return h.hexdigest()

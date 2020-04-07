@@ -212,6 +212,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'authentication.tasks.password_expiry',
         'schedule': crontab(minute='0', hour='5'),
     },
+    'check_user_lockout': {
+        'task': 'authentication.tasks.check_user_lockout',
+        'schedule': crontab(minute='*', hour='*'),
+    },
     'get_sms_quota': {
         'task': 'messageservice.tasks.get_sms_quota',
         'schedule': crontab(minute='29', hour='*'),
@@ -241,13 +245,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Login url settings
 LOGIN_URL = '/authenticate/login/'
-
 LOGOUT_URL = '/authenticate/login?logout=true'
-
 RESET_URL = '/authenticate/reset/'
 
+# Axes lockout settings
 AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'
+AXES_FAILURE_LIMIT = 3
+AXES_ONLY_USER_FAILURES = True
 
 REDIRECT_URL = os.getenv('REDIRECT_URL', default='/')
 
@@ -260,6 +266,7 @@ PASSWORD_RESET_THRESHOLD = 60
 PASSWORD_ENTROPY_THRESHOLD = 60
 
 # MFA settings
+# Token expiry in seconds
 TOKEN_EXPIRY_THRESHOLD = 300
 
 # HIBP settings

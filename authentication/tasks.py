@@ -7,6 +7,7 @@
 Celery tasks.
 """
 
+from axes.models import AccessAttempt
 from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.utils.timezone import now
@@ -90,3 +91,17 @@ def password_expiry():
             user.profile.password_reset = True
             user.save()
             logger.info("Password expired for: {}".format(user.username))
+
+
+@app.task
+def check_user_lockout():
+    """Check axes lockout for any user and deactivate the user account."""
+    attempt_users = AccessAttempt.objects.values_list('username', flat=True).filter(
+        failures_since_start__gte=settings.AXES_FAILURE_LIMIT
+    )
+    if attempt_users:
+        deactivate_users = User.objects.filter(username__in=attempt_users)
+        for user in deactivate_users:
+            user.is_active = False
+            user.save()
+            logger.info("Deactivated user: {}".format(user.username))

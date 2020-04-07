@@ -19,6 +19,7 @@ from .utils import (
     PasswordGenerator,
     PasswordPwnedChecker,
     PasswordEntropyCalculator,
+    MultiFactorCodeGenerator,
 )
 
 
@@ -119,6 +120,8 @@ class MFACode(models.Model):
     )
     code = models.CharField(
         max_length=64,
+        blank=True,
+        null=True,
     )
     expiry_date = models.DateTimeField(
         blank=True,
@@ -139,7 +142,12 @@ class MFACode(models.Model):
         return self.code
 
     def save(self, *args, **kwargs):
-        self.expiry_date = timezone.now() + timedelta(seconds=settings.TOKEN_EXPIRY_THRESHOLD)
+        """Generate the code hash and expiry date."""
+        generator = MultiFactorCodeGenerator()
+        self.code = generator.generate_random_hash()
+        self.expiry_date = timezone.now() + timedelta(
+            seconds=settings.TOKEN_EXPIRY_THRESHOLD
+        )
         super(MFACode, self).save(*args, **kwargs)
 
 
