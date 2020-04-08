@@ -14,13 +14,14 @@ from django.dispatch import receiver
 from django.conf import settings
 from django.utils import timezone
 
+from messageservice.models import SMSMessageConfiguration
 from samaritan.base_models import SingletonModel
 from .tasks import send_reset_email, send_welcome_pack
 from .utils import (
     PasswordGenerator,
     PasswordPwnedChecker,
     PasswordEntropyCalculator,
-    MultiFactorCodeGenerator,
+    RandomHashGenerator,
 )
 
 
@@ -152,8 +153,8 @@ class MFACode(models.Model):
 
     def save(self, *args, **kwargs):
         """Generate the code hash and expiry date."""
-        generator = MultiFactorCodeGenerator()
-        self.code = generator.generate_random_hash()
+        generator = RandomHashGenerator()
+        self.code = generator.generate_hash()
         self.expiry_date = timezone.now() + timedelta(
             seconds=settings.TOKEN_EXPIRY_THRESHOLD
         )
@@ -170,6 +171,24 @@ class MFAConfiguration(SingletonModel):
     enabled = models.BooleanField(
         default=False,
     )
+
+    @property
+    def quota_remaining(self):
+        """Get the remaining quota."""
+        sms_conf = SMSMessageConfiguration.load()
+        if sms_conf:
+            return sms_conf.quota_remaining
+
+        return 0
+
+    @property
+    def active(self):
+        """Check if MFA is active."""
+        if self.enabled:
+            if self.quota_remaining >= settings.SMS_AVAILABILITY_THRESHOLD:
+                return True
+
+        return False
 
     def __str__(self):
         """Return the string representation."""

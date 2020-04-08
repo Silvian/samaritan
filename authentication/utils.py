@@ -173,13 +173,13 @@ class PasswordPwnedChecker:
         return None
 
 
-class MultiFactorCodeGenerator:
-    """Multi factor unique random code generator."""
+class RandomHashGenerator:
+    """Unique random hash generator."""
 
     def __init__(self, salt=settings.SECRET_KEY):
         self.salt = salt
 
-    def generate_random_hash(self):
+    def generate_hash(self):
         """Generate random hash based on secure random and time."""
         random_bits = random.getrandbits(256)
         unique_time = time.time()

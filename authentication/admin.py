@@ -41,4 +41,9 @@ class MFACodeAdmin(admin.ModelAdmin):
 class MFAConfigurationAdmin(admin.ModelAdmin):
     """MFAConfiguration admin."""
 
-    list_display = ('name', 'enabled')
+    list_display = (
+        'name',
+        'enabled',
+        'quota_remaining',
+        'active',
+    )
