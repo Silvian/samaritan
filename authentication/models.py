@@ -175,9 +175,9 @@ class MFAConfiguration(SingletonModel):
     @property
     def quota_remaining(self):
         """Get the remaining quota."""
-        sms_conf = SMSMessageConfiguration.load()
-        if sms_conf:
-            return sms_conf.quota_remaining
+        sms_config = SMSMessageConfiguration.load()
+        if sms_config and sms_config.send_message:
+            return sms_config.quota_remaining
 
         return 0
 
