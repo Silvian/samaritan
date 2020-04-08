@@ -1,6 +1,6 @@
 """Message service models."""
 
-from emailservice.models import SingletonModel
+from samaritan.base_models import SingletonModel
 from django.db import models
 
 

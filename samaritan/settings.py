@@ -268,6 +268,7 @@ PASSWORD_ENTROPY_THRESHOLD = 60
 # MFA settings
 # Token expiry in seconds
 TOKEN_EXPIRY_THRESHOLD = 300
+SMS_AVAILABILITY_THRESHOLD = 10
 
 # HIBP settings
 PWNED_API_URL = "https://api.pwnedpasswords.com/range/"

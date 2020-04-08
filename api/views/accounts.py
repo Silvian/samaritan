@@ -8,6 +8,7 @@ This is the main user accounts file for Samaritan CMA app
 
 Please note: All methods and classes in here must be secure (i.e. use @login_required decorators)
 """
+
 from axes.utils import reset
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required

@@ -14,6 +14,7 @@ from django.dispatch import receiver
 from django.conf import settings
 from django.utils import timezone
 
+from samaritan.base_models import SingletonModel
 from .tasks import send_reset_email, send_welcome_pack
 from .utils import (
     PasswordGenerator,
@@ -54,6 +55,9 @@ class Profile(models.Model):
     password_last_updated = models.DateTimeField(
         blank=True,
         null=True,
+    )
+    mfa_enabled = models.BooleanField(
+        default=False,
     )
 
     def send_password_email(self, site_url):
@@ -137,6 +141,11 @@ class MFACode(models.Model):
             return True
         return False
 
+    def calculate_six_digit_code(self):
+        """Calculate six digit code."""
+        six_digit_pin = str(int(self.code, 16))[:6]
+        return six_digit_pin
+
     def __str__(self):
         """Return the string representation."""
         return self.code
@@ -149,6 +158,22 @@ class MFACode(models.Model):
             seconds=settings.TOKEN_EXPIRY_THRESHOLD
         )
         super(MFACode, self).save(*args, **kwargs)
+
+
+class MFAConfiguration(SingletonModel):
+    """MFA Configurations."""
+
+    name = models.CharField(
+        max_length=50,
+        default='MFA Settings',
+    )
+    enabled = models.BooleanField(
+        default=False,
+    )
+
+    def __str__(self):
+        """Return the string representation."""
+        return self.name
 
 
 @receiver(post_save, sender=User)

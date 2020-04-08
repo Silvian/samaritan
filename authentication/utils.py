@@ -188,9 +188,3 @@ class MultiFactorCodeGenerator:
         encoded_string = random_string.encode("utf-8")
         h.update(encoded_string)
         return h.hexdigest()
-
-    @staticmethod
-    def calculate_six_digit_code(input_hash):
-        """Calculate six digit code."""
-        six_digit_pin = str(int(input_hash, 16))[:6]
-        return six_digit_pin
