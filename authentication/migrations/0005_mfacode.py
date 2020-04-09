@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
+import uuid
 
 
 class Migration(migrations.Migration):
@@ -20,6 +21,7 @@ class Migration(migrations.Migration):
             name='MFACode',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('token', models.UUIDField(default=uuid.uuid4, editable=False)),
                 ('code', models.CharField(blank=True, max_length=64, null=True)),
                 ('expiry_date', models.DateTimeField(blank=True, null=True)),
                 ('created_date', models.DateTimeField(default=django.utils.timezone.now)),
