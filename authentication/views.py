@@ -18,6 +18,7 @@ from django_common.auth_backends import User
 from django.utils.timezone import now
 
 from api.views import success_response, failure_response
+from authentication.helpers import initiate_mfa_auth, validate_mfa_code
 from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
@@ -34,15 +35,37 @@ def login_view(request):
     return render(request, "samaritan/login.html", context)
 
 
+def login_mfa_view(request, token):
+    context = SettingsConstants.get_settings()
+    if request.method == 'GET':
+        return render(request, "samaritan/mfa.html", context)
+
+    if request.method == 'POST':
+        if token:
+            code = request.POST['code']
+            if validate_mfa_code(request, code, token):
+                return HttpResponseRedirect(settings.REDIRECT_URL)
+
+        context['msg'] = AuthenticationConstants.INVALID_CODE
+        return render(request, "samaritan/mfa.html", context)
+
+
 def authenticate_user(request):
     if request.method == 'POST':
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         context = SettingsConstants.get_settings()
 
         if user is not None:
-            # the password verified for the user
+            # the password is verified for the user
             if user.is_active:
+                # mfa enabled
+                token = initiate_mfa_auth(user)
+                if token:
+                    redirect_url = settings.MFA_URL + token + "/"
+                    return HttpResponseRedirect(redirect_url)
+
                 login(request, user)
+
                 if user.profile.password_reset:
                     return HttpResponseRedirect(settings.RESET_URL)
 

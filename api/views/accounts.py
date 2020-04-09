@@ -9,7 +9,6 @@ This is the main user accounts file for Samaritan CMA app
 Please note: All methods and classes in here must be secure (i.e. use @login_required decorators)
 """
 
-from axes.utils import reset
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
@@ -21,6 +20,7 @@ from django_common.auth_backends import User
 
 from api.views import failure_response, success_response
 from authentication.forms import UserDetailsForm
+from authentication.helpers import reset_user_access
 
 
 @login_required
@@ -102,7 +102,7 @@ def activate_user(request):
                 user.is_active = request.POST['is_active']
                 user.save()
                 if user.is_active:
-                    reset(username=user.username)
+                    reset_user_access(user)
                 return JsonResponse(success_response)
         return JsonResponse(failure_response)
 

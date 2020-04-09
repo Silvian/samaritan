@@ -29,6 +29,7 @@ class MFACodeAdmin(admin.ModelAdmin):
     """MFACode admin."""
 
     list_display = (
+        'token',
         'code',
         'user',
         'expiry_date',

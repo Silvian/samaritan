@@ -83,6 +83,7 @@ class AuthenticationConstants:
     LOGOUT_SUCCESS = "You've been logged out successfully"
     ACCOUNT_DISABLED = "This account has been disabled"
     INVALID_CREDENTIALS = "The username or password is incorrect"
+    INVALID_CODE = "The code entered is invalid"
     LOCKOUT_MESSAGE = (
         "Your account has been locked due to repeated failed login attempts! "
         "Please contact the system administrator"

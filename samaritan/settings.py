@@ -249,6 +249,7 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/authenticate/login/'
 LOGOUT_URL = '/authenticate/login?logout=true'
 RESET_URL = '/authenticate/reset/'
+MFA_URL = '/authenticate/mfa/'
 
 # Axes lockout settings
 AXES_LOCKOUT_URL = '/authenticate/login?lockout=true'

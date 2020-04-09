@@ -5,6 +5,7 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
+import uuid
 from datetime import timedelta
 
 from django.db import models
@@ -119,6 +120,10 @@ class Profile(models.Model):
 class MFACode(models.Model):
     """Multi factor authentication codes."""
 
+    token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

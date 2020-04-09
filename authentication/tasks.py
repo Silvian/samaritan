@@ -96,12 +96,27 @@ def password_expiry():
 @app.task
 def check_user_lockout():
     """Check axes lockout for any user and deactivate the user account."""
-    attempt_users = AccessAttempt.objects.values_list('username', flat=True).filter(
+    from authentication.models import MFACode
+    queryset = AccessAttempt.objects.filter(
         failures_since_start__gte=settings.AXES_FAILURE_LIMIT
     )
+    attempt_users = queryset.values_list('username', flat=True)
     if attempt_users:
         deactivate_users = User.objects.filter(username__in=attempt_users)
         for user in deactivate_users:
+            user.is_active = False
+            user.save()
+            logger.info("Deactivated user: {}".format(user.username))
+
+    attempt_tokens = queryset.filter(username__isnull=True, path_info__isnull=False)
+    if attempt_tokens:
+        tokens = []
+        for token in attempt_tokens:
+            tokens.append(token.path_info.split('/')[3])
+
+        deactivate_codes = MFACode.objects.filter(token__in=tokens)
+        for code in deactivate_codes:
+            user = code.user
             user.is_active = False
             user.save()
             logger.info("Deactivated user: {}".format(user.username))
