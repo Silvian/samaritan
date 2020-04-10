@@ -18,7 +18,12 @@ from django_common.auth_backends import User
 from django.utils.timezone import now
 
 from api.views import success_response, failure_response
-from authentication.helpers import initiate_mfa_auth, validate_mfa_code
+from authentication.helpers import (
+    initiate_mfa_auth,
+    validate_mfa_code,
+    valid_cookie,
+    set_cookie,
+)
 from samaritan.constants import SettingsConstants, AuthenticationConstants
 
 
@@ -44,7 +49,10 @@ def login_mfa_view(request, token):
         if token:
             code = request.POST['code']
             if validate_mfa_code(request, code, token):
-                return HttpResponseRedirect(settings.REDIRECT_URL)
+                response = HttpResponseRedirect(settings.REDIRECT_URL)
+                if request.POST.get('remember', None):
+                    set_cookie(response, token)
+                return response
 
         context['msg'] = AuthenticationConstants.INVALID_CODE
         return render(request, "samaritan/mfa.html", context)
@@ -58,11 +66,12 @@ def authenticate_user(request):
         if user is not None:
             # the password is verified for the user
             if user.is_active:
-                # mfa enabled
-                token = initiate_mfa_auth(user)
-                if token:
-                    redirect_url = settings.MFA_URL + token + "/"
-                    return HttpResponseRedirect(redirect_url)
+                if not valid_cookie(user, request.COOKIES.get("mfa", None)):
+                    token = initiate_mfa_auth(user)
+                    if token:
+                        # mfa enabled
+                        redirect_url = settings.MFA_URL + token + "/"
+                        return HttpResponseRedirect(redirect_url)
 
                 login(request, user)
 

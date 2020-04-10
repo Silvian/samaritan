@@ -166,6 +166,44 @@ class MFACode(models.Model):
         super(MFACode, self).save(*args, **kwargs)
 
 
+class MFACookie(models.Model):
+    """MFA Cookies."""
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    expiry_date = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    @property
+    def expired(self):
+        if timezone.now() > self.expiry_date:
+            return True
+        return False
+
+    def __str__(self):
+        """Return the string representation."""
+        return str(self.id)
+
+    def save(self, *args, **kwargs):
+        """Set the expiry date."""
+        self.expiry_date = timezone.now() + timedelta(
+            seconds=settings.COOKIE_EXPIRY_THRESHOLD
+        )
+        super(MFACookie, self).save(*args, **kwargs)
+
+
 class MFAConfiguration(SingletonModel):
     """MFA Configurations."""
 

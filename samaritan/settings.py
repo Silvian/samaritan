@@ -269,6 +269,9 @@ PASSWORD_ENTROPY_THRESHOLD = 60
 # MFA settings
 # Token expiry in seconds
 TOKEN_EXPIRY_THRESHOLD = 300
+# Cookie expiry in seconds
+COOKIE_EXPIRY_THRESHOLD = 60 * 60 * 24 * 30
+# Stop MFA if the sms quota drops below this level
 SMS_AVAILABILITY_THRESHOLD = 10
 
 # HIBP settings

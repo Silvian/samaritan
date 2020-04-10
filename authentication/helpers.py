@@ -5,12 +5,14 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
+from datetime import datetime
+
 from axes.models import AccessAttempt
 from axes.utils import reset
 from django.conf import settings
 from django.contrib.auth import login
 
-from authentication.models import MFACode, MFAConfiguration
+from authentication.models import MFACode, MFAConfiguration, MFACookie
 from messageservice.tasks import send_sms_task
 
 
@@ -63,3 +65,31 @@ def reset_user_access(user):
 
         # delete all records in the access attempt table
         AccessAttempt.objects.filter(path_info__in=path_list).delete()
+
+
+def set_cookie(response, token):
+    """set cookie if mfa is valid and device is trusted."""
+    code = MFACode.objects.get(token=token)
+    cookie = MFACookie.objects.create(user=code.user)
+    expires = datetime.strftime(cookie.expiry_date, "%a, %d-%b-%Y %H:%M:%S GMT")
+    response.set_cookie(
+        "mfa",
+        cookie.id,
+        expires=expires,
+        max_age=settings.COOKIE_EXPIRY_THRESHOLD,
+        domain=settings.SESSION_COOKIE_DOMAIN,
+        secure=settings.SESSION_COOKIE_SECURE,
+    )
+
+
+def valid_cookie(user, cookie):
+    """Verify cookie is set and valid for given user."""
+    try:
+        cookie = MFACookie.objects.get(id=cookie, user=user)
+        if not cookie.expired:
+            return True
+
+    except MFACookie.DoesNotExist:
+        pass
+
+    return False

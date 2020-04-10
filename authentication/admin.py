@@ -6,7 +6,7 @@
 """
 
 from django.contrib import admin
-from .models import Profile, MFACode, MFAConfiguration
+from .models import Profile, MFACode, MFACookie, MFAConfiguration
 
 
 @admin.register(Profile)
@@ -31,6 +31,19 @@ class MFACodeAdmin(admin.ModelAdmin):
     list_display = (
         'token',
         'code',
+        'user',
+        'expiry_date',
+        'created_date',
+        'expired',
+    )
+
+
+@admin.register(MFACookie)
+class MFACookieAdmin(admin.ModelAdmin):
+    """MFACookie admin."""
+
+    list_display = (
+        'id',
         'user',
         'expiry_date',
         'created_date',
