@@ -21,6 +21,16 @@
     User profile settings have been updated successfully
 </div>
 
+<div id="mfa-activated-success" class="alert alert-success" role="alert" hidden>
+  <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+    Multi factor authentication has been verified and activated successfully
+</div>
+
+<div id="mfa-deactivated-success" class="alert alert-success" role="alert" hidden>
+  <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+    Multi factor authentication has been disabled successfully
+</div>
+
 <h4>User profile settings</h4>
 
 <div class="col-md-6 well">
@@ -66,7 +76,17 @@
     <button type="button" class="btn btn-primary btn-md" id="password-reset">
         <i class="fa fa-key fa-fw"></i> Change password
     </button>
+    <button type="button" class="btn btn-warning btn-md" id="enable-mfa">
+        <i class="fa fa-mobile fa-fw"></i> Enable MFA
+    </button>
+    <button type="button" class="btn btn-danger btn-md" id="disable-mfa">
+        <i class="fa fa-times fa-fw"></i> Disable MFA
+    </button>
 </div>
+
+{% include "samaritan/modals/mfa_enable_modal.html" %}
+
+{% include "samaritan/modals/mfa_disable_modal.html" %}
 
 {% endblock %}
 
