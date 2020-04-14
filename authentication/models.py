@@ -5,16 +5,24 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
+import uuid
+from datetime import timedelta
+
 from django.db import models
 from django.db.models.signals import post_save
 from django_common.auth_backends import User
 from django.dispatch import receiver
+from django.conf import settings
+from django.utils import timezone
 
+from messageservice.models import SMSMessageConfiguration
+from samaritan.base_models import SingletonModel
 from .tasks import send_reset_email, send_welcome_pack
 from .utils import (
     PasswordGenerator,
     PasswordPwnedChecker,
     PasswordEntropyCalculator,
+    RandomHashGenerator,
 )
 
 
@@ -49,6 +57,9 @@ class Profile(models.Model):
     password_last_updated = models.DateTimeField(
         blank=True,
         null=True,
+    )
+    mfa_enabled = models.BooleanField(
+        default=False,
     )
 
     def send_password_email(self, site_url):
@@ -104,6 +115,127 @@ class Profile(models.Model):
     def __str__(self):
         """Return the string representation."""
         return self.user.username
+
+
+class MFACode(models.Model):
+    """Multi factor authentication codes."""
+
+    token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    code = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+    )
+    expiry_date = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    @property
+    def expired(self):
+        if timezone.now() > self.expiry_date:
+            return True
+        return False
+
+    def calculate_six_digit_code(self):
+        """Calculate six digit code."""
+        six_digit_pin = str(int(self.code, 16))[:6]
+        return six_digit_pin
+
+    def __str__(self):
+        """Return the string representation."""
+        return self.code
+
+    def save(self, *args, **kwargs):
+        """Generate the code hash and expiry date."""
+        generator = RandomHashGenerator()
+        self.code = generator.generate_hash()
+        self.expiry_date = timezone.now() + timedelta(
+            seconds=settings.TOKEN_EXPIRY_THRESHOLD
+        )
+        super(MFACode, self).save(*args, **kwargs)
+
+
+class MFACookie(models.Model):
+    """MFA Cookies."""
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    expiry_date = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    @property
+    def expired(self):
+        if timezone.now() > self.expiry_date:
+            return True
+        return False
+
+    def __str__(self):
+        """Return the string representation."""
+        return str(self.id)
+
+    def save(self, *args, **kwargs):
+        """Set the expiry date."""
+        self.expiry_date = timezone.now() + timedelta(
+            seconds=settings.COOKIE_EXPIRY_THRESHOLD
+        )
+        super(MFACookie, self).save(*args, **kwargs)
+
+
+class MFAConfiguration(SingletonModel):
+    """MFA Configurations."""
+
+    name = models.CharField(
+        max_length=50,
+        default='MFA Settings',
+    )
+    enabled = models.BooleanField(
+        default=False,
+    )
+
+    @property
+    def quota_remaining(self):
+        """Get the remaining quota."""
+        sms_config = SMSMessageConfiguration.load()
+        if sms_config and sms_config.send_message:
+            return sms_config.quota_remaining
+
+        return 0
+
+    @property
+    def active(self):
+        """Check if MFA is active."""
+        if self.enabled:
+            if self.quota_remaining >= settings.SMS_AVAILABILITY_THRESHOLD:
+                return True
+
+        return False
+
+    def __str__(self):
+        """Return the string representation."""
+        return self.name
 
 
 @receiver(post_save, sender=User)

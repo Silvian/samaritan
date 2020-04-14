@@ -7,7 +7,23 @@ $(document).ready(function(){
     });
 
     $('#save-profile').click(function() {
-        updateProfileDetails()
+        updateProfileDetails();
+    });
+
+    $('#enable-mfa').click(function () {
+        enableMultiFactorAuth();
+    });
+
+    $('#verify-code').click(function () {
+        verifyMFACode();
+    });
+
+    $('#disable-mfa').click(function () {
+        $("#mfa-disable-modal").modal('show');
+    });
+
+    $('#disable-mfa-confirm').click(function () {
+        disableMultiFactorAuth();
     });
 
 });
@@ -28,7 +44,16 @@ function getProfileDetails() {
                 $('#email').val(data['email']);
                 $('#mobile').val(data['mobile_number']);
                 $('#username').val(data['username']);
-                $('#profile_image').attr('src', data['profile_image'])
+                $('#profile_image').attr('src', data['profile_image']);
+
+                if(data['mfa_enabled']) {
+                    $('#enable-mfa').hide();
+                    $('#disable-mfa').show();
+                }
+                else {
+                    $('#enable-mfa').show();
+                    $('#disable-mfa').hide();
+                }
             }
 
         }
@@ -46,7 +71,7 @@ function updateProfileDetails() {
         return
     }
 
-    var formData = new FormData()
+    var formData = new FormData();
     formData.append('first_name', $('#first_name').val());
     formData.append('last_name', $('#last_name').val());
     formData.append('email', $('#email').val());
@@ -68,6 +93,99 @@ function updateProfileDetails() {
             setTimeout(function () {
                 $('#saved-success').hide();
             }, 3000);
+        }
+    });
+}
+
+function enableMultiFactorAuth() {
+    ecblockui();
+    $("#mfa-enable-modal").modal('show');
+
+    $.ajax({
+        type: 'GET',
+        url: '/api/profile/sendCode',
+        dataType: 'json',
+        success: function (data) {
+            ecunblockui();
+            if(data) {
+                if(data['success']) {
+                    $('#code-sent-success').show();
+                    setTimeout(function () {
+                        $('#code-sent-success').hide();
+                    }, 3000);
+                }
+                else {
+                    $('#code-sent-failure').show();
+                    setTimeout(function () {
+                        $('#code-sent-success').hide();
+                    }, 3000);
+                }
+            }
+
+        }
+    });
+}
+
+function verifyMFACode() {
+    if($('#code').val() == null || $('#code').val() == "") {
+        $('#code-required-fields-alert').show();
+        return
+    }
+
+    ecblockui();
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/profile/verifyCode',
+        dataType: 'json',
+        data: {
+            code : $('#code').val(),
+            csrfmiddlewaretoken : getCookie('csrftoken')
+        },
+        success: function (data) {
+            ecunblockui();
+            getProfileDetails();
+            $('#code-required-fields-alert').hide();
+            if(data['success']) {
+                $("#mfa-enable-modal").modal('hide');
+                $('#mfa-activated-success').show();
+                setTimeout(function () {
+                    $('#mfa-activated-success').hide();
+                }, 3000);
+            }
+            else {
+                $('#code-verified-failure').show();
+                setTimeout(function () {
+                    $('#code-verified-failure').hide();
+                }, 3000);
+            }
+
+        }
+
+    });
+}
+
+function disableMultiFactorAuth() {
+    ecblockui();
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/profile/disableMFA',
+        dataType: 'json',
+        data: {
+            csrfmiddlewaretoken : getCookie('csrftoken')
+        },
+        success: function (data) {
+            ecunblockui();
+            getProfileDetails();
+            if(data['success']) {
+                $("#mfa-disable-modal").modal('hide');
+                $('#mfa-deactivated-success').show();
+                setTimeout(function () {
+                    $('#mfa-deactivated-success').hide();
+                }, 3000);
+            }
+
         }
     });
 }

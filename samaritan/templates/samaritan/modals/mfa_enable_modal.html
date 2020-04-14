@@ -1,0 +1,42 @@
+{% block mfa_enable_modal %}
+
+<!-- Modal -->
+<div class="modal fade" id="mfa-enable-modal" role="dialog" aria-labelledby="mfaEnableModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mfa-enable-modal-label">Activate multi factor authentication</h4>
+      </div>
+      <div class="modal-body">
+        <div id="code-sent-success" class="alert alert-success" role="alert" hidden>
+          <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+            SMS verification code has been sent to your device
+        </div>
+        <div id="code-sent-failure" class="alert alert-danger" role="alert" hidden>
+          <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            Multi factor authentication cannot be activated at this time
+        </div>
+        <div id="code-verified-failure" class="alert alert-danger" role="alert" hidden>
+          <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            The code entered is invalid
+        </div>
+        <div id="code-required-fields-alert" class="alert alert-danger" role="alert" hidden>
+          <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+            The six digit code is required
+        </div>
+        <div class="form-group">
+          <fieldset class="form-group">
+            <input class="form-control" id="code" name="code" type="text" placeholder="six digit code" maxlength="6"/>
+          </fieldset>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" style="float:left" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Close</button>
+        <button id="verify-code" type="button" class="btn btn-success"><i class="fa fa-check fa-fw"></i> Verify code</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

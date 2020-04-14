@@ -6,7 +6,7 @@ This is the main development project repository for Samaritan CMA
 @author: Silvian Dragan
 @Date: 02/05/2016
 @Copyright: Copyright 2018, Samaritan CMA - Published under GNU General Public Licence v3 - please read the LICENSE included.
-@Contributors: Abel Hristodor
+@Contributors: Veronica Timofte & Abel Hristodor
 
 For any issues, queries or bugs please contact me directly: silvian.dragan@gmail.com
 

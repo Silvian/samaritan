@@ -14,6 +14,8 @@ from django.http import JsonResponse
 
 from api.views import success_response, failure_response
 from authentication.forms import UserForm
+from authentication.models import MFAConfiguration, MFACode
+from messageservice.tasks import send_sms_task
 
 
 @login_required
@@ -25,6 +27,7 @@ def get_user_profile(request):
             "first_name": user.first_name,
             "last_name": user.last_name,
             "email": user.email,
+            "mfa_enabled": user.profile.mfa_enabled,
             "mobile_number": user.profile.mobile_number,
             "profile_image": user.profile.profile_pic.url,
         }
@@ -45,3 +48,43 @@ def update_user_profile(request):
             return JsonResponse(success_response)
 
         return JsonResponse(failure_response)
+
+
+@login_required
+def send_mfa_code(request):
+    if request.is_ajax:
+        user = get_user(request)
+        mfa_config = MFAConfiguration.load()
+        if mfa_config and mfa_config.active:
+            if user.profile.mobile_number:
+                # generate the mfa code and send sms to the user
+                mfa_code = MFACode.objects.create(user=user)
+                send_sms_task.delay(
+                    message=mfa_code.calculate_six_digit_code(),
+                    phone=user.profile.mobile_number,
+                )
+                return JsonResponse(success_response)
+
+        return JsonResponse(failure_response)
+
+
+def verify_mfa_code(request):
+    if request.method == 'POST':
+        user = get_user(request)
+        mfa_code = MFACode.objects.filter(user=user).last()
+        if mfa_code:
+            if not mfa_code.expired:
+                if request.POST['code'] == mfa_code.calculate_six_digit_code():
+                    user.profile.mfa_enabled = True
+                    user.save()
+                    return JsonResponse(success_response)
+
+        return JsonResponse(failure_response)
+
+
+def disable_mfa(request):
+    if request.method == 'POST':
+        user = get_user(request)
+        user.profile.mfa_enabled = False
+        user.save()
+        return JsonResponse(success_response)

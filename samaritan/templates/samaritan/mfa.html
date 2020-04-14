@@ -1,0 +1,44 @@
+{% extends "samaritan/layout.html" %}
+
+{% block heading %}
+
+<div>
+  </br>
+  <h2><i class="fa fa-mobile fa-fw" aria-hidden="true"></i> Multi Factor Authentication</h2>
+</div>
+
+{% endblock %}
+
+{% block body %}
+
+{% if logout %}
+    <div class="alert alert-info" role="alert">
+      <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+      {{ msg }}
+    </div>
+
+{% elif msg %}
+    <div class="alert alert-danger" role="alert">
+      <i class="fa fa-exclamation-circle fa-fw" aria-hidden="true"></i>
+      <span class="sr-only">Error:</span>
+      {{ msg }}
+    </div>
+{% endif %}
+
+<h4>Enter access code</h4>
+
+<div class="col-md-4 well">
+    <form role="form" enctype="multipart/form-data" action="" method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <input class="form-control" type="text" id="code" name="code" placeholder="code" required>
+        </fieldset>
+        <fieldset class="form-group">
+            <input id="remember" name="remember" type="checkbox" placeholder="remember" checked/>
+            &nbsp;Trust this device
+        </fieldset>
+        <button class="btn btn-primary" type = "submit" name = "authenticate"><i class="fa fa-key fa-fw"></i> Authenticate</button>
+    </form>
+</div>
+
+{% endblock %}
