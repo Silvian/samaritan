@@ -10,6 +10,5 @@ class SMSMessageAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'counter',
-        'quota_remaining',
         'send_message',
     )

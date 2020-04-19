@@ -216,19 +216,11 @@ class MFAConfiguration(SingletonModel):
     )
 
     @property
-    def quota_remaining(self):
-        """Get the remaining quota."""
-        sms_config = SMSMessageConfiguration.load()
-        if sms_config and sms_config.send_message:
-            return sms_config.quota_remaining
-
-        return 0
-
-    @property
     def active(self):
         """Check if MFA is active."""
         if self.enabled:
-            if self.quota_remaining >= settings.SMS_AVAILABILITY_THRESHOLD:
+            sms_config = SMSMessageConfiguration.load()
+            if sms_config and sms_config.send_message:
                 return True
 
         return False

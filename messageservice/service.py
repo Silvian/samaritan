@@ -16,21 +16,15 @@ class SMSService:
     def send_sms(self, message, phone):
         """Send SMS"""
         response = requests.post(
-            self.service_url + "/text",
-            {
+            url=self.service_url,
+            headers={
+                'Content-Type': 'application/json',
+                'x-api-key': self.api_token,
+            },
+            json={
                 'phone': phone,
                 'message': message,
-                'key': self.api_token
-            }).json()
-
-        return response
-
-    def get_quota(self):
-        """Check the SMS quota remaining"""
-        response = requests.get(
-            self.service_url + "/quota/{}".format(
-                self.api_token
-            )
+            }
         ).json()
 
         return response
