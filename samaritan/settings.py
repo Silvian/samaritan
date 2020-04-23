@@ -225,6 +225,8 @@ CELERY_RESULT_BACKEND = 'django-db'
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
+COUNTRY_CODE = 'GB'
+
 LANGUAGE_CODE = 'en-uk'
 
 TIME_ZONE = 'UTC'
