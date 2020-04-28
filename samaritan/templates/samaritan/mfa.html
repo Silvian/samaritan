@@ -31,7 +31,7 @@
     <form role="form" enctype="multipart/form-data" action="" method="post">
         {% csrf_token %}
         <fieldset class="form-group">
-            <input class="form-control" type="text" id="code" name="code" placeholder="code" required>
+            <input class="form-control" type="text" id="code" name="code" placeholder="six digit code" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" required>
         </fieldset>
         <fieldset class="form-group">
             <input id="remember" name="remember" type="checkbox" placeholder="remember" checked/>
