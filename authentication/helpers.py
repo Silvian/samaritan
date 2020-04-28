@@ -23,8 +23,9 @@ def initiate_mfa_auth(user):
         if user.profile.mobile_number and user.profile.mfa_enabled:
             # generate the mfa code and send sms to the user
             mfa_code = MFACode.objects.create(user=user)
+            message = "One time code: {}".format(mfa_code.calculate_six_digit_code())
             send_sms_task.delay(
-                message=mfa_code.calculate_six_digit_code(),
+                message=message,
                 phone=user.profile.mobile_number,
             )
             return str(mfa_code.token)

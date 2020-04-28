@@ -59,8 +59,9 @@ def send_mfa_code(request):
             if user.profile.mobile_number:
                 # generate the mfa code and send sms to the user
                 mfa_code = MFACode.objects.create(user=user)
+                message = "One time code: {}".format(mfa_code.calculate_six_digit_code())
                 send_sms_task.delay(
-                    message=mfa_code.calculate_six_digit_code(),
+                    message=message,
                     phone=user.profile.mobile_number,
                 )
                 return JsonResponse(success_response)
