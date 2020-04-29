@@ -25,7 +25,7 @@ from celery.schedules import crontab
 AUTHOR = "Silvian Dragan"
 COPYRIGHT = "Copyright {year}, Samaritan CMA (Church Management Assistant)"
 LICENCE = "GPLv3"
-VERSION = "1.10"
+VERSION = "1.11"
 MAINTAINER = "Silvian Dragan"
 EMAIL = "silvian.dragan@gmail.com"
 
