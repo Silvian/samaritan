@@ -6,6 +6,7 @@
 """
 import json
 
+from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
@@ -18,9 +19,12 @@ from emailservice.tasks import send_email_task
 
 
 def send_emails(request, members):
+    user = get_user(request)
     form = EmailOutboxForm(request.POST or None)
     if form.is_valid():
         outbox = form.save()
+        outbox.created_by = user
+        outbox.save()
         attachment = request.FILES.get(['attachment'][0], default=None)
         if attachment:
             outbox.attachment = attachment

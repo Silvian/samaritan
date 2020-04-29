@@ -25,6 +25,7 @@ class EmailOutbox(admin.ModelAdmin):
         'subject',
         'message',
         'attachment',
+        'created_by',
         'created_date',
     )
 
