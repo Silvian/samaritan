@@ -7,6 +7,7 @@
 
 from django.db import models
 from django.utils import timezone
+from django_common.auth_backends import User
 
 from samaritan.base_models import SingletonModel
 from samaritan.models import ChurchRole
@@ -24,6 +25,13 @@ class EmailOutbox(models.Model):
         blank=True,
         null=True,
         upload_to='attachments',
+    )
+
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
 
     created_date = models.DateTimeField(
