@@ -16,10 +16,6 @@ class SMSMessageConfiguration(SingletonModel):
         default=0,
     )
 
-    quota_remaining = models.PositiveIntegerField(
-        default=0,
-    )
-
     def __str__(self):
         """Return the string representation"""
         return self.name

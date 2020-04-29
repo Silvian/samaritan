@@ -58,6 +58,5 @@ class MFAConfigurationAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'enabled',
-        'quota_remaining',
         'active',
     )

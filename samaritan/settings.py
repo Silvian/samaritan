@@ -216,10 +216,6 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'authentication.tasks.check_user_lockout',
         'schedule': crontab(minute='*', hour='*'),
     },
-    'get_sms_quota': {
-        'task': 'messageservice.tasks.get_sms_quota',
-        'schedule': crontab(minute='29', hour='*'),
-    }
 }
 
 # Django celery results configurations
@@ -228,6 +224,8 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
+
+COUNTRY_CODE = 'GB'
 
 LANGUAGE_CODE = 'en-uk'
 
@@ -271,8 +269,6 @@ PASSWORD_ENTROPY_THRESHOLD = 60
 TOKEN_EXPIRY_THRESHOLD = 300
 # Cookie expiry in seconds
 COOKIE_EXPIRY_THRESHOLD = 60 * 60 * 24 * 30
-# Stop MFA if the sms quota drops below this level
-SMS_AVAILABILITY_THRESHOLD = 10
 
 # HIBP settings
 PWNED_API_URL = "https://api.pwnedpasswords.com/range/"

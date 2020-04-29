@@ -14,7 +14,7 @@ from django.http import JsonResponse
 
 from api.views import success_response, failure_response
 from authentication.forms import UserForm
-from authentication.models import MFAConfiguration, MFACode
+from authentication.models import MFAConfiguration, MFACode, MFACookie
 from messageservice.tasks import send_sms_task
 
 
@@ -86,6 +86,7 @@ def verify_mfa_code(request):
 def disable_mfa(request):
     if request.method == 'POST':
         user = get_user(request)
+        MFACookie.objects.filter(user=user).delete()
         user.profile.mfa_enabled = False
         user.save()
         return JsonResponse(success_response)
