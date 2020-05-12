@@ -9,11 +9,7 @@ from django.contrib import admin
 from .models import (
     EmailOutbox,
     ChurchEmailConfiguration,
-    BirthdayEmailGreetingConfiguration,
-    BirthdaysListConfiguration,
-    GroupRotationConfiguration,
-    PasswordResetEmailConfiguration,
-    WelcomeEmailConfiguration,
+    EmailConfiguration,
 )
 
 
@@ -41,65 +37,14 @@ class ChurchEmailConfigurationAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(BirthdayEmailGreetingConfiguration)
-class BirthdayEmailGreetingConfigurationAdmin(admin.ModelAdmin):
-    """BirthdayEmailGreetingConfiguration admin."""
+@admin.register(EmailConfiguration)
+class EmailConfigurationAdmin(admin.ModelAdmin):
+    """EmailConfiguration admin."""
 
     list_display = (
-        'name',
-        'threshold',
+        'type',
+        'description',
         'subject',
-        'greeting',
-        'send_emails',
-    )
-
-
-@admin.register(BirthdaysListConfiguration)
-class BirthdaysListConfigurationAdmin(admin.ModelAdmin):
-    """BirthdaysListConfiguration admin."""
-
-    list_display = (
-        'name',
-        'subject',
-        'sending_day',
-        'week_cycle',
-        'send_emails',
-    )
-
-
-@admin.register(GroupRotationConfiguration)
-class GroupRotationConfigurationAdmin(admin.ModelAdmin):
-    """GroupRotationConfiguration admin."""
-
-    list_display = (
-        'name',
-        'group_name',
-        'group_number',
-        'email_subject',
-        'email_message',
-        'send_emails',
-    )
-
-
-@admin.register(PasswordResetEmailConfiguration)
-class PasswordResetEmailConfigurationAdmin(admin.ModelAdmin):
-    """PasswordResetEmailConfiguration admin."""
-
-    list_display = (
-        'name',
-        'email_subject',
-        'email_message',
-        'send_email',
-    )
-
-
-@admin.register(WelcomeEmailConfiguration)
-class WelcomeEmailConfigurationAdmin(admin.ModelAdmin):
-    """WelcomeEmailConfiguration admin."""
-
-    list_display = (
-        'name',
-        'email_subject',
-        'email_message',
+        'message',
         'send_email',
     )

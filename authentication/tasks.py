@@ -15,9 +15,9 @@ from django_common.auth_backends import User
 
 from samaritan.celery import app
 from emailservice.models import (
+    EmailTypes,
+    EmailConfiguration,
     ChurchEmailConfiguration,
-    PasswordResetEmailConfiguration,
-    WelcomeEmailConfiguration,
 )
 
 from emailservice.mail import send_password_email
@@ -29,17 +29,17 @@ logger = get_task_logger(__name__)
 def send_reset_email(user_id, site_url, temp_passwd):
     """Send forgot password email to reset password."""
     email_config = ChurchEmailConfiguration.load()
-    password_reset = PasswordResetEmailConfiguration.load()
+    password_reset = EmailConfiguration.objects.get(type=EmailTypes.PASSWORD_RESET.name)
 
-    if password_reset.send_email and password_reset.email_subject and password_reset.email_message:
+    if password_reset.send_email:
         user = User.objects.get(id=user_id)
         send_password_email(
             sender_email=email_config.church_email,
             sender_name=email_config.church_signature,
             recipient_first_name=user.first_name,
             recipient_email=user.email,
-            subject=password_reset.email_subject,
-            message=password_reset.email_message,
+            subject=password_reset.subject,
+            message=password_reset.message,
             username=user.username,
             password=temp_passwd,
             domain=site_url,
@@ -52,17 +52,17 @@ def send_reset_email(user_id, site_url, temp_passwd):
 def send_welcome_pack(user_id, site_url, temp_passwd):
     """Send the user's welcome pack email when a new user is created."""
     email_config = ChurchEmailConfiguration.load()
-    welcome_email = WelcomeEmailConfiguration.load()
+    welcome_email = EmailConfiguration.objects.get(type=EmailTypes.WELCOME_EMAIL.name)
 
-    if welcome_email.send_email and welcome_email.email_subject and welcome_email.email_message:
+    if welcome_email.send_email:
         user = User.objects.get(id=user_id)
         send_password_email(
             sender_email=email_config.church_email,
             sender_name=email_config.church_signature,
             recipient_first_name=user.first_name,
             recipient_email=user.email,
-            subject=welcome_email.email_subject,
-            message=welcome_email.email_message,
+            subject=welcome_email.subject,
+            message=welcome_email.message,
             username=user.username,
             password=temp_passwd,
             domain=site_url,

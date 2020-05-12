@@ -1,6 +1,6 @@
 Hi {{ recipient_name }},
 
-Please see below the list of church members who had a birthday last month:
+{{ message }}
 
 {% for member in member_list %}
 
