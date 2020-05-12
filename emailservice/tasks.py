@@ -7,23 +7,19 @@
 Celery tasks.
 """
 
-import calendar
-
 from datetime import date
 
 from celery.utils.log import get_task_logger
-
-from django.utils.timezone import now
+from django.conf import settings
 
 from samaritan.celery import app
-from samaritan.models import Member, ChurchGroup
+from samaritan.models import Member
 from emailservice.mail import send_email, send_list_email
 from emailservice.models import (
+    EmailTypes,
     EmailOutbox,
+    EmailConfiguration,
     ChurchEmailConfiguration,
-    BirthdayEmailGreetingConfiguration,
-    BirthdaysListConfiguration,
-    GroupRotationConfiguration,
 )
 
 
@@ -53,7 +49,7 @@ def send_email_task(outbox_id, member_id):
 def send_birthday_greeting():
     """Send birthday greeting to members."""
     email_config = ChurchEmailConfiguration.load()
-    birthday_config = BirthdayEmailGreetingConfiguration.load()
+    birthday_config = EmailConfiguration.objects.get(type=EmailTypes.BIRTHDAY_GREETING.name)
     logger.info("Running send birthday greeting task...")
 
     # get everyone from members list including guests
@@ -62,11 +58,14 @@ def send_birthday_greeting():
     # get today's date
     today = date.today()
 
-    if birthday_config.send_emails and birthday_config.subject and birthday_config.greeting:
+    if birthday_config.send_email:
         for member in everyone:
             # check each member's date of birth matches current day and month
-            if member.date_of_birth.month == today.month and member.date_of_birth.day == today.day \
-                    and member.date_of_birth.year > birthday_config.threshold:
+            if (
+                member.date_of_birth.month == today.month
+                and member.date_of_birth.day == today.day
+                and member.date_of_birth.year > settings.THRESHOLD
+            ):
                 if member.church_role not in birthday_config.excluded_roles.all():
                     if member.email is not None and member.email != "":
                         logger.info("Sending greeting to: {} {}".format(member.last_name, member.first_name))
@@ -76,7 +75,7 @@ def send_birthday_greeting():
                             recipient_first_name=member.first_name,
                             recipient_email=member.email,
                             subject=birthday_config.subject,
-                            message=birthday_config.greeting,
+                            message=birthday_config.message,
                         ):
                             logger.warn("Failed to send email to the following recipient: {}".format(member.email))
 
@@ -85,8 +84,8 @@ def send_birthday_greeting():
 def send_birthdays_list():
     """Send birthdays list to select role members."""
     email_config = ChurchEmailConfiguration.load()
-    birthdays_list_config = BirthdaysListConfiguration.load()
-    greeting_config = BirthdayEmailGreetingConfiguration.load()
+    birthdays_list_config = EmailConfiguration.objects.get(type=EmailTypes.BIRTHDAY_LIST.name)
+    greeting_config = EmailConfiguration.objects.get(type=EmailTypes.BIRTHDAY_GREETING.name)
 
     # get everyone from members list including guests
     everyone = Member.objects.filter(is_active=True)
@@ -102,11 +101,11 @@ def send_birthdays_list():
 
     birthdays_list = []
 
-    if birthdays_list_config.send_emails and birthdays_list_config.subject:
-        if today.day <= birthdays_list_config.week_cycle and today.weekday() == birthdays_list_config.sending_day:
+    if birthdays_list_config.send_email:
+        if today.day <= settings.WEEK_CYCLE and today.weekday() == birthdays_list_config.scheduled_day:
 
             for member in everyone:
-                if member.date_of_birth.month == last_month and member.date_of_birth.year > greeting_config.threshold:
+                if member.date_of_birth.month == last_month and member.date_of_birth.year > settings.THRESHOLD:
                     if member.church_role not in greeting_config.excluded_roles.all():
                         birthdays_list.append(member)
 
@@ -128,46 +127,7 @@ def send_birthdays_list():
                 recipient_first_name=recipient.first_name,
                 recipient_email=recipient.email,
                 subject=birthdays_list_config.subject,
+                message=birthdays_list_config.message,
                 member_list=birthdays_list,
             ):
                 logger.warn("Failed to send email to the following recipient: {}".format(recipient.email))
-
-
-@app.task
-def group_rotation_schedule():
-    """Set the next group in the rotation weekly schedule."""
-    group_rotation = GroupRotationConfiguration.load()
-    if group_rotation.group_number:
-        if (group_rotation.group_number == len(
-                [1 for i in calendar.monthcalendar(now().year, now().month) if i[5] != 0])):
-            group_rotation.group_number = 1
-        else:
-            group_rotation.group_number += 1
-
-        logger.info("Group Rotation: {}".format(str(group_rotation.group_number)))
-        group_rotation.save()
-
-
-@app.task
-def send_group_schedule_notification():
-    """Send notification for the next group scheduled."""
-    email_config = ChurchEmailConfiguration.load()
-    group_rotation = GroupRotationConfiguration.load()
-    group_name = "{} {}".format(group_rotation.group_name, group_rotation.group_number)
-
-    if group_rotation.send_emails and group_rotation.email_subject and group_rotation.email_message:
-        logger.debug("Group name: {}".format(group_name))
-        group = ChurchGroup.objects.get(name=group_name)
-
-        for member in group.members.order_by('last_name').filter(is_active=True):
-            if member.email:
-                logger.info("Sending group notification to: {} {}".format(member.last_name, member.first_name))
-                if not send_email(
-                    sender_email=email_config.church_email,
-                    sender_name=email_config.church_signature,
-                    recipient_first_name=member.first_name,
-                    recipient_email=member.email,
-                    subject=group_rotation.email_subject,
-                    message=group_rotation.email_message,
-                ):
-                    logger.warn("Failed to send email to the following recipient: {}".format(member.email))

@@ -16,8 +16,7 @@ def send_email(
         recipient_email,
         subject,
         message,
-        attachment=None,
-):
+        attachment=None):
     text_template = get_template('samaritan/email/group_email.txt')
     html_template = get_template('samaritan/email/group_email.html')
 
@@ -48,12 +47,14 @@ def send_list_email(
         recipient_first_name,
         recipient_email,
         subject,
+        message,
         member_list):
     text_template = get_template('samaritan/email/list_email.txt')
     html_template = get_template('samaritan/email/list_email.html')
 
     context = {
         'recipient_name': recipient_first_name,
+        'message': message,
         'member_list': member_list,
         'sender_name': sender_name,
     }

@@ -200,14 +200,6 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'emailservice.tasks.send_birthdays_list',
         'schedule': crontab(minute='0', hour='9'),
     },
-    'group_rotation_schedule': {
-        'task': 'emailservice.tasks.group_rotation_schedule',
-        'schedule': crontab(minute='30', hour='0', day_of_week='0'),
-    },
-    'send_group_schedule_notification': {
-        'task': 'emailservice.tasks.send_group_schedule_notification',
-        'schedule': crontab(minute='35', hour='9', day_of_week='5'),
-    },
     'password_expiry': {
         'task': 'authentication.tasks.password_expiry',
         'schedule': crontab(minute='0', hour='5'),
@@ -221,6 +213,9 @@ CELERY_BEAT_SCHEDULE = {
 # Django celery results configurations
 CELERY_RESULT_BACKEND = 'django-db'
 
+# Miscellaneous
+WEEK_CYCLE = 7
+THRESHOLD = 1900
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

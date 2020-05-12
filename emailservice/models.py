@@ -5,6 +5,8 @@
 @Details: https://github.com/Silvian/samaritan
 """
 
+from enum import Enum
+
 from django.db import models
 from django.utils import timezone
 from django_common.auth_backends import User
@@ -56,82 +58,52 @@ class ChurchEmailConfiguration(SingletonModel):
         return self.name
 
 
-class BirthdayEmailGreetingConfiguration(SingletonModel):
-    """BirthdayEmailGreetingConfiguration data model."""
+class EmailTypes(Enum):
+    WELCOME_EMAIL = "WELCOME EMAIL"
+    PASSWORD_RESET = "PASSWORD RESET"
+    BIRTHDAY_LIST = "BIRTHDAY LIST"
+    BIRTHDAY_GREETING = "BIRTHDAY GREETING"
 
-    name = models.CharField(
-        max_length=200,
-        default='Birthdays Email Greeting Configurations',
+    @classmethod
+    def choices(cls):
+        return tuple((key.name, key.value) for key in cls)
+
+
+class EmailConfiguration(models.Model):
+    """Email configuration data model."""
+
+    type = models.CharField(
+        choices=EmailTypes.choices(),
+        primary_key=True,
+        max_length=100,
+        unique=True,
     )
-    threshold = models.IntegerField(default=1900)
-    subject = models.CharField(max_length=500)
-    greeting = models.TextField()
-    excluded_roles = models.ManyToManyField(ChurchRole)
-    send_emails = models.BooleanField(default=False)
+    description = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    subject = models.CharField(
+        max_length=200,
+    )
+    message = models.TextField()
+    scheduled_day = models.IntegerField(
+        null=True,
+        blank=True,
+    )
+    recipient_roles = models.ManyToManyField(
+        ChurchRole,
+        related_name="recipient",
+        blank=True,
+    )
+    excluded_roles = models.ManyToManyField(
+        ChurchRole,
+        related_name="excluded",
+        blank=True,
+    )
+    send_email = models.BooleanField(
+        default=False,
+    )
 
     def __str__(self):
-        return self.name
-
-
-class BirthdaysListConfiguration(SingletonModel):
-    """BirthdaysListConfiguration data model."""
-
-    name = models.CharField(
-        max_length=200,
-        default='Birthday List Configurations',
-    )
-    subject = models.CharField(max_length=500)
-    sending_day = models.IntegerField(default=5)
-    week_cycle = models.IntegerField(default=7)
-    recipient_roles = models.ManyToManyField(ChurchRole)
-    send_emails = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-
-
-class GroupRotationConfiguration(SingletonModel):
-    """GroupRotationConfiguration data model."""
-
-    name = models.CharField(
-        max_length=200,
-        default='Church Group Rotation Configurations',
-    )
-    group_name = models.CharField(max_length=200)
-    group_number = models.IntegerField()
-    email_subject = models.CharField(max_length=500)
-    email_message = models.TextField()
-    send_emails = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-
-
-class PasswordResetEmailConfiguration(SingletonModel):
-    """PasswordResetEmailConfiguration data model."""
-
-    name = models.CharField(
-        max_length=200,
-        default='Password Reset Email Configurations',
-    )
-    email_subject = models.CharField(max_length=200)
-    email_message = models.TextField()
-    send_email = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-
-
-class WelcomeEmailConfiguration(SingletonModel):
-    """WelcomeEmailConfiguration data model."""
-
-    name = models.CharField(
-        max_length=200,
-        default='Welcome Email Configurations',
-    )
-    email_subject = models.CharField(max_length=200)
-    email_message = models.TextField()
-    send_email = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
+        return str(self.type)
