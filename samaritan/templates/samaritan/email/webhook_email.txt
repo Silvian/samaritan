@@ -1,0 +1,12 @@
+Hi {{ recipient_name }},
+
+{{ message }}
+
+Name: {{ member.first_name }} {{ member.last_name }}
+Email: {{ member.email }}
+Phone: {{ member.telephone }}
+
+
+Regards,
+
+{{ sender_name }}

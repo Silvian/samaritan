@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'emailservice',
     'export',
     'messageservice',
+    'webhook',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -284,3 +285,6 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', default='')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', default=False)
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', default=False)
+
+# Webhook settings
+WEBHOOK_API_KEY = os.getenv('WEBHOOK_API_KEY', default='')
