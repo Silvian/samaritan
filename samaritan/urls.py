@@ -42,5 +42,6 @@ urlpatterns = [
     url(r'^views/role_members', views.RoleMembersView.as_view(), name='roleMembers'),
     url(r'^views/group_members', views.GroupMembersView.as_view(), name='groupMembers'),
     url(r'^views/group_add', views.GroupMembersAddView.as_view(), name='addGroupMembers'),
+    url(r'^webhook/', include('webhook.urls', namespace='webhook')),
     url(r'^$', views.IndexView.as_view(), name='index'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

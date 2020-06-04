@@ -71,6 +71,36 @@ def send_list_email(
     return msg.send()
 
 
+def send_webhook_email(
+        sender_email,
+        sender_name,
+        recipient_first_name,
+        recipient_email,
+        subject,
+        message,
+        member):
+    text_template = get_template('samaritan/email/webhook_email.txt')
+    html_template = get_template('samaritan/email/webhook_email.html')
+
+    context = {
+        'recipient_name': recipient_first_name,
+        'message': message,
+        'member': member,
+        'sender_name': sender_name,
+    }
+    text_content = text_template.render(context)
+    html_content = html_template.render(context)
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=sender_email,
+        to=[recipient_email],
+    )
+    msg.attach_alternative(html_content, "text/html")
+    return msg.send()
+
+
 def send_password_email(
         sender_email,
         sender_name,
