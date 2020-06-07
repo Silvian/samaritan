@@ -87,7 +87,8 @@ class Member(models.Model):
         max_length=200,
     )
     date_of_birth = models.DateField(
-
+        blank=True,
+        null=True,
     )
     telephone = models.CharField(
         max_length=200,
