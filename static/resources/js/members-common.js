@@ -94,8 +94,7 @@ function addMember(members_table) {
     if(
         $('#first_name').val()=="" ||
         $('#last_name').val()=="" ||
-        $('select[name=church-role-select]').val()==null ||
-        $('#date_of_birth').val()==""
+        $('select[name=church-role-select]').val()==null
     ){
         $('#required-fields-alert').show();
 
