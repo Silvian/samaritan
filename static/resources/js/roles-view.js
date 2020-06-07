@@ -56,8 +56,13 @@ $(document).ready(function(){
                                     }
                         },
                         {"mRender": function(data, type, row) {
-                                        return getFormattedDate(new Date(htmlEntities(row.fields.date_of_birth)));
-                                    }
+                                if(row.fields.date_of_birth){
+                                    return getFormattedDate(new Date(htmlEntities(row.fields.date_of_birth)));
+                                }
+                                else{
+                                    return "";
+                                }
+                            }
                         },
                         {"mRender": function(data, type, row) {
                                         return htmlEntities(row.fields.telephone);
