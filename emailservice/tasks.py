@@ -10,7 +10,6 @@ Celery tasks.
 from datetime import date
 
 from celery.utils.log import get_task_logger
-from django.conf import settings
 
 from samaritan.celery import app
 from samaritan.models import Member
@@ -61,23 +60,20 @@ def send_birthday_greeting():
     if birthday_config.send_email:
         for member in everyone:
             # check each member's date of birth matches current day and month
-            if (
-                member.date_of_birth.month == today.month
-                and member.date_of_birth.day == today.day
-                and member.date_of_birth.year > settings.THRESHOLD
-            ):
-                if member.church_role not in birthday_config.excluded_roles.all():
-                    if member.email is not None and member.email != "":
-                        logger.info("Sending greeting to: {} {}".format(member.last_name, member.first_name))
-                        if not send_email(
-                            sender_email=email_config.church_email,
-                            sender_name=email_config.church_signature,
-                            recipient_first_name=member.first_name,
-                            recipient_email=member.email,
-                            subject=birthday_config.subject,
-                            message=birthday_config.message,
-                        ):
-                            logger.warn("Failed to send email to the following recipient: {}".format(member.email))
+            if member.date_of_birth:
+                if member.date_of_birth.month == today.month and member.date_of_birth.day == today.day:
+                    if member.church_role not in birthday_config.excluded_roles.all():
+                        if member.email:
+                            logger.info("Sending greeting to: {} {}".format(member.last_name, member.first_name))
+                            if not send_email(
+                                sender_email=email_config.church_email,
+                                sender_name=email_config.church_signature,
+                                recipient_first_name=member.first_name,
+                                recipient_email=member.email,
+                                subject=birthday_config.subject,
+                                message=birthday_config.message,
+                            ):
+                                logger.warn("Failed to send email to the following recipient: {}".format(member.email))
 
 
 @app.task
@@ -102,12 +98,13 @@ def send_birthdays_list():
     birthdays_list = []
 
     if birthdays_list_config.send_email:
-        if today.day <= settings.WEEK_CYCLE and today.weekday() == birthdays_list_config.scheduled_day:
+        if today.day <= 7 and today.weekday() == birthdays_list_config.scheduled_day:
 
             for member in everyone:
-                if member.date_of_birth.month == last_month and member.date_of_birth.year > settings.THRESHOLD:
-                    if member.church_role not in greeting_config.excluded_roles.all():
-                        birthdays_list.append(member)
+                if member.date_of_birth:
+                    if member.date_of_birth.month == last_month:
+                        if member.church_role not in greeting_config.excluded_roles.all():
+                            birthdays_list.append(member)
 
     # get church roles from config
     recipients_list = []

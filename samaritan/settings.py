@@ -214,9 +214,6 @@ CELERY_BEAT_SCHEDULE = {
 # Django celery results configurations
 CELERY_RESULT_BACKEND = 'django-db'
 
-# Miscellaneous
-WEEK_CYCLE = 7
-THRESHOLD = 1900
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
