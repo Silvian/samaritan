@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'axes',
     'api',
     'samaritan',
+    'auditing',
     'authentication',
     'emailservice',
     'export',
