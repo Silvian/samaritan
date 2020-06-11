@@ -103,6 +103,8 @@ def update_member(request):
 def delete_member(request):
     if request.method == 'POST':
         member = Member.objects.get(pk=request.POST['id'])
+        activities = ActivityLog.objects.filter(member=member)
+        activities.delete()
         member.delete()
         ActivityLog.objects.create(
             action=ActionsTypes.DELETE_MEMBER.name,
