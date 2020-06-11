@@ -12,6 +12,7 @@ class ActionsTypes(Enum):
     DELETE_MEMBER = "DELETE MEMBER"
     UPDATE_MEMBER = "UPDATE MEMBER"
     ARCHIVE_MEMBER = "ARCHIVE MEMBER"
+    UNARCHIVE_MEMBER = "UNARCHIVE MEMBER"
 
     @classmethod
     def choices(cls):
