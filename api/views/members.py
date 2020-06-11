@@ -19,6 +19,7 @@ from django.shortcuts import get_object_or_404
 from api.views import success_response, failure_response
 from samaritan.forms import MemberForm
 from samaritan.models import MembershipType, Member
+from auditing.models import ActivityLog, ActionsTypes
 
 
 @login_required
@@ -62,6 +63,11 @@ def add_new_members(request):
         form = MemberForm(request.POST or None)
         if form.is_valid():
             member = form.save()
+            ActivityLog.objects.create(
+                action=ActionsTypes.CREATE_MEMBER.name,
+                member=member,
+                user=request.user,
+            )
             profile_image = request.FILES.get(['profile_pic'][0], default=None)
             if profile_image:
                 member.profile_pic = profile_image
@@ -79,6 +85,11 @@ def update_member(request):
         form = MemberForm(request.POST or None, instance=member)
         if form.is_valid():
             profile_image = request.FILES.get(['profile_pic'][0], default=None)
+            ActivityLog.objects.create(
+                action=ActionsTypes.UPDATE_MEMBER.name,
+                member=member,
+                user=request.user,
+            )
             if profile_image:
                 member.profile_pic = profile_image
             form.save()
@@ -93,6 +104,10 @@ def delete_member(request):
     if request.method == 'POST':
         member = Member.objects.get(pk=request.POST['id'])
         member.delete()
+        ActivityLog.objects.create(
+            action=ActionsTypes.DELETE_MEMBER.name,
+            user=request.user,
+        )
         return HttpResponse(json.dumps(success_response), content_type='application/json')
 
 
@@ -104,6 +119,11 @@ def terminate_member(request):
         member.is_active = False
         member.notes = request.POST['notes']
         member.save()
+        ActivityLog.objects.create(
+            action=ActionsTypes.ARCHIVE_MEMBER.name,
+            member=member,
+            user=request.user,
+        )
         return HttpResponse(json.dumps(success_response), content_type='application/json')
 
 
@@ -114,4 +134,9 @@ def reinstate_member(request):
         member = get_object_or_404(Member, id=request.POST['id'])
         member.is_active = True
         member.save()
+        ActivityLog.objects.create(
+            action=ActionsTypes.UNARCHIVE_MEMBER.name,
+            member=member,
+            user=request.user,
+        )
         return HttpResponse(json.dumps(success_response), content_type='application/json')
