@@ -106,7 +106,6 @@ def delete_member(request):
         member.delete()
         ActivityLog.objects.create(
             action=ActionsTypes.DELETE_MEMBER.name,
-            member=member,
             user=request.user,
         )
         return HttpResponse(json.dumps(success_response), content_type='application/json')
