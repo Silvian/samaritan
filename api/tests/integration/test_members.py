@@ -2,6 +2,7 @@
 
 from django.test import TestCase
 from api.tests.integration import UserFactory, MemberFactory
+from auditing.models import ActivityLog, ActionsTypes
 
 
 class TestMemberIntegrationTestCase(TestCase):
@@ -41,6 +42,11 @@ class TestMemberIntegrationTestCase(TestCase):
             200
         )
 
+        activities = ActivityLog.objects.all()
+        self.assertEqual(1, activities.count())
+        create_activity = ActivityLog.objects.filter().first()
+        self.assertEqual(ActionsTypes.CREATE_MEMBER.name, create_activity.action)
+
     def test_update_member(self):
         """Test that an admin user can update a member"""
         self.client.force_login(user=self.admin_user)
@@ -72,6 +78,11 @@ class TestMemberIntegrationTestCase(TestCase):
             200
         )
 
+        activities = ActivityLog.objects.all()
+        self.assertEqual(1, activities.count())
+        create_activity = ActivityLog.objects.filter().first()
+        self.assertEqual(ActionsTypes.UPDATE_MEMBER.name, create_activity.action)
+
     def test_delete_member(self):
         """Test that an admin user can delete a member"""
         self.client.force_login(user=self.admin_user)
@@ -86,6 +97,11 @@ class TestMemberIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
+
+        activities = ActivityLog.objects.all()
+        self.assertEqual(1, activities.count())
+        create_activity = ActivityLog.objects.filter().first()
+        self.assertEqual(ActionsTypes.DELETE_MEMBER.name, create_activity.action)
 
     def test_terminate_member(self):
         """Test that an admin user can terminate a member"""
@@ -103,6 +119,11 @@ class TestMemberIntegrationTestCase(TestCase):
             200
         )
 
+        activities = ActivityLog.objects.all()
+        self.assertEqual(1, activities.count())
+        create_activity = ActivityLog.objects.filter().first()
+        self.assertEqual(ActionsTypes.ARCHIVE_MEMBER.name, create_activity.action)
+
     def test_reinstate_member(self):
         """Test that an admin user can reinstate a member"""
 
@@ -118,6 +139,11 @@ class TestMemberIntegrationTestCase(TestCase):
             response.status_code,
             200
         )
+
+        activities = ActivityLog.objects.all()
+        self.assertEqual(1, activities.count())
+        create_activity = ActivityLog.objects.filter().first()
+        self.assertEqual(ActionsTypes.UNARCHIVE_MEMBER.name, create_activity.action)
 
     def test_list_active_members(self):
         """Test that an authenticated user can list all active members"""
