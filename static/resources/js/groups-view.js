@@ -75,6 +75,8 @@ $(document).ready(function(){
                 $('#send-sms').click(function (event) { 
                     sendGroupSMS(id);
                  });
+
+                fileSizeCheck();
                  
                 $('#send-email').click(function(event) {
                     sendGroupEmail(id);
