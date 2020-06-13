@@ -129,3 +129,15 @@ function dateFormatValidator(date){
 
     return true;
 }
+
+//checks file upload attachment size
+function fileSizeCheck() {
+    var uploadField = document.getElementById("file-attachment");
+
+    uploadField.onchange = function() {
+        if(this.files[0].size > 10000000){
+           alert("File is too large! Attachment cannot be bigger than 10MB.");
+           this.value = "";
+        }
+    };
+}
