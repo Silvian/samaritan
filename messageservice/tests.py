@@ -13,6 +13,7 @@ from messageservice.models import SMSMessageConfiguration
 class SMSMessageConfigurationFactory(DjangoModelFactory):
     """Factory for SMS Message Configuration."""
 
+    sender_name = "TestSender"
     send_message = True
 
     class Meta:
@@ -40,7 +41,8 @@ class TestSMSMessageTaskTestCase(TestCase):
 
         send_sms_mock.assert_called_once_with(
             message,
-            self.member.telephone
+            self.member.telephone,
+            sender_id=self.sms_config.sender_name,
         )
 
 

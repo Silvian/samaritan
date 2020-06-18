@@ -16,7 +16,7 @@ def send_sms_task(message, phone):
     if sms_config.send_message:
         message = message.encode('utf-8')
         logger.info('Sending:"{}" to: {}'.format(message, phone))
-        response = SMSService().send_sms(message, phone)
+        response = SMSService().send_sms(message, phone, sender_id=sms_config.sender_name)
         if response.get('success'):
             sms_config.counter += 1
             sms_config.save()
