@@ -9,6 +9,11 @@ class SMSMessageConfiguration(SingletonModel):
         max_length=50,
         default='SMS Message'
     )
+    sender_name = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+    )
     send_message = models.BooleanField(
         default=False,
     )

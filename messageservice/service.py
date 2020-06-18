@@ -19,7 +19,7 @@ class SMSService:
         self.api_token = api_token
         self.country_code = country_code
 
-    def send_sms(self, message, phone):
+    def send_sms(self, message, phone, sender_id=None):
         """Send SMS"""
         response = requests.post(
             url=self.service_url,
@@ -30,6 +30,7 @@ class SMSService:
             json={
                 'phone': phone,
                 'country_code': self.country_code,
+                'sender_id': sender_id,
                 'message': message,
             }
         ).json()
