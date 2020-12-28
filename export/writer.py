@@ -93,7 +93,10 @@ def write_to_excel(download_data, report_title=None):
     for member in download_data:
         worksheet_s.write(row, col, member.first_name)
         worksheet_s.write(row, col + 1, member.last_name)
-        worksheet_s.write(row, col + 2, member.date_of_birth.strftime(WriterConstants.DATE_FORMAT))
+        if member.date_of_birth is not None:
+            worksheet_s.write(row, col + 2, member.date_of_birth.strftime(WriterConstants.DATE_FORMAT))
+        else:
+            worksheet_s.write(row, col + 2, WriterConstants.NOT_SPECIFIED)
         worksheet_s.write(row, col + 3, member.telephone)
         worksheet_s.write(row, col + 4, member.address.number)
         worksheet_s.write(row, col + 5, member.address.street)
