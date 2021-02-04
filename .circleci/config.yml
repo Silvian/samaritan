@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    machine: true # Use a Linux VM instead of docker environment
+    working_directory: ~/samaritan
+    steps:
+      - checkout
+      - run:
+          command: touch .env
+          name: Create environment
+      - run:
+          command: docker-compose build
+          name: Build
+      - run:
+          command: docker-compose run --rm web scripts/migrate_loaddata.sh 
+          name: Load Data
+      - run:
+          command: ./scripts/test.sh
+          name: Test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
