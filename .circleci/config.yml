@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          command: touch .env
+          name: Create environment
+      - run:
           command: docker-compose build
           name: Build
       - run:
