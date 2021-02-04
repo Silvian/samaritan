@@ -1,21 +1,19 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@0.2.1
-
 jobs:
   build-and-test:
-    executor: python/default
+    machine: true # Use a Linux VM instead of docker environment
+    working_directory: ~/samaritan
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
       - run:
-          command: ./scripts/migrate_loaddata.sh
+          command: docker-compose build
+          name: Build
+      - run:
+          command: docker-compose run --rm web scripts/migrate_loaddata.sh 
           name: Load Data
       - run:
-          command: ./manage.py test
+          command: ./scripts/test.sh
           name: Test
 
 workflows:
