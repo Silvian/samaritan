@@ -12,6 +12,9 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
+          command: ./scripts/scripts/migrate_loaddata.sh
+          name: Load data
+      - run:
           command: ./manage.py test
           name: Test
 
