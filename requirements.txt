@@ -22,7 +22,7 @@ kombu==4.1.0
 mock==2.0.0
 pathlib2==2.3.5
 pbr==4.2.0
-Pillow==6.2.2
+Pillow==8.2.0
 psycopg2-binary==2.8.3
 python-dateutil==2.7.3
 python-memcached==1.59
