@@ -39,8 +39,6 @@ class SettingsConstants:
 class WriterConstants:
     """Writer constants."""
 
-    TITLE_TEXT = "Report"
-
     FIRST_NAME = "First Name"
     LAST_NAME = "Last Name"
     DATE_OF_BIRTH = "Date of Birth"
