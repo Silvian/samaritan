@@ -20,7 +20,7 @@ from django.utils.translation import ugettext
 def write_to_excel(download_data, report_title=None):
     output = StringIO.StringIO()
     workbook = xlsxwriter.Workbook(output)
-    title_text = u"{0} {1}".format(report_title, ugettext(WriterConstants.TITLE_TEXT))
+    title_text = u"{0}".format(report_title)
 
     # Here we will adding the code to add data
     worksheet_s = workbook.add_worksheet(title_text)
