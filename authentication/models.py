@@ -118,7 +118,7 @@ class Profile(models.Model):
 
 
 class MFACode(models.Model):
-    """Multi factor authentication codes."""
+    """Multifactor authentication codes."""
 
     token = models.UUIDField(
         default=uuid.uuid4,
@@ -232,7 +232,7 @@ class MFAConfiguration(SingletonModel):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    """Create profile when an user instance is created."""
+    """Create profile when a user instance is created."""
     if created:
         Profile.objects.create(user=instance)
 
