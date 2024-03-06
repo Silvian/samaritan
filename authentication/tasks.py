@@ -72,28 +72,6 @@ def send_welcome_pack(user_id, site_url, temp_passwd):
 
 
 @app.task
-def password_expiry():
-    """Reset passwords for all users over configured number of days."""
-    users = User.objects.filter(is_superuser=False)
-
-    def threshold_delta():
-        if user.profile.password_last_updated:
-            time_passed = now() - user.profile.password_last_updated
-            seconds_passed = time_passed.total_seconds()
-            days_passed = round(seconds_passed / 60 / 60 / 24)
-            logger.info("Days passed since last password change: {}".format(days_passed))
-            if days_passed > settings.PASSWORD_RESET_THRESHOLD:
-                return True
-        return False
-
-    for user in users:
-        if user.profile.password_last_updated is None or threshold_delta():
-            user.profile.password_reset = True
-            user.save()
-            logger.info("Password expired for: {}".format(user.username))
-
-
-@app.task
 def check_user_lockout():
     """Check axes lockout for any user and deactivate the user account."""
     from authentication.models import MFACode

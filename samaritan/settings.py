@@ -202,10 +202,6 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'emailservice.tasks.send_birthdays_list',
         'schedule': crontab(minute='0', hour='9'),
     },
-    'password_expiry': {
-        'task': 'authentication.tasks.password_expiry',
-        'schedule': crontab(minute='0', hour='5'),
-    },
     'check_user_lockout': {
         'task': 'authentication.tasks.check_user_lockout',
         'schedule': crontab(minute='*', hour='*'),
@@ -254,8 +250,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Password settings
-# Password reset number of days before expiry
-PASSWORD_RESET_THRESHOLD = 60
 PASSWORD_ENTROPY_THRESHOLD = 60
 
 # MFA settings
