@@ -20,6 +20,7 @@ from django.utils.timezone import now
 from api.views import success_response, failure_response
 from authentication.helpers import (
     initiate_mfa_auth,
+    validate_login_token,
     validate_mfa_code,
     valid_cookie,
     set_cookie,
@@ -40,6 +41,28 @@ def login_view(request):
     return render(request, "samaritan/login.html", context)
 
 
+def passwordless_view(request):
+    context = SettingsConstants.get_settings()
+    return render(request, "samaritan/passwordless.html", context)
+
+
+def send_login_email(request):
+    if request.method == 'POST':
+        if request.POST['email']:
+            try:
+                user = User.objects.get(email=request.POST['email'].lower())
+                user.profile.send_login_email(get_current_site(request).name)
+                return JsonResponse(success_response)
+
+            except User.DoesNotExist:
+                pass
+
+            except User.MultipleObjectsReturned:
+                pass
+
+        return JsonResponse(failure_response)
+
+
 def login_mfa_view(request, token):
     context = SettingsConstants.get_settings()
     if request.method == 'GET':
@@ -58,42 +81,54 @@ def login_mfa_view(request, token):
         return render(request, "samaritan/mfa.html", context)
 
 
+def login_with_token(request, token):
+    if request.method == 'GET':
+        context = SettingsConstants.get_settings()
+        if token:
+            validated, redirect_url, message = validate_login_token(request, token)
+            if validated:
+                return HttpResponseRedirect(redirect_url)
+
+            else:
+                # the authentication system was unable to verify token
+                context['msg'] = message
+                return render(request, "samaritan/login.html", context)
+
+
 def authenticate_user(request):
     if request.method == 'POST':
+        # the password is verified for the user
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         context = SettingsConstants.get_settings()
 
-        if user is not None:
-            # the password is verified for the user
-            if user.is_active:
-                if not valid_cookie(user, request.COOKIES.get("mfa", None)):
-                    token = initiate_mfa_auth(user)
-                    if token:
-                        # mfa enabled
-                        redirect_url = settings.MFA_URL + token + "/"
-                        return HttpResponseRedirect(redirect_url)
-
-                login(request, user)
-
-                if user.profile.password_reset:
-                    return HttpResponseRedirect(settings.RESET_URL)
-
-                if user.profile.password_breached:
-                    return HttpResponseRedirect(settings.RESET_URL)
-
-                if user.profile.password_strength < settings.PASSWORD_ENTROPY_THRESHOLD:
-                    return HttpResponseRedirect(settings.RESET_URL)
-
-                return HttpResponseRedirect(settings.REDIRECT_URL)
-
-            else:
-                context['msg'] = AuthenticationConstants.ACCOUNT_DISABLED
-                return render(request, "samaritan/login.html", context)
-
-        else:
+        if not user:
             # the authentication system was unable to verify the username and password
             context['msg'] = AuthenticationConstants.INVALID_CREDENTIALS
             return render(request, "samaritan/login.html", context)
+
+        if not user.is_active:
+            context['msg'] = AuthenticationConstants.ACCOUNT_DISABLED
+            return render(request, "samaritan/login.html", context)
+
+        if not valid_cookie(user, request.COOKIES.get("mfa", None)):
+            token = initiate_mfa_auth(user)
+            if token:
+                # mfa enabled
+                redirect_url = settings.MFA_URL + token + "/"
+                return HttpResponseRedirect(redirect_url)
+
+        login(request, user)
+
+        if user.profile.password_reset:
+            return HttpResponseRedirect(settings.RESET_URL)
+
+        if user.profile.password_breached:
+            return HttpResponseRedirect(settings.RESET_URL)
+
+        if user.profile.password_strength < settings.PASSWORD_ENTROPY_THRESHOLD:
+            return HttpResponseRedirect(settings.RESET_URL)
+
+        return HttpResponseRedirect(settings.REDIRECT_URL)
 
 
 def forgot_view(request):
@@ -130,35 +165,36 @@ def change_password(request):
         user = get_user(request)
         context = SettingsConstants.get_settings()
 
-        if user.check_password(request.POST['current_password']):
-            if request.POST['new_password'] != request.POST['current_password']:
-                if request.POST['new_password'] == request.POST['confirm_password']:
-                    # validate password strength and if not breached
-                    if not user.profile.verify_password_strength(request.POST['new_password']):
-                        context['msg'] = AuthenticationConstants.WEAK_PASSWORD
-                        return render(request, "samaritan/reset.html", context)
-
-                    if user.profile.verify_password_breached(request.POST['new_password']):
-                        context['msg'] = AuthenticationConstants.BREACHED_PASSWORD
-                        return render(request, "samaritan/reset.html", context)
-
-                    user.set_password(request.POST['new_password'])
-                    user.profile.password_reset = False
-                    user.profile.password_last_updated = now()
-                    user.save()
-                    return HttpResponseRedirect(settings.REDIRECT_URL)
-
-                else:
-                    context['msg'] = AuthenticationConstants.PASSWORD_MISMATCH
-                    return render(request, "samaritan/reset.html", context)
-
-            else:
-                context['msg'] = AuthenticationConstants.SAME_PASSWORD
-                return render(request, "samaritan/reset.html", context)
-
-        else:
+        # validate current password
+        if not user.check_password(request.POST['current_password']):
             context['msg'] = AuthenticationConstants.INCORRECT_PASSWORD
             return render(request, "samaritan/reset.html", context)
+
+        # check new password is not the same as current password
+        if request.POST['new_password'] == request.POST['current_password']:
+            context['msg'] = AuthenticationConstants.SAME_PASSWORD
+            return render(request, "samaritan/reset.html", context)
+
+        # check that the new password and the confirmation password are the same
+        if request.POST['new_password'] != request.POST['confirm_password']:
+            context['msg'] = AuthenticationConstants.PASSWORD_MISMATCH
+            return render(request, "samaritan/reset.html", context)
+
+        # validate password strength
+        if not user.profile.verify_password_strength(request.POST['new_password']):
+            context['msg'] = AuthenticationConstants.WEAK_PASSWORD
+            return render(request, "samaritan/reset.html", context)
+
+        # verify password has not been found in a breached database
+        if user.profile.verify_password_breached(request.POST['new_password']):
+            context['msg'] = AuthenticationConstants.BREACHED_PASSWORD
+            return render(request, "samaritan/reset.html", context)
+
+        user.set_password(request.POST['new_password'])
+        user.profile.password_reset = False
+        user.profile.password_last_updated = now()
+        user.save()
+        return HttpResponseRedirect(settings.REDIRECT_URL)
 
 
 @login_required

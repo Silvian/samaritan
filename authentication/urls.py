@@ -10,8 +10,10 @@ from axes.decorators import watch_login
 from . import views
 
 urlpatterns = [
+    url(r'^send_login_email/', views.send_login_email, name='send_login_email'),
     url(r'^forgot_password/', views.forgot_password, name='forgot_password'),
     url(r'^change_password/', views.change_password, name='change_password'),
+    url(r'^passwordless/', views.passwordless_view, name='passwordless'),
     url(r'^forgot/', views.forgot_view, name='forgot'),
     url(r'^reset/', views.reset_view, name='reset'),
     url(r'^login/', views.login_view, name='login'),
@@ -20,5 +22,9 @@ urlpatterns = [
     url(
         r'^mfa/(?P<token>\b[0-9A-Fa-f]{8}\b(-\b[0-9A-Fa-f]{4}\b){3}-\b[0-9A-Fa-f]{12}\b)/',
         watch_login(views.login_mfa_view), name='mfa'
+    ),
+    url(
+        r'^url/(?P<token>\b[0-9A-Fa-f]{8}\b(-\b[0-9A-Fa-f]{4}\b){3}-\b[0-9A-Fa-f]{12}\b)/',
+        watch_login(views.login_with_token), name='url'
     ),
 ]
