@@ -134,3 +134,36 @@ def send_password_email(
     )
     msg.attach_alternative(html_content, "text/html")
     return msg.send()
+
+
+def send_login_link_email(
+        sender_email,
+        sender_name,
+        recipient_first_name,
+        recipient_email,
+        subject,
+        message,
+        link,
+        domain):
+    text_template = get_template('samaritan/email/login_link_email.txt')
+    html_template = get_template('samaritan/email/login_link_email.html')
+
+    context = {
+        'recipient_name': recipient_first_name,
+        'message': message,
+        'link': link,
+        'domain': domain,
+        'sender_name': sender_name,
+
+    }
+    text_content = text_template.render(context)
+    html_content = html_template.render(context)
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_content,
+        from_email=sender_email,
+        to=[recipient_email],
+    )
+    msg.attach_alternative(html_content, "text/html")
+    return msg.send()

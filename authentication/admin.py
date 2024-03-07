@@ -6,7 +6,13 @@
 """
 
 from django.contrib import admin
-from .models import Profile, MFACode, MFACookie, MFAConfiguration
+from .models import (
+    Profile,
+    LoginToken,
+    MFACode,
+    MFACookie,
+    MFAConfiguration,
+)
 
 
 @admin.register(Profile)
@@ -21,6 +27,19 @@ class ProfileAdmin(admin.ModelAdmin):
         'password_reset',
         'password_last_updated',
         'mfa_enabled',
+    )
+
+
+@admin.register(LoginToken)
+class LoginTokenAdmin(admin.ModelAdmin):
+    """LoginToken admin."""
+
+    list_display = (
+        'token',
+        'user',
+        'expiry_date',
+        'created_date',
+        'expired',
     )
 
 

@@ -7,13 +7,20 @@
 
 from datetime import datetime
 
+from axes.decorators import watch_login
 from axes.models import AccessAttempt
 from axes.utils import reset
 from django.conf import settings
 from django.contrib.auth import login
 
-from authentication.models import MFACode, MFAConfiguration, MFACookie
+from authentication.models import (
+    LoginToken,
+    MFACode,
+    MFAConfiguration,
+    MFACookie,
+)
 from messageservice.tasks import send_sms_task
+from samaritan.constants import AuthenticationConstants
 
 
 def initiate_mfa_auth(user):
@@ -51,6 +58,32 @@ def validate_mfa_code(request, code, token):
             AccessAttempt.objects.create(username=user.username, failures_since_start=1)
 
     return False
+
+
+@watch_login
+def validate_login_token(request, token):
+    """use to validate received login url token against request user."""
+    token_object = LoginToken.objects.filter(token=token).last()
+    if not token_object:
+        return False, None, AuthenticationConstants.INVALID_TOKEN
+
+    user = token_object.user
+    if token_object.expired:
+        return False, None, AuthenticationConstants.INVALID_TOKEN
+
+    if not user.is_active:
+        return False, None, AuthenticationConstants.ACCOUNT_DISABLED
+
+    if not valid_cookie(user, request.COOKIES.get("mfa", None)):
+        mfa_token = initiate_mfa_auth(user)
+        if mfa_token:
+            # mfa enabled
+            redirect_url = settings.MFA_URL + mfa_token + "/"
+            return True, redirect_url, None
+
+    login(request, user)
+    redirect_url = settings.REDIRECT_URL
+    return True, redirect_url, None
 
 
 def reset_user_access(user):
