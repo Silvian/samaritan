@@ -17,7 +17,11 @@ from django.utils import timezone
 
 from messageservice.models import SMSMessageConfiguration
 from samaritan.base_models import SingletonModel
-from .tasks import send_reset_email, send_welcome_pack
+from .tasks import (
+    send_login_link,
+    send_reset_email,
+    send_welcome_pack,
+)
 from .utils import (
     PasswordGenerator,
     PasswordPwnedChecker,
@@ -62,6 +66,11 @@ class Profile(models.Model):
         default=False,
     )
 
+    def send_login_email(self, site_url):
+        """Send email with a login link."""
+        link = self.generate_login_link(site_url)
+        send_login_link.delay(self.user.id, site_url, link)
+
     def send_password_email(self, site_url):
         """Send email with temporary password."""
         temp_passwd = self.generate_temp_password()
@@ -71,6 +80,10 @@ class Profile(models.Model):
         """Send the welcome pack email."""
         temp_passwd = self.generate_temp_password()
         send_welcome_pack.delay(self.user.id, site_url, temp_passwd)
+
+    def generate_login_link(self, site_url):
+        token = LoginToken.objects.create(user=self.user)
+        return "http://{url}/authenticate/url/{token}".format(url=site_url, token=token)
 
     def generate_temp_password(self):
         """Generate temporary password."""
@@ -117,8 +130,45 @@ class Profile(models.Model):
         return self.user.username
 
 
+class LoginToken(models.Model):
+    """Passwordless Login Token model."""
+
+    token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    expiry_date = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    created_date = models.DateTimeField(
+        default=timezone.now,
+    )
+
+    @property
+    def expired(self):
+        if timezone.now() > self.expiry_date:
+            return True
+        return False
+
+    def __str__(self):
+        """Return the string representation."""
+        return str(self.token)
+
+    def save(self, *args, **kwargs):
+        """Generate the code hash and expiry date."""
+        self.expiry_date = timezone.now() + timedelta(
+            seconds=settings.TOKEN_EXPIRY_THRESHOLD
+        )
+        super(LoginToken, self).save(*args, **kwargs)
+
+
 class MFACode(models.Model):
-    """Multi factor authentication codes."""
+    """Multifactor authentication codes."""
 
     token = models.UUIDField(
         default=uuid.uuid4,
@@ -232,7 +282,7 @@ class MFAConfiguration(SingletonModel):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    """Create profile when an user instance is created."""
+    """Create profile when a user instance is created."""
     if created:
         Profile.objects.create(user=instance)
 

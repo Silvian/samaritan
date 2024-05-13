@@ -2,6 +2,8 @@ Hi {{ recipient_name }},
 
 {{ message }}
 
+Use the following link to login at {{ domain }}: {{ link }}
+
 Regards,
 
 {{ sender_name }}
