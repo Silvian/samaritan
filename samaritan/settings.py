@@ -17,6 +17,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 from __future__ import absolute_import
 
+import dj_database_url
 import os
 
 from celery.schedules import crontab
@@ -153,11 +154,12 @@ DATABASES = {
 }
 
 if 'DATABASE_HOST' in os.environ:
-    DATABASES['default']['HOST'] = os.getenv('DATABASE_HOST')
-    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-    DATABASES['default']['NAME'] = os.getenv('DATABASE_NAME')
-    DATABASES['default']['USER'] = os.getenv('DATABASE_USER')
-    DATABASES['default']['PASSWORD'] = os.getenv('DATABASE_PASSWORD')
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_CONNECTION_URL'),
+            engine='django.db.backends.postgresql_psycopg2'
+        ),
+    }
 
 
 # Password validation

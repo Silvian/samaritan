@@ -71,3 +71,87 @@ Note: you can login with the default user created here at http://localhost:8000/
 
 To run the test pack simply run:
 *./scripts/test.sh*
+
+
+# Production Environment Setup
+
+### Setting Up Nginx Proxy with HTTPS for a Dockerized Web Application on Ubuntu 22
+
+This guide will help you set up Nginx as a reverse proxy for your web application running in a Docker container and configure HTTPS on an Ubuntu 22 server.
+Ensure Docker and Nginx are installed on your Ubuntu server.
+
+### Install Docker:
+
+```bash
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo apt update
+sudo apt install -y nginx
+
+sudo docker run -d --name my-web-app -p 8000:8000 my-web-app-image
+```
+### Configure Nginx:
+
+```bash
+sudo nano /etc/nginx/sites-available/my-web-app
+
+server {
+    listen 80;
+    server_name your_domain_or_ip;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+sudo ln -s /etc/nginx/sites-available/my-web-app /etc/nginx/sites-enabled/
+
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+### Install Certbot:
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d your_domain_or_ip
+
+server {
+    listen 80;
+    server_name your_domain_or_ip;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name your_domain_or_ip;
+
+    ssl_certificate /etc/letsencrypt/live/your_domain_or_ip/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/your_domain_or_ip/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+sudo certbot renew --dry-run
+```
+
+### Add Certbot renew to cronjob:
+
+```bash
+#certbot SSL/TLS certificates renewal runs twice a day
+30 08,22 * * * certbot renew --quiet
+```
