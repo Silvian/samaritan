@@ -57,4 +57,3 @@ services:
       - memcached
       - rabbitmq
       - postgres
-
