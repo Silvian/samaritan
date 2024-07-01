@@ -33,7 +33,7 @@ EMAIL = "silvian.dragan@gmail.com"
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATIC_ROOT = os.getenv('STATIC_ROOT', default='')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,7 +45,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='a@!wnp8fx8rjm4(kmbjblnxi$$53g$-3_8
 if 'PRODUCTION' in os.environ:
     DEBUG = False
 
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
@@ -71,7 +71,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'static', STATIC_ROOT),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 # Application definition
@@ -153,7 +153,7 @@ DATABASES = {
     }
 }
 
-if 'DATABASE_HOST' in os.environ:
+if 'DATABASE_CONNECTION_URL' in os.environ:
     DATABASES = {
         'default': dj_database_url.config(
             default=os.getenv('DATABASE_CONNECTION_URL'),
